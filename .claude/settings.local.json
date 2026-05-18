@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node *)",
+      "WebFetch(domain:www.eglo.com)",
+      "Bash(npx tsc *)",
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\aajre\\\\Downloads\\\\EGLO_\\\\EGLO_\\\\eglo\" -Recurse -Include \"*.tsx\",\"*.ts\" -Depth 3)",
+      "Bash(Select-Object -ExpandProperty FullName)",
+      "Bash(Sort-Object)",
+      "Bash(npx next *)",
+      "Bash(dotnet user-secrets *)",
+      "WebSearch",
+      "WebFetch(domain:fonts.googleapis.com)",
+      "PowerShell(Invoke-WebRequest -Uri \"https://pub-166082e4b3d54bb296c0e624eb1a1f50.r2.dev/products/romazzina_2.jpg\" -Method Head -UseBasicParsing 2>&1 | Select-Object StatusCode, StatusDescription)",
+      "PowerShell(try { $r = Invoke-WebRequest -Uri \"https://pub-166082e4b3d54bb296c0e624eb1a1f50.r2.dev/products/romazzina_2.jpg\" -Method Head -UseBasicParsing; Write-Output $r.StatusCode } catch { Write-Output $_.Exception.Message })",
+      "PowerShell(try { $r = Invoke-WebRequest -Uri \"https://pub-166082e4b3d54bb296c0e624eb1a1f50.r2.dev/products/300384.jpg\" -Method Head -UseBasicParsing; Write-Output \"200 OK\" } catch { Write-Output $_.Exception.Message })",
+      "PowerShell(try { $r = Invoke-WebRequest -Uri \"http://localhost:5181/api/products/9c9f3a9d-aee5-4b1c-9171-a3723c5e2c55\" -UseBasicParsing; $r.Content } catch { Invoke-WebRequest -Uri \"http://localhost:3000/api/products/9c9f3a9d-aee5-4b1c-9171-a3723c5e2c55\" -UseBasicParsing | Select-Object -ExpandProperty Content })",
+      "PowerShell(try { $r = Invoke-WebRequest -Uri \"http://localhost:5181/api/products?search=300384&page=1&pageSize=5\" -UseBasicParsing; $r.Content | ConvertFrom-Json | ConvertTo-Json -Depth 3 } catch { Write-Output $_.Exception.Message })"
+    ]
+  }
+}

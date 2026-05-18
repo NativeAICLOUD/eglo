@@ -196,18 +196,33 @@
   },
   "header": {
     "topBar": {
-      "findStore": "Gjej një Dyqan",
+      "findStore": "Lokacioni",
       "customerSupport": "Mbështetje për Klientët",
-      "freeShipping": "Transport Falas për Porosi $70+",
-      "freeShippingMobile": "Transport Falas $70+"
+      "freeShipping": "Transport Falas për Porosi mbi 70€",
+      "freeShippingMobile": "Transport Falas mbi 70€",
+      "promos": [
+        "Transport Falas për Porosi mbi 70€",
+        "Koleksione të Reja — 2026",
+        "Zbritje Ekskluzive për Përdoruesit e Regjistruar",
+        "EGLO Smart Light — ndriçim inteligjent për shtëpinë tuaj"
+      ]
     },
     "search": {
-      "placeholder": "Kërko për drita, tifozë dhe më shumë..."
+      "placeholder": "Kërko për drita, tifozë dhe më shumë...",
+      "viewAll": "Shiko të gjitha rezultatet për",
+      "skuLabel": "Art.nr."
     },
     "actions": {
       "login": "Hyni",
       "logout": "Dilni",
-      "cart": "Shporta"
+      "cart": "Shporta",
+      "userMenu": {
+        "dashboard":  "Paneli i Kontrollit",
+        "profile":    "Profili",
+        "myProducts": "Produktet e Mia",
+        "settings":   "Cilësimet",
+        "logout":     "Dilni"
+      }
     }
   },
   "footer": {
@@ -246,7 +261,8 @@
   "navigation": {
     "inspiration": "Inspirimi",
     "all": "Të Gjitha",
-    "menu": "Meny"
+    "viewAll": "Shiko të gjitha",
+    "menu": "Menu"
   },
   "categories": {
     "interiorLights": {
@@ -307,7 +323,7 @@
           "name": "Lustra",
           "description": "Lustra luksoze për hapësira speciale"
         },
-        "wallLights": {
+        "wallLamps": {
           "name": "Drita e Murit",
           "description": "Drita praktike e murit"
         },
@@ -356,6 +372,18 @@
         "earthLuminaires": {
           "name": "Drita Tokësore",
           "description": "Drita elegante tokësore"
+        },
+        "gardenLights": {
+          "name": "Dritat e Kopshtit",
+          "description": "Ndriçim për kopshte dhe oborr"
+        },
+        "facadeLights": {
+          "name": "Dritat e Fasadës",
+          "description": "Ndriçim për fasada dhe hyrje"
+        },
+        "pathwayLights": {
+          "name": "Dritat e Shtegut",
+          "description": "Ndriçim për shtigje dhe alee"
         }
       }
     },
@@ -471,7 +499,7 @@
     "learnMore": "Mëso Më Shumë"
   },
   "featuredProducts": {
-    "title": "Produktet e Veçanta",
+    "title": "Më të Shiturat",
     "subtitle": "Të preferuarat e zgjedhura me dorë nga koleksioni ynë i fundit",
     "viewAllProducts": "Shiko Të Gjitha Produktet",
     "sale": "Në Zbritje"
@@ -610,6 +638,12 @@
       }
     }
   },
+  "pagination": {
+    "items": "Artikujt {start}-{end} nga {total}",
+    "perPage": "Shfaq për faqe",
+    "prev": "Faqja e mëparshme",
+    "next": "Faqja tjetër"
+  },
   "categoryPage": {
     "breadcrumb": {
       "home": "Kryesore"
@@ -618,7 +652,8 @@
     "categories": "Kategoritë",
     "expand": "Zgjero",
     "collapse": "Tkurr",
-    "filters": "Filtrat"
+    "filters": "Filtrat",
+    "noProducts": "Nuk ka produkte në këtë kategori"
   },
   "subcategoryPage": {
     "breadcrumb": {
@@ -628,161 +663,191 @@
     "categories": "Kategoritë",
     "expand": "Zgjero",
     "collapse": "Tkurr",
-    "filters": "Filtrat"
+    "filters": "Filtrat",
+    "noProducts": "Nuk ka produkte në këtë nënkategori"
   },
   "categories": {
     "interiorLights": {
-      "name": "Drita e brendshme",
+      "name": "Ndriçim i brendshëm",
       "description": "Një dritë e përsosur për çdo dhomë. Theksoni unikezinë e dhomës suaj përmes kombinimit të ngjyrave të buta, mobiljeve elegante dhe teknologjisë më të fundit të ndriçimit.\n\nÇdo dhomë është e ndryshme; ju dëshironi të krijoni një atmosferë relaksuese në një dhe të punoni në një tjetër. Zbuloni zgjedhjen tonë të gjerë të produkteve të ndriçimit dhe gjeni stilin tuaj personal.",
       "subcategories": {
         "smartLighting": {
-          "name": "Ndriçimi i Mençur",
-          "description": "Ne kemi zgjidhjet më të mira të ndriçimit të mençur për shtëpinë tuaj, me gamën tonë EGLO Connect dhe EGLO Access. Ka diçka për çdo familje.\n\nKontrolloni ndriçimin tuaj përmes një kontrolli të largët ose një aplikacioni. Është i përshtatshëm dhe i lehtë për t'u përdorur, me prekjen e një butoni."
+          "name": "Ndriçimi Smart",
+          "description": "Ne kemi zgjidhjet më të mira të ndriçimit të mençur për shtëpinë tuaj, me gamën tonë EGLO Connect dhe EGLO Access. Ka diçka për çdo familje.\n\nKontrolloni ndriçimin tuaj përmes një kontrolli të largët ose një aplikacioni. Është i përshtatshëm dhe i lehtë për t'u përdorur, me prekjen e një butoni.",
+          "subcategories": {
+            "egloConnectC": { "name": "EGLO connect-c" },
+            "egloAccess":   { "name": "EGLO access" }
+          }
         },
         "ledLamps": {
-          "name": "Llamba LED",
+          "name": "Dritat LED",
           "description": "LED ofron teknologjinë më të mirë të ndriçimit në treg. Kujdesuni për centët tuaj me drita moderne LED dhe kujdesuni për planetin tonë.\n\nLargohuni nga llambat tradicionale, LED-të ndriçojnë të ardhmen. Zbuloni një zgjedhje të gjerë dizajnesh të jashtëzakonshme për çdo shije.",
           "subcategories": {
-            "ledStrips": {
-              "name": "Shirita LED",
+            "ledStripLights": {
+              "name": "Shirit LED",
               "description": "Shiritat LED ofrojnë ndriçim indirekt në shtëpinë tuaj për të ekspozuar dhe ndriçuar pjesë specifike të mobiljeve dhe dekorit të shtëpisë, duke përfshirë raftet e librave ose kornizat."
             },
             "ledPanel": {
-              "name": "Paneli LED",
+              "name": "Panel LED",
               "description": "Panelet LED ofrojnë ndriçim fantastik përmes një dizajni diskret dhe stili të integruar. Me aftësinë për t'u integruar në mur ose tavan, panelet tona LED ofrojnë ndriçim të mirë në zonën tuaj të dëshiruar duke kursyer hapësirë në shtëpinë tuaj."
             },
+            "ledTubes": { "name": "Tuba LED" },
             "floorLedLights": {
-              "name": "Drita LED e dyshemesë",
+              "name": "Ndriçues dyshemeje LED",
               "description": "Llambat e dyshemesë LED ofrojnë qëndrueshmëri, efikasitet dhe lëvizshmëri. Llambat tona të dyshemesë LED jo vetëm që plotësojnë ndriçimin tuaj bazë, por mund të përputhen në mënyrë të përsosur për të përmirësuar dhe ndriçuar brendësinë tuaj."
             },
             "ceilingLedLights": {
-              "name": "Drita LED e tavanit",
+              "name": "Ndriçues tavani LED",
               "description": "Dritat LED të tavanit ofrojnë ndriçim të ndritshëm me konsum të ulët energjie. Ndryshe nga dritat tradicionale të tavanit, ato janë afërsisht 90% më efikase dhe zgjasin deri në 50 herë më gjatë."
             },
             "ledPendantLights": {
-              "name": "Drita LED e varur",
+              "name": "Ndriçues i varur LED",
               "description": "Gama jonë e ndriçimit të varur LED ofron si stilin bashkëkohor ashtu edhe teknologjinë efikase energjetik. Gama e gjerë ofron ndriçim për çdo brendësi, si p.sh. thjesht ndriçimi i tryezës së dhomës së ngrënies, plotësimi i dekorit tuaj dhe kursimi i parave në të njëjtën kohë."
             },
             "ledWallLights": {
-              "name": "Drita LED e murit",
+              "name": "Ndriçues muri LED",
               "description": "Dritat tona LED të murit ofrojnë një zgjidhje ndriçimi efikase energjetik dhe të qëndrueshme. Ky produkt mund të përshtatet dhe përdoret në shumë mënyra, për të krijuar ndriçim indirekt ose të drejtpërdrejtë në shtëpinë tuaj."
             },
             "ledTableLights": {
-              "name": "Drita LED e tavolinës",
+              "name": "Ndriçues tavoline LED",
               "description": "Koleksioni ynë i llambave të tavolinës LED nuk është vetëm funksional, por mund të përdoret gjithashtu si një element dekorativ në shtëpinë tuaj. Teknologjia LED ofron produkte ndriçimi që janë efikase energjetik dhe miqësore për mjedisin."
-            }
+            },
+            "ceilingLedFloodlight": { "name": "Reflektor LED tavani" }
           }
         },
         "floorLamps": {
-          "name": "Llamba e dyshemesë",
+          "name": "Ndriçues dyshemeje",
           "description": "Shtoni ndriçim karakteristik në shtëpinë tuaj dhe ndriçoni zonat me koleksionin tonë të llambave të dyshemesë. Të gjithanshme dhe moderne, duke ju lejuar të përshtatni stilin e llambave me shtëpinë tuaj."
         },
         "ceilingLights": {
-          "name": "Drita e tavanit",
+          "name": "Ndriçues tavani",
           "description": "Drita e tavanit është një nga elementët më të rëndësishëm të ndriçimit të brendshëm në çdo dhomë. Ajo ofron ndriçim bazë dhe ndriçon hapësirën tuaj të brendshme."
         },
         "pendantLights": {
-          "name": "Drita e varur",
+          "name": "Ndriçuesit e varur",
           "description": "Dritat e varura janë pika e ndritshme qendrore për dhomën tuaj. Dizajnet tona moderne dhe të pazakonta ofrojnë një prekje unike për shtëpinë tuaj."
         },
         "chandeliers": {
-          "name": "Lustra",
+          "name": "Llambadarë",
           "description": "Lustrat tona ofrojnë luks dhe madhështi. Transformoni shtëpinë tuaj dhe sillni shkëlqim dhe glamur në hapësirën tuaj të jetesës."
         },
-        "wallLights": {
-          "name": "Drita e murit",
-          "description": "Dritat e murit janë të gjithanshme, të zbatueshme, universale dhe praktike. Pavarësisht nëse përdoren për ndriçimin e korridoreve, banjove, si drita aksente ose llamba leximi."
+        "wallLamps": {
+          "name": "Ndriçues muri",
+          "description": "Dritat e murit janë të gjithanshme, të zbatueshme, universale dhe praktike. Pavarësisht nëse përdoren për ndriçimin e korridoreve, banjove, si drita aksente ose llamba leximi.",
+          "subcategories": {
+            "mirrorLights": { "name": "Ndriçues pasqyrë" }
+          }
         },
         "tableLamps": {
-          "name": "Llamba e tavolinës",
-          "description": "Pavarësisht nëse po lexoni ose punoni, përmirësoni ndriçimin tuaj të brendshëm me një llambë të mahnitshme tavoline. Llambat tona të tavolinës ofrojnë një shumëllojshmëri dizajnesh nga trendike në klasike."
+          "name": "Ndriçues tavoline",
+          "description": "Pavarësisht nëse po lexoni ose punoni, përmirësoni ndriçimin tuaj të brendshëm me një llambë të mahnitshme tavoline. Llambat tona të tavolinës ofrojnë një shumëllojshmëri dizajnesh nga trendike në klasike.",
+          "subcategories": {
+            "deskLamps":   { "name": "Ndriçues tavoline pune" },
+            "clampLights": { "name": "Ndriçues me kapëse" }
+          }
         },
         "trackSpotlights": {
-          "name": "Pista dhe spotlights",
-          "description": "Pista dhe spotlights janë një mënyrë e mirë për të shtuar një prekje dritë në shtëpinë tuaj. Ato janë të përsosura për lexim, punë, ose thjesht relaksim."
+          "name": "Spotet",
+          "description": "Spotet janë një mënyrë e mirë për të shtuar ndriçim të drejtuar në shtëpinë tuaj. Ato janë të përsosura për lexim, punë, ose thjesht relaksim."
         },
         "recessedSurface": {
-          "name": "Drita e gdhendur dhe e montuar në sipërfaqe",
-          "description": "Dritat e gdhendura dhe të montuara në sipërfaqe janë një mënyrë e mirë për të shtuar një prekje dritë në shtëpinë tuaj."
+          "name": "Ndriçues plafoni",
+          "description": "Dritat e gdhendura dhe të montuara në sipërfaqe janë diskrete dhe praktike. Sjellin dritë në çdo dhomë me ndriçuesit tanë, linja jonë më e adaptueshme e produkteve."
         },
         "underCabinet": {
-          "name": "Drita nën kabinet",
+          "name": "Ndriçues nën dollap",
           "description": "Ju nuk dëshironi hije në sipërfaqen tuaj të punës kur po prisni dhe copëtoni në kuzhinë. Ne kemi zgjidhjen për ju!"
         }
       }
     },
     "outdoorLights": {
-      "name": "Drita e jashtme",
+      "name": "Ndriçues të jashtëm",
       "description": "Ndriçoni hapësirat tuaja të jashtme me gamën tonë gjithëpërfshirëse të zgjidhjeve të ndriçimit të jashtëm. Nga dritat e shtigjeve të kopshtit deri te ndriçimi sofistikuar i fasadës.",
       "subcategories": {
+        "gardenLights": {
+          "name": "Ndriçues kopshti",
+          "description": "Ndriçoni kopshtin dhe oborrin tuaj me koleksionin tonë të ndriçuesve të kopshtit."
+        },
+        "facadeLights": {
+          "name": "Ndriçues fasade",
+          "description": "Theksoni bukurinë e shtëpisë suaj me ndriçuesit tanë të fasadës."
+        },
+        "pathwayLights": {
+          "name": "Ndriçues shtegu",
+          "description": "Ndriçoni shtigjet dhe aleet në kopshtin tuaj me koleksionin tonë të ndriçuesve të shtegut."
+        },
         "outdoorLedLights": {
-          "name": "Drita LED e jashtme",
+          "name": "Ndriçues të jashtëm LED",
           "description": "Dëshironi ta bëni jashtëm e shtëpisë suaj efikase energjetik? Atëherë thjesht përdorni produktet tona të ndriçimit të jashtëm LED."
         },
         "solarLights": {
-          "name": "Drita solare",
+          "name": "Drita Solare",
           "description": "Përfitimet e ndriçimit solar janë se është i gjithanshëm, praktik dhe i qëndrueshëm. Ju nuk keni nevojë për një lidhje elektrike."
         },
         "outdoorWallLights": {
-          "name": "Drita e jashtme e murit",
-          "description": "Dritat tona të jashtme të murit ofrojnë një zgjidhje të mirë për nevojat tuaja të ndriçimit të jashtëm."
+          "name": "Ndriçues të jashtëm muri",
+          "description": "Ndriçuesit tanë të jashtëm të murit ofrojnë një zgjidhje të mirë për nevojat tuaja të ndriçimit të jashtëm."
         },
         "exteriorCeilingLights": {
-          "name": "Drita e jashtme e tavanit",
-          "description": "Dritat tona të jashtme të murit ofrojnë një zgjidhje të mirë për nevojat tuaja të ndriçimit të jashtëm."
+          "name": "Ndriçim i jashtëm i tavanit",
+          "description": "Ndriçuesit tanë të jashtëm të tavanit ofrojnë një zgjidhje të mirë për nevojat tuaja të ndriçimit të jashtëm."
         },
         "outdoorSpotlights": {
-          "name": "Spotlights të jashtëm",
+          "name": "Spote të jashtme",
           "description": "Kush nuk e do natyrën? Ne besojmë se hapësira juaj e jetesës nuk përfundon në derën e verandës."
         },
         "earthLuminaires": {
-          "name": "Luminarët e tokës",
-          "description": "Kush nuk e do natyrën? Ne besojmë se hapësira juaj e jetesës nuk përfundon në derën e verandës."
-        }
+          "name": "Ndriçuesit e tokës",
+          "description": "Ndriçuesit e tokës janë zgjedhja ideale për të ndriçuar shtigjet, lulishtet ose zonat speciale të kopshtit."
+        },
+        "motionDetectors":     { "name": "Detektor lëvizjeje" },
+        "houseNumberLighting": { "name": "Ndriçim numri shtëpie" },
+        "pedestalLights":      { "name": "Ndriçues pedestal" },
+        "smartOutdoorLighting":{ "name": "Ndriçim i jashtëm inteligjent" }
       }
     },
     "ceilingFans": {
-      "name": "Tifozët e tavanit",
-      "description": "Qëndroni të freskët dhe të rehatshëm me zgjedhjen tonë të tifozëve të tavanit që kombinojnë stilin me funksionalitetin.",
+      "name": "Ventilatorët e tavanit",
+      "description": "Qëndroni të freskët dhe të rehatshëm me zgjedhjen tonë të ventilatorëve të tavanit që kombinojnë stilin me funksionalitetin.",
       "subcategories": {
         "ceilingFansWithLight": {
-          "name": "Tifozët e tavanit me dritë",
-          "description": "Tifozët tanë të tavanit me dritë janë projektuar për të ofruar si ftohje ashtu edhe ndriçim."
+          "name": "Ventilatorë tavani me dritë",
+          "description": "Ventilatorët tanë të tavanit me dritë janë projektuar për të ofruar si ftohje ashtu edhe ndriçim."
         },
         "ceilingFansWithoutLight": {
-          "name": "Tifozët e tavanit pa dritë",
-          "description": "Tifozët tanë të tavanit pa dritë janë projektuar për të ofruar ftohje dhe ventilim."
+          "name": "Ventilatorë tavani pa dritë",
+          "description": "Ventilatorët tanë të tavanit pa dritë janë projektuar për të ofruar ftohje dhe ventilim efikas."
         }
       }
     },
     "illuminants": {
-      "name": "Iluminantët",
-      "description": "Gjeni llambat dhe iluminantët e përsosur për pajisjet tuaja të ndriçimit. Gama jonë gjithëpërfshirëse përfshin lloje të ndryshme soketesh.",
+      "name": "Poçat",
+      "description": "Gjeni llambat dhe poçat e përsosura për pajisjet tuaja të ndriçimit. Gama jonë gjithëpërfshirëse përfshin lloje të ndryshme soketesh.",
       "subcategories": {
-        "e27": {
-          "name": "E27"
-        },
-        "e14": {
-          "name": "E14"
-        },
-        "g4": {
-          "name": "G4"
-        },
-        "g9": {
-          "name": "G9"
-        },
-        "gu53": {
-          "name": "GU5.3"
-        },
-        "gu10": {
-          "name": "GU10"
-        },
-        "r7s": {
-          "name": "R7S"
-        },
-        "gx53": {
-          "name": "GX53"
-        }
+        "e27":  { "name": "E27" },
+        "e14":  { "name": "E14" },
+        "g4":   { "name": "G4" },
+        "g9":   { "name": "G9" },
+        "gu53": { "name": "GU5.3" },
+        "gu10": { "name": "GU10" },
+        "r7s":  { "name": "R7S" },
+        "gx53": { "name": "GX53" },
+        "gu5-3":       { "name": "GU5.3" },
+        "ledBulbs":    { "name": "Llamba LED" },
+        "halogenBulbs":{ "name": "Llamba halogjeni" },
+        "filamentBulbs":{ "name": "Llamba filament" }
+      }
+    },
+    "accessories": {
+      "name": "Aksesorë",
+      "description": "Aksesorë dhe komponentë cilësorë për sistemet e ndriçimit.",
+      "subcategories": {
+        "ledProfiles":    { "name": "Profile LED" },
+        "ledStrips":      { "name": "Shirita LED" },
+        "mountingFrames": { "name": "Korniza montimi" },
+        "transformers":   { "name": "Transformatorë" },
+        "remoteControls": { "name": "Telekomanda" },
+        "spareParts":     { "name": "Pjesë këmbimi" }
       }
     }
   },
@@ -919,10 +984,15 @@
   },
   "productPage": {
     "breadcrumb": {
-      "home": "Kryesore"
+      "home": "Kryesore",
+      "products": "Produktet"
     },
     "addToCart": "Shto në shportë",
     "quantity": "Sasia",
+    "articleNumber": "Nr. artikulli",
+    "noImage": "Nuk ka imazh",
+    "vatNotice": "Përfshi 18% TVSH, plus kostot e transportit",
+    "deliveryNotice": "Dërgesa për 2-3 ditë pune",
     "downloadManual": "Shkarko manualin e udhëzimeve",
     "warrantyConditions": "Kushtet e garancisë",
     "dimensions": "Dimensionet",
@@ -1162,5 +1232,172 @@
       "viewSite": "Shiko Sajtin",
       "logout": "Dil"
     }
+  },
+  "dashboard": {
+    "nav": {
+      "overview":   "Përmbledhje",
+      "products":   "Produktet",
+      "categories": "Kategoritë",
+      "orders":     "Porositë",
+      "users":      "Përdoruesit",
+      "settings":   "Cilësimet",
+      "viewSite":   "Shiko Sajtin",
+      "logout":     "Dil"
+    },
+    "overview": {
+      "title":            "Përmbledhje",
+      "subtitle":         "Mirë se vini në panelin e administratorit të EGLO",
+      "viewAll":          "Shiko të gjitha",
+      "manageProducts":   "Menaxho, shto dhe redakto produktet.",
+      "manageCategories": "Menaxho kategoritë e produkteve.",
+      "stats": {
+        "totalProducts": "Gjithsej produkte",
+        "totalOrders":   "Gjithsej porosi",
+        "totalUsers":    "Gjithsej përdorues",
+        "revenue":       "Të ardhura"
+      }
+    },
+    "products": {
+      "title":          "Produktet",
+      "subtitle":       "Menaxho të gjitha produktet",
+      "addProduct":     "Shto produkt",
+      "search":         "Kërko produkte...",
+      "filterCategory": "Të gjitha kategoritë",
+      "filterStatus":   "Të gjitha statuset",
+      "noResults":      "Nuk ka produkte.",
+      "table": {
+        "image":    "Imazh",
+        "name":     "Emri",
+        "sku":      "Kodi",
+        "price":    "Çmimi",
+        "category": "Kategoria",
+        "status":   "Statusi",
+        "created":  "Krijuar",
+        "actions":  "Veprimet"
+      },
+      "status": {
+        "active":   "Aktiv",
+        "inactive": "Joaktiv"
+      },
+      "deleteModal": {
+        "title":   "Fshi produktin",
+        "message": "A jeni i sigurt që dëshironi të fshini",
+        "confirm": "Fshi",
+        "cancel":  "Anulo"
+      },
+      "pagination": {
+        "showing": "Duke shfaqur"
+      },
+      "uncategorized":      "Pa kategori",
+      "unassigned":         "Pa caktuar",
+      "filterUncategorized":"Vetëm pa kategori",
+      "selected":           "të zgjedhura",
+      "clearFilters":       "Pastro filtrat",
+      "bulkAssign": {
+        "title":             "Cakto kategori",
+        "subtitle":          "Cakto kategori për {count} produkte",
+        "selectCategory":    "Zgjidh kategori...",
+        "assign":            "Cakto",
+        "button":            "Cakto kategori",
+        "error":             "Gabim gjatë caktimit të kategorisë. Ju lutem provoni përsëri.",
+        "uncategorizedHint": "Shfaq vetëm produktet pa kategori"
+      }
+    },
+    "editProduct": {
+      "title":          "Ndrysho produktin",
+      "basicInfo":      "Informacione bazë",
+      "specifications": "Specifikimet",
+      "backToProducts": "Kthehu tek produktet",
+      "save":           "Ruaj ndryshimet",
+      "saving":         "Duke ruajtur...",
+      "cancel":         "Anulo",
+      "savedSuccess":   "Produkti u ruajt me sukses. Duke ridrejtuar...",
+      "fields": {
+        "name":           "Emri i produktit",
+        "sku":            "Kodi (SKU)",
+        "price":          "Çmimi",
+        "category":       "Kategoria",
+        "categoryNone":   "— Pa kategori —",
+        "productDetails": "Detaje produkti",
+        "dimensions":     "Dimensionet",
+        "technicalInfo":  "Informacione teknike",
+        "otherInfo":      "Informacione të tjera"
+      },
+      "errors": {
+        "nameRequired":  "Emri i produktit është i detyrueshëm",
+        "priceRequired": "Ju lutem vendosni një çmim të vlefshëm",
+        "notFound":      "Produkti nuk u gjet",
+        "saveFailed":    "Gabim gjatë ruajtjes. Ju lutem provoni përsëri."
+      }
+    },
+    "categories": {
+      "subtitle":        "Menaxho kategoritë e produkteve",
+      "addCategory":     "Shto kategori",
+      "noCategories":    "Nuk ka kategori",
+      "noCategoriesDesc":"Shto kategorinë e parë të produkteve.",
+      "table": {
+        "name":          "Emri",
+        "slug":          "Slug",
+        "subcategories": "Nënkategoritë"
+      }
+    },
+    "orders": {
+      "subtitle":     "Menaxho porositë e klientëve",
+      "noOrders":     "Nuk ka porosi",
+      "noOrdersDesc": "Porositë do të shfaqen këtu kur klientët të blejnë."
+    },
+    "users": {
+      "subtitle":    "Menaxho llogaritë e përdoruesve",
+      "noUsers":     "Nuk ka përdorues",
+      "noUsersDesc": "Përdoruesit e regjistruar do të shfaqen këtu."
+    },
+    "settings": {
+      "subtitle":                "Menaxho cilësimet e panelit të administratorit",
+      "notifications":           "Njoftimet",
+      "emailNotifications":      "Njoftimet me email",
+      "emailNotificationsDesc":  "Merrni përditësime për porositë dhe aktivitetet.",
+      "security":                "Siguria",
+      "localization":            "Lokalizimi",
+      "saveChanges":             "Ruaj ndryshimet",
+      "saved":                   "U ruajt",
+      "comingSoon":              "Së shpejti"
+    }
+  },
+  "profile": {
+    "title": "Profili",
+    "subtitle": "Menaxho informacionet tuaja personale",
+    "accountInfo": "Informacionet e llogarisë",
+    "email": "Email",
+    "userId": "ID e përdoruesit",
+    "role": "Roli",
+    "roles": "Rolet",
+    "changePassword": "Ndrysho fjalëkalimin",
+    "currentPassword": "Fjalëkalimi aktual",
+    "newPassword": "Fjalëkalimi i ri",
+    "confirmPassword": "Konfirmo fjalëkalimin",
+    "saveChanges": "Ruaj ndryshimet",
+    "comingSoon": "Së shpejti"
+  },
+  "settings": {
+    "title": "Cilësimet",
+    "subtitle": "Menaxho preferencat e llogarisë tuaj",
+    "language": "Gjuha",
+    "languageDesc": "Zgjidhni gjuhën e ndërfaqes",
+    "notifications": "Njoftimet",
+    "emailNotifications": "Njoftimet me email",
+    "emailNotificationsDesc": "Merrni përditësime për porositë dhe promovimet",
+    "orderUpdates": "Përditësimet e porosive",
+    "orderUpdatesDesc": "Njoftimet për statusin e porosisë tuaj",
+    "saveChanges": "Ruaj ndryshimet",
+    "saved": "Cilësimet u ruajtën",
+    "comingSoon": "Së shpejti"
+  },
+  "myProducts": {
+    "title": "Produktet e Mia",
+    "subtitle": "Produktet që ndiqni ose i doni",
+    "noProducts": "Nuk keni produkte të ruajtura",
+    "noProductsDesc": "Shfletoni katalogun tonë dhe ruani produktet tuaja të preferuara",
+    "browse": "Shfleto produktet",
+    "comingSoon": "Së shpejti"
   }
 }

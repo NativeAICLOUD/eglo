@@ -1,150 +1,115 @@
 "use client"
 
-import { useState } from "react"
-import { Button } from "../../../components/Button"
-import { Input } from "../../../components/Input"
-import { Checkbox } from "../../../components/Checkbox"
-import { Eye, EyeOff, Mail, Lock } from "lucide-react"
-import Image from "next/image"
 import Link from "next/link"
+import { Package, ShoppingCart, Users, TrendingUp, ArrowRight, Plus } from "lucide-react"
+import { useTranslations } from "next-intl"
 import { useParams } from "next/navigation"
-import { useTranslations } from 'next-intl'
-import { useAuth } from "../../../lib/useAuth"
+import { useEffect, useState } from "react"
+import { Button } from "../../../components/Button"
+import { apiService } from "../../../lib/api"
 
-export default function LoginPage() {
-  const [showPassword, setShowPassword] = useState(false)
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [rememberMe, setRememberMe] = useState(false)
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  
+export default function DashboardOverviewPage() {
+  const t      = useTranslations("dashboard")
   const params = useParams()
   const locale = params.locale as string
-  const t = useTranslations('login')
-  const { login } = useAuth()
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError(null)
-    setIsSubmitting(true)
+  const [totalProducts,   setTotalProducts]   = useState<number | null>(null)
+  const [totalCategories, setTotalCategories] = useState<number | null>(null)
+  const [totalUsers,      setTotalUsers]      = useState<number | null>(null)
 
-    try {
-      await login({
-        email,
-        password,
-        rememberMe,
+  useEffect(() => {
+    apiService.getStats()
+      .then(s => {
+        setTotalProducts(s.totalProducts)
+        setTotalCategories(s.totalCategories)
+        setTotalUsers(s.totalUsers)
       })
-      // Success - user will be redirected by useAuth hook
-    } catch (error) {
-      setError(error instanceof Error ? error.message : 'Login failed. Please try again.')
-    } finally {
-      setIsSubmitting(false)
-    }
-  }
+      .catch(() => {})
+  }, [])
+
+  const fmt = (v: number | null) => v === null ? "…" : v.toLocaleString()
+
+  const stats = [
+    { key: "totalProducts", value: fmt(totalProducts), icon: Package,      color: "bg-teal-50  text-teal-600"  },
+    { key: "totalOrders",   value: "—",                icon: ShoppingCart, color: "bg-blue-50  text-blue-600"  },
+    { key: "totalUsers",    value: fmt(totalUsers),    icon: Users,        color: "bg-green-50 text-green-600" },
+    { key: "revenue",       value: "—",                icon: TrendingUp,   color: "bg-amber-50 text-amber-600" },
+  ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-50 to-blue-50 flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
-        {/* Logo */}
-        <div className="text-center mb-8">
-          <Image
-            src="/assets/images/Logo_EGLO.png"
-            alt="EGLO Logo"
-            width={80}
-            height={30}
-            className="mx-auto mb-4"
-          />
-          <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
-          <p className="text-gray-600 mt-2">{t('subtitle')}</p>
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">{t("overview.title")}</h1>
+          <p className="text-gray-500 mt-1 text-sm">{t("overview.subtitle")}</p>
+        </div>
+        <Link href={`/${locale}/add-product`}>
+          <Button variant="primary" className="flex items-center gap-2">
+            <Plus className="w-4 h-4" />
+            {t("products.addProduct")}
+          </Button>
+        </Link>
+      </div>
+
+      {/* Stats */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+        {stats.map(({ key, value, icon: Icon, color }) => (
+          <div key={key} className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-500">{t(`overview.stats.${key}`)}</p>
+                <p className="text-2xl font-bold text-gray-900 mt-1">{value}</p>
+              </div>
+              <div className={`p-3 rounded-xl ${color}`}>
+                <Icon className="w-6 h-6" />
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Quick links */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="font-semibold text-gray-900">{t("nav.products")}</h2>
+            <Link href={`/${locale}/dashboard/products`} className="text-teal-600 hover:text-teal-700 text-sm flex items-center gap-1">
+              {t("overview.viewAll")} <ArrowRight className="w-3 h-3" />
+            </Link>
+          </div>
+          <p className="text-sm text-gray-500">{t("overview.manageProducts")}</p>
+          <div className="mt-4 flex gap-2">
+            <Link href={`/${locale}/dashboard/products`}>
+              <Button variant="outline" size="sm">{t("overview.viewAll")}</Button>
+            </Link>
+            <Link href={`/${locale}/add-product`}>
+              <Button variant="primary" size="sm" className="flex items-center gap-1">
+                <Plus className="w-3 h-3" /> {t("products.addProduct")}
+              </Button>
+            </Link>
+          </div>
         </div>
 
-        {/* Login Form */}
-        <div className="bg-white rounded-2xl shadow-xl p-8">
-          {error && (
-            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
-              {error}
-            </div>
-          )}
-
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Email Field */}
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                {t('email')}
-              </label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                <Input
-                  id="email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder={t('placeholders.email')}
-                  className="pl-10"
-                  required
-                />
-              </div>
-            </div>
-
-            {/* Password Field */}
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
-                {t('password')}
-              </label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                <Input
-                  id="password"
-                  type={showPassword ? "text" : "password"}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder={t('placeholders.password')}
-                  className="pl-10 pr-10"
-                  required
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                  aria-label={showPassword ? t('hidePassword') : t('showPassword')}
-                >
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                </button>
-              </div>
-            </div>
-
-            {/* Remember Me & Forgot Password */}
-            <div className="flex items-center justify-between">
-              <Checkbox
-                checked={rememberMe}
-                onChange={(e) => setRememberMe(e.target.checked)}
-                label={t('rememberMe')}
-              />
-              <a href="#" className="text-sm text-teal-600 hover:text-teal-700 font-medium">
-                {t('forgotPassword')}
-              </a>
-            </div>
-
-            {/* Submit Button */}
-            <Button
-              type="submit"
-              variant="primary"
-              className="w-full py-3"
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? 'Signing In...' : t('signIn')}
-            </Button>
-          </form>
-
-          {/* Sign Up Link */}
-          <div className="mt-6 text-center">
-            <p className="text-sm text-gray-600">
-              {t('dontHaveAccount')}{" "}
-              <Link href={`/${locale}/signup`} className="font-medium text-teal-600 hover:text-teal-700">
-                {t('signUp')}
-              </Link>
-            </p>
+        <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="font-semibold text-gray-900">{t("nav.categories")}</h2>
+            <Link href={`/${locale}/dashboard/categories`} className="text-teal-600 hover:text-teal-700 text-sm flex items-center gap-1">
+              {t("overview.viewAll")} <ArrowRight className="w-3 h-3" />
+            </Link>
+          </div>
+          <p className="text-sm text-gray-500">
+            {t("overview.manageCategories")}
+            {totalCategories !== null && (
+              <span className="ml-2 text-xs font-medium text-teal-600 bg-teal-50 px-2 py-0.5 rounded-full">
+                {totalCategories}
+              </span>
+            )}
+          </p>
+          <div className="mt-4">
+            <Link href={`/${locale}/dashboard/categories`}>
+              <Button variant="outline" size="sm">{t("overview.viewAll")}</Button>
+            </Link>
           </div>
         </div>
       </div>

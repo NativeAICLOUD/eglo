@@ -1,148 +1,97 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Button } from "../../../../components/Button"
-import { Input } from "../../../../components/Input"
-import { Eye, EyeOff, Mail, Lock, AlertCircle, CheckCircle } from "lucide-react"
-import { useParams } from "next/navigation"
-import { useTranslations } from 'next-intl'
-
-// Import test utility
-import '../../../../lib/test-registration'
+import { useState } from "react";
+import { Button } from "../../../../components/Button";
+import { Input } from "../../../../components/Input";
+import { Eye, EyeOff, Mail, Lock, AlertCircle, CheckCircle } from "lucide-react";
+import { useParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 export default function AdminSignupPage() {
-  const [showPassword, setShowPassword] = useState(false)
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [success, setSuccess] = useState<string | null>(null)
-  const [useCorsProxy, setUseCorsProxy] = useState(false)
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    confirmPassword: ""
-  })
-  const params = useParams()
-  const locale = params.locale as string
-  const t = useTranslations('adminSignup')
+    confirmPassword: "",
+  });
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
+
+  const { locale } = useParams() as { locale: string };
+  const t = useTranslations("adminSignup");
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError(null)
-    setSuccess(null)
+    e.preventDefault();
+    setError(null);
+    setSuccess(null);
 
-    // Client-side validation
     if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match")
-      return
+      setError("Passwords do not match");
+      return;
     }
 
     if (formData.password.length < 6) {
-      setError("Password must be at least 6 characters long")
-      return
+      setError("Password must be at least 6 characters long");
+      return;
     }
 
-    setIsSubmitting(true)
-    
+    setIsSubmitting(true);
+
     try {
-      console.log('Testing registration with payload:', {
-        email: formData.email,
-        password: formData.password
-      })
+      const baseUrl =
+        process.env.NEXT_PUBLIC_API_BASE_URL ||
+        (process.env.NODE_ENV === "development"
+          ? "https://localhost:7169"
+          : "https://nativeapi-h8e7h4cgc6gpgbea.northeurope-01.azurewebsites.net");
 
-      // Choose URL based on CORS proxy setting
-      const baseUrl = useCorsProxy 
-        ? 'https://cors-anywhere.herokuapp.com/https://nativeapi-h8e7h4cgc6gpgbea.northeurope-01.azurewebsites.net'
-        : 'https://nativeapi-h8e7h4cgc6gpgbea.northeurope-01.azurewebsites.net'
-
-      const response = await fetch(`${baseUrl}/api/auth/register`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(useCorsProxy && { 'X-Requested-With': 'XMLHttpRequest' })
-        },
+      const response = await fetch(`${baseUrl}/api/v1/auth/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email: formData.email,
-          password: formData.password
+          password: formData.password,
         }),
-      })
-
-      console.log('Response status:', response.status)
-      console.log('Response headers:', Object.fromEntries(response.headers.entries()))
+      });
 
       if (!response.ok) {
-        const errorText = await response.text()
-        console.error('Error response:', errorText)
-        
-        // Try to parse as JSON for better error message
+        const errorText = await response.text();
         try {
-          const errorJson = JSON.parse(errorText)
-          setError(`Registration failed: ${errorJson.message || errorText}`)
+          const errorJson = JSON.parse(errorText);
+          setError(`Registration failed: ${errorJson.message || errorText}`);
         } catch {
-          setError(`Registration failed: ${response.status} - ${errorText}`)
+          setError(`Registration failed: ${response.status} - ${errorText}`);
         }
-        return
+        return;
       }
 
-      const data = await response.json()
-      console.log('Registration successful:', data)
-      setSuccess('Registration successful! Check console for full response details.')
-      
-      // Clear form on success
-      setFormData({
-        email: "",
-        password: "",
-        confirmPassword: ""
-      })
-      
-    } catch (error) {
-      console.error('Registration error:', error)
-      if (error instanceof Error && error.message.includes('CORS')) {
-        setError('CORS Error: Backend needs to allow requests from localhost:3000. Try enabling CORS proxy below.')
-      } else {
-        setError(error instanceof Error ? error.message : 'Registration failed')
-      }
+      const data = await response.json();
+      console.log("Registration successful:", data);
+      setSuccess("Registration successful! Check console for full response details.");
+      setFormData({ email: "", password: "", confirmPassword: "" });
+    } catch (err) {
+      console.error("Registration error:", err);
+      setError(err instanceof Error ? err.message : "Registration failed");
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
-
-  const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: value
-    }))
-  }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-teal-50 to-blue-50 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
-          <p className="text-gray-600 mt-2">{t('subtitle')}</p>
-          <p className="text-sm text-gray-500 mt-1">{t('endpoint')}</p>
+          <h1 className="text-2xl font-bold text-gray-900">{t("title")}</h1>
+          <p className="text-gray-600 mt-2">{t("subtitle")}</p>
+          <p className="text-sm text-gray-500 mt-1">{t("endpoint")}</p>
         </div>
 
         <div className="bg-white rounded-2xl shadow-xl p-8">
-          {/* CORS Proxy Toggle */}
-          <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-            <label className="flex items-center gap-2 text-sm">
-              <input
-                type="checkbox"
-                checked={useCorsProxy}
-                onChange={(e) => setUseCorsProxy(e.target.checked)}
-                className="rounded"
-              />
-              <span>{t('useCorsProxy')}</span>
-            </label>
-            <p className="text-xs text-blue-600 mt-1">
-              {t('corsNote')}{" "}
-              <a href="https://cors-anywhere.herokuapp.com/corsdemo" target="_blank" rel="noopener noreferrer" className="underline ml-1">
-                {t('corsDemo')}
-              </a> first to enable the proxy.
-            </p>
-          </div>
-
           {error && (
             <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg flex items-center gap-2 text-red-700">
               <AlertCircle className="w-4 h-4 flex-shrink-0" />
@@ -231,31 +180,22 @@ export default function AdminSignupPage() {
               </div>
             </div>
 
-            <Button
-              type="submit"
-              variant="primary"
-              className="w-full py-3"
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? t('testingRegistration') : t('testRegistration')}
+            <Button type="submit" variant="primary" className="w-full py-3" disabled={isSubmitting}>
+              {isSubmitting ? t("testingRegistration") : t("testRegistration")}
             </Button>
           </form>
 
           <div className="mt-6 text-center space-y-2">
             <p className="text-sm text-gray-600">
               <a href={`/${locale}/signup`} className="font-medium text-teal-600 hover:text-teal-700">
-                {t('backToSignup')}
+                {t("backToSignup")}
               </a>
             </p>
-            <p className="text-xs text-gray-500">
-              {t('description')}
-            </p>
-            <p className="text-xs text-blue-600">
-              {t('consoleNote')}
-            </p>
+            <p className="text-xs text-gray-500">{t("description")}</p>
+            <p className="text-xs text-blue-600">{t("consoleNote")}</p>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }

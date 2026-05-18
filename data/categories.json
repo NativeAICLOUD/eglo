@@ -129,9 +129,9 @@
           "subcategories": []
         },
         {
-          "id": "wall-lights",
-          "nameKey": "categories.interiorLights.subcategories.wallLights.name",
-          "descriptionKey": "categories.interiorLights.subcategories.wallLights.description",
+          "id": "wall-lamps",
+          "nameKey": "categories.interiorLights.subcategories.wallLamps.name",
+          "descriptionKey": "categories.interiorLights.subcategories.wallLamps.description",
           "images": {
             "image1": "/assets/images/wallLamp.jpg"
           },
@@ -185,6 +185,27 @@
         "image2": "/assets/images/outdoor-lights2.png"
       },
       "subcategories": [
+        {
+          "id": "garden-lights",
+          "nameKey": "categories.outdoorLights.subcategories.gardenLights.name",
+          "descriptionKey": "categories.outdoorLights.subcategories.gardenLights.description",
+          "images": { "image1": "/assets/images/outdoor-lights1.png" },
+          "subcategories": []
+        },
+        {
+          "id": "facade-lights",
+          "nameKey": "categories.outdoorLights.subcategories.facadeLights.name",
+          "descriptionKey": "categories.outdoorLights.subcategories.facadeLights.description",
+          "images": { "image1": "/assets/images/outdoor-wall-lights.png" },
+          "subcategories": []
+        },
+        {
+          "id": "pathway-lights",
+          "nameKey": "categories.outdoorLights.subcategories.pathwayLights.name",
+          "descriptionKey": "categories.outdoorLights.subcategories.pathwayLights.description",
+          "images": { "image1": "/assets/images/outdoor-lights2.png" },
+          "subcategories": []
+        },
         {
           "id": "outdoor-led-lights",
           "nameKey": "categories.outdoorLights.subcategories.outdoorLedLights.name",

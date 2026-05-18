@@ -1,22 +1,28 @@
 export async function POST(request: Request) {
   try {
-    const body = await request.json()
-    
-    const response = await fetch('https://nativeapi-h8e7h4cgc6gpgbea.northeurope-01.azurewebsites.net/login', {
-      method: 'POST',
+    const body = await request.json();
+
+    const payload = {
+      Email: body.email,
+      Password: body.password,
+    };
+
+    const response = await fetch(`${process.env.INTERNAL_API_URL}/auth/login`, {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(body),
-    })
-    
-    const data = await response.json()
-    
-    return Response.json(data, { status: response.status })
-  } catch {
+      body: JSON.stringify(payload),
+    });
+
+    const data = await response.json();
+
+    return Response.json(data, { status: response.status });
+  } catch (err) {
+    console.error("Login error:", err);
     return Response.json(
-      { success: false, message: 'Internal server error' },
+      { success: false, message: "Internal server error" },
       { status: 500 }
-    )
+    );
   }
-} 
+}

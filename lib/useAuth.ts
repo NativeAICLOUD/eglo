@@ -5,28 +5,27 @@ import { useRouter, useParams } from "next/navigation";
 import {
   apiService,
   AuthResponse,
-  LoginRequest,
-  SignupRequest,
-  ApiError,
+  isApiError,
 } from "./api";
 
-interface User {
+type User = {
   id: string;
   email: string;
   firstName: string;
   lastName: string;
   phone?: string;
   roles?: string[];
-}
+};
 
-interface AuthState {
+type AuthState = {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
+  initialized: boolean; // true after first token check completes — never resets
   error: string | null;
-}
+};
 
-// Helper: decode JWT
+// Safe JWT decode (client only)
 const decodeJWT = (token: string) => {
   try {
     const base64Url = token.split(".")[1];
@@ -37,112 +36,121 @@ const decodeJWT = (token: string) => {
         .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
         .join("")
     );
-    return JSON.parse(jsonPayload);
-  } catch (error) {
-    console.error("Error decoding JWT:", error);
+    return JSON.parse(jsonPayload) as Record<string, unknown>;
+  } catch {
     return null;
   }
 };
 
 export function useAuth() {
-  const [authState, setAuthState] = useState<AuthState>({
+  const [auth, setAuth] = useState<AuthState>({
     user: null,
     isAuthenticated: false,
     isLoading: true,
+    initialized: false,
     error: null,
   });
 
   const router = useRouter();
-  const { locale } = useParams() as { locale: string }; // ✅ get locale from URL
+  const { locale } = useParams() as { locale: string };
 
-  // Init auth state
+  // Initialize from localStorage
   useEffect(() => {
-    const initAuth = async () => {
-      try {
-        const token = apiService.getToken();
-        console.log("🔍 Token found:", token ? "Yes" : "No");
+    const token = apiService.getToken();
+    if (!token) {
+      setAuth((s) => ({ ...s, isAuthenticated: false, isLoading: false, initialized: true }));
+      return;
+    }
 
-        if (token) {
-          const decoded = decodeJWT(token);
-          console.log("🔍 Decoded JWT:", decoded);
+    const decoded = decodeJWT(token);
+    if (!decoded) {
+      apiService.removeToken();
+      apiService.removeUserEmail();
+      setAuth((s) => ({ ...s, isAuthenticated: false, isLoading: false, initialized: true }));
+      return;
+    }
 
-          if (decoded) {
-            setAuthState((prev) => ({
-              ...prev,
-              isAuthenticated: true,
-              isLoading: false,
-              user: {
-                id: decoded.sub || "unknown",
-                email: decoded.sub || "unknown@example.com",
-                firstName: "",
-                lastName: "",
-                phone: "",
-                roles: [],
-              },
-            }));
-          } else {
-            console.log("❌ Invalid token, clearing...");
-            apiService.removeToken();
-            setAuthState((prev) => ({
-              ...prev,
-              isAuthenticated: false,
-              isLoading: false,
-            }));
-          }
-        } else {
-          console.log("❌ No token found");
-          setAuthState((prev) => ({
-            ...prev,
-            isAuthenticated: false,
-            isLoading: false,
-          }));
-        }
-      } catch (error) {
-        console.error("Auth initialization error:", error);
-        setAuthState((prev) => ({
-          ...prev,
-          isAuthenticated: false,
-          isLoading: false,
-          error: "Failed to initialize authentication",
-        }));
-      }
-    };
+    // Use the email saved at login time — JWT claim names vary by .NET configuration
+    // and can fall through to the sub (GUID) if the claim key doesn't match.
+    const storedEmail = apiService.getUserEmail();
+    const jwtEmail =
+      (decoded["email"] as string | undefined) ??
+      (decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"] as string | undefined) ??
+      (decoded["unique_name"] as string | undefined) ??
+      (decoded["name"] as string | undefined);
+    const email = storedEmail ?? jwtEmail ?? "unknown@example.com";
 
-    initAuth();
+    const id =
+      (decoded["nameid"] as string) ??
+      (decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"] as string) ??
+      (decoded["sub"] as string) ??
+      "unknown";
+
+    const rolesRaw = decoded["role"]
+      ?? decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+    const roles =
+      Array.isArray(rolesRaw)
+        ? (rolesRaw as string[])
+        : typeof rolesRaw === "string"
+        ? [rolesRaw]
+        : [];
+
+    setAuth({
+      user: { id, email, firstName: "", lastName: "", phone: "", roles },
+      isAuthenticated: true,
+      isLoading: false,
+      initialized: true,
+      error: null,
+    });
   }, []);
 
   // Login
   const login = useCallback(
-    async (credentials: LoginRequest) => {
-      setAuthState((prev) => ({ ...prev, isLoading: true, error: null }));
-
+    async ({
+      email,
+      password,
+      rememberMe,
+    }: {
+      email: string;
+      password: string;
+      rememberMe?: boolean;
+    }) => {
+      setAuth((s) => ({ ...s, isLoading: true, error: null }));
       try {
-        const response: AuthResponse = await apiService.login(credentials);
-        apiService.setToken(response.token);
+        const res: AuthResponse = await apiService.login({
+          email,
+          password,
+          rememberMe,
+        });
+        apiService.setToken(res.token);
+        // Persist email so page reloads don't need to guess JWT claim names
+        apiService.setUserEmail(res.user.email);
 
-        setAuthState({
-          user: response.user,
+        // Decode JWT to get roles — backend may not include them in the response body
+        const decoded   = decodeJWT(res.token)
+        // .NET Identity may use full claim URI or short "role" key
+        const rolesRaw  = decoded?.["role"]
+          ?? decoded?.["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]
+        const roles: string[] = Array.isArray(rolesRaw)
+          ? rolesRaw
+          : typeof rolesRaw === "string"
+          ? [rolesRaw]
+          : res.user.roles ?? []
+
+        setAuth({
+          user: { ...res.user, roles },
           isAuthenticated: true,
           isLoading: false,
+          initialized: true,
           error: null,
         });
-
-        // ✅ Redirect with locale
-        router.push(`/${locale}`);
-        return response;
-      } catch (error) {
-        const errorMessage =
-          error instanceof ApiError
-            ? error.message
-            : "Login failed. Please try again.";
-
-        setAuthState((prev) => ({
-          ...prev,
-          isLoading: false,
-          error: errorMessage,
-        }));
-
-        throw error;
+        const isAdmin = roles.some(r => ["superadmin", "admin"].includes(r.toLowerCase()))
+        router.push(isAdmin ? `/${locale}/dashboard` : `/${locale}`)
+        return res;
+      } catch (err: unknown) {
+        const msg = isApiError(err) ? err.message : "Login failed. Please try again.";
+        setAuth((s) => ({ ...s, isLoading: false, error: msg }));
+        throw err;
       }
     },
     [router, locale]
@@ -150,70 +158,52 @@ export function useAuth() {
 
   // Signup
   const signup = useCallback(
-    async (userData: SignupRequest) => {
-      setAuthState((prev) => ({ ...prev, isLoading: true, error: null }));
-
+    async ({
+      email,
+      password,
+    }: {
+      email: string;
+      password: string;
+    }) => {
+      setAuth((s) => ({ ...s, isLoading: true, error: null }));
       try {
-        const response = await apiService.signup(userData);
-        // Don't automatically log in the user after signup
-        // Don't set token or update auth state
-
-        setAuthState((prev) => ({
-          ...prev,
-          isLoading: false,
-          error: null,
-        }));
-
-        // Redirect to login page instead of home page
-        console.log('Signup successful, redirecting to login page:', `/${locale}/login`);
+        const res = await apiService.signup({
+          email,
+          password,
+        });
+        setAuth((s) => ({ ...s, isLoading: false, error: null }));
         router.push(`/${locale}/login`);
-        return response;
-      } catch (error) {
-        const errorMessage =
-          error instanceof ApiError
-            ? error.message
-            : "Signup failed. Please try again.";
-
-        setAuthState((prev) => ({
-          ...prev,
-          isLoading: false,
-          error: errorMessage,
-        }));
-
-        throw error;
+        return res;
+      } catch (err: unknown) {
+        const msg = isApiError(err) ? err.message : "Signup failed. Please try again.";
+        setAuth((s) => ({ ...s, isLoading: false, error: msg }));
+        throw err;
       }
     },
     [router, locale]
   );
 
   // Logout
-  const logout = useCallback(async () => {
+  const logout = useCallback(() => {
     try {
-      await apiService.logout();
-    } catch (error) {
-      console.error("Logout error:", error);
+      apiService.logout();
     } finally {
       apiService.removeToken();
-      setAuthState({
+      apiService.removeUserEmail();
+      setAuth({
         user: null,
         isAuthenticated: false,
         isLoading: false,
+        initialized: true,
         error: null,
       });
-
       router.push(`/${locale}/login`);
     }
   }, [router, locale]);
 
   const clearError = useCallback(() => {
-    setAuthState((prev) => ({ ...prev, error: null }));
+    setAuth((s) => ({ ...s, error: null }));
   }, []);
 
-  return {
-    ...authState,
-    login,
-    signup,
-    logout,
-    clearError,
-  };
+  return { ...auth, login, signup, logout, clearError };
 }

@@ -1,20 +1,90 @@
 // lib/api.ts
 
-// ---------------------------------------------------------------------------
-// Base URL (prod defaults to your Azure API, overridable via env)
-// Keep `/api` because your endpoints are like "/auth/login" → "/api/auth/login"
-// ---------------------------------------------------------------------------
 const DEFAULT_API_BASE =
-  'https://nativeapi-h8e7h4cgc6gpgbea.northeurope-01.azurewebsites.net/api';
+  "http://localhost:7169/api"; // ← use HTTP for local dev
 
 export const API_BASE_URL = (
   process.env.NEXT_PUBLIC_API_BASE_URL ||
-  (process.env.NODE_ENV === 'production' ? DEFAULT_API_BASE : 'http://localhost:3000/api')
-).replace(/\/$/, ''); // strip trailing slash
+  (process.env.NODE_ENV === "production" ? DEFAULT_API_BASE : "/api")
+).replace(/\/$/, "");
 
-// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
+// ----------------------------- Types ----------------------------------------
+export interface BackendCategory {
+  id: string;
+  name: string;
+  slug: string;
+  icon: string | null;
+  description?: string | null;
+  imageUrl?: string | null;
+  subcategories: BackendCategory[];
+}
+
+export interface BackendProductImage {
+  id: string;
+  url: string;
+  order?: number;
+}
+
+export interface BackendProduct {
+  id: string;
+  /** Full EGLO spec string e.g. "LED-DL SCHWARZ/WEISS 'PALMARES'" — returned as "name" by detail endpoint */
+  title: string;
+  name?: string;
+  /** Product code e.g. "300384" — returned as "description" by detail endpoint */
+  sku: string;
+  description?: string | null;
+  /** Price in MKD */
+  price: number;
+  imageUrl: string | null;
+  createdDate: string;
+  // Fields present on paginated list + single-product responses
+  categoryId?: string | null;
+  subcategoryId?: string | null;
+  categoryName?: string | null;
+  subcategoryName?: string | null;
+  category?: string;
+  isPublished?: boolean;
+  status?: string;
+  images?: Array<string | BackendProductImage>;
+  productDetailsJson?: string | null;
+  dimensionsJson?: string | null;
+  technicalInfoJson?: string | null;
+  otherInfoJson?: string | null;
+}
+
+export interface PaginatedProducts {
+  items: BackendProduct[];
+  totalCount: number;
+  page: number;
+  pageSize: number;
+}
+
+export interface ProductQueryParams {
+  categoryId?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  page?: number;
+  pageSize?: number;
+  search?: string;
+  categorySlug?: string;
+  uncategorized?: boolean;
+}
+
+/** Extract the quoted model name from a German EGLO spec string.
+ *  "LED-DL SCHWARZ/WEISS 'PALMARES'" → "PALMARES"
+ *  Falls back to the full title if no quotes found. */
+export function parseProductName(raw: string | null | undefined): string {
+  if (!raw) return ''
+  const match = raw.match(/'([^']+)'/)
+  return match ? match[1] : raw
+}
+
+/** Format a MKD price for display (comma = thousands separator, no decimal cents) */
+export function formatMKD(price: number): string {
+  const mkd = Math.round(price)
+  return `${mkd.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} ден.`
+}
+
 export interface LoginRequest {
   email: string;
   password: string;
@@ -51,213 +121,240 @@ export interface AuthResponse {
   expiresIn?: number;
 }
 
-// A very light JSON-ish type (no "any")
-type Json =
-  | string
-  | number
-  | boolean
-  | null
-  | Json[]
-  | { [key: string]: Json };
-
-// Shape we *optionally* expect from error bodies
-type ApiErrorPayload = {
-  message?: string;
-} & Record<string, Json>;
-
-// ---------------------------------------------------------------------------
-// Error
-// ---------------------------------------------------------------------------
+// ----------------------------- Error ----------------------------------------
 export class ApiError extends Error {
   status: number;
   details?: unknown;
 
   constructor(message: string, status: number, details?: unknown) {
     super(message);
-    this.name = 'ApiError';
+    this.name = "ApiError";
     this.status = status;
     this.details = details;
   }
 }
 
-// ------------------------------ Type guards ---------------------------------
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null;
-}
+export const isApiError = (e: unknown): e is ApiError =>
+  typeof e === "object" &&
+  e !== null &&
+  (e as any).name === "ApiError" &&
+  "status" in (e as any);
 
-function hasStringMessage(value: unknown): value is { message: string } {
-  return (
-    isRecord(value) &&
-    'message' in value &&
-    typeof (value as Record<string, unknown>).message === 'string'
-  );
-}
+// ----------------------------- Internals ------------------------------------
+const isObject = (v: unknown): v is Record<string, unknown> =>
+  typeof v === "object" && v !== null;
 
-// ---------------------------------------------------------------------------
-// Service
-// ---------------------------------------------------------------------------
+const hasStringMessage = (v: unknown): v is { message: string } =>
+  isObject(v) && typeof (v as any).message === "string";
+
+// ----------------------------- Service --------------------------------------
 class ApiService {
-  private baseURL: string;
+  constructor(private baseURL: string = API_BASE_URL) {}
 
-  constructor(baseURL: string = API_BASE_URL) {
-    this.baseURL = baseURL;
-  }
-
-  private buildUrl(endpoint: string) {
-    const ep = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
-    return `${this.baseURL}${ep}`;
+  private url(endpoint: string) {
+    return `${this.baseURL}${endpoint.startsWith("/") ? endpoint : `/${endpoint}`}`;
   }
 
   private async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
-    const url = this.buildUrl(endpoint);
+    const url = this.url(endpoint);
 
-    if (process.env.NODE_ENV !== 'production') {
-      console.log('🔍 API_BASE_URL:', this.baseURL);
-      console.log('🔍 endpoint:', endpoint);
-      console.log('🔍 Full URL:', url);
+    if (process.env.NODE_ENV !== "production") {
+      console.log("🔍 API_BASE_URL:", this.baseURL);
+      console.log("🔍 endpoint:", endpoint);
+      console.log("🔍 Full URL:", url);
     }
 
     const headers: HeadersInit = {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       ...(options.headers || {}),
     };
 
-    // Add auth token if available
     const token = this.getToken();
     if (token) {
       (headers as Record<string, string>).Authorization = `Bearer ${token}`;
     }
 
-    const config: RequestInit = { ...options, headers };
+    const res = await fetch(url, { ...options, headers });
 
-    try {
-      const response = await fetch(url, config);
+    if (!res.ok) {
+      let body: unknown = {};
+      try {
+        body = await res.json();
+      } catch {}
 
-      if (!response.ok) {
-        // Parse error body safely, without "any"
-        let rawError: unknown = {};
-        try {
-          rawError = await response.json();
-        } catch {
-          // leave rawError as {}
-        }
+      const message = hasStringMessage(body)
+        ? body.message
+        : `HTTP error! status: ${res.status}`;
 
-        const errorData: ApiErrorPayload | Record<string, unknown> = isRecord(rawError)
-          ? (rawError as ApiErrorPayload)
-          : {};
-
-        const message = hasStringMessage(rawError)
-          ? rawError.message
-          : `HTTP error! status: ${response.status}`;
-
-        if (process.env.NODE_ENV !== 'production') {
-          console.log('🔍 API Error Response:', errorData);
-          console.log('🔍 Response Status:', response.status);
-        }
-
-        throw new ApiError(message, response.status, errorData);
-      }
-
-      // Successful JSON response
-      const parsed: unknown = await response.json();
-      return parsed as T;
-    } catch (error: unknown) {
-      if (error instanceof ApiError) throw error;
-
-      const message =
-        error instanceof Error ? error.message : 'An unknown error occurred';
-      throw new ApiError(message, 0, error);
-    }
-  }
-
-  // Convert Eglo API response to our internal format
-  private convertToAuthResponse(egloResponse: EgloApiResponse): AuthResponse {
-    if (!egloResponse.success || !egloResponse.token || !egloResponse.user) {
-      throw new ApiError(
-        egloResponse.message || 'Authentication failed',
-        400,
-        egloResponse.errors
-      );
+      throw new ApiError(message, res.status, body);
     }
 
-    return {
-      token: egloResponse.token,
-      user: {
-        id: egloResponse.user.userId,
-        email: egloResponse.user.email,
-        firstName: '', // Not provided by API
-        lastName: '',  // Not provided by API
-        phone: '',     // Not provided by API
-        roles: egloResponse.user.roles,
-      },
-    };
+    return (await res.json()) as T;
   }
 
   // ------------------------- Public endpoints --------------------------------
+  async getStats(): Promise<{ totalProducts: number; totalCategories: number; totalUsers: number }> {
+    return this.request<{ totalProducts: number; totalCategories: number; totalUsers: number }>("/stats");
+  }
+
+  async getCategories(): Promise<BackendCategory[]> {
+    return this.request<BackendCategory[]>("/categories");
+  }
+
+  async getCategoryBySlug(slug: string): Promise<BackendCategory> {
+    return this.request<BackendCategory>(`/categories/by-slug/${slug}`);
+  }
+
+  async getProducts(params?: ProductQueryParams): Promise<PaginatedProducts> {
+    const qs = new URLSearchParams();
+    if (params?.categoryId)        qs.set("CategoryId",    params.categoryId);
+    if (params?.categorySlug)      qs.set("categorySlug",  params.categorySlug);
+    if (params?.search)            qs.set("search",        params.search);
+    if (params?.minPrice != null)  qs.set("minPrice",      String(params.minPrice));
+    if (params?.maxPrice != null)  qs.set("maxPrice",      String(params.maxPrice));
+    // page is required by the backend; default to 1
+    qs.set("page",     String(params?.page     ?? 1));
+    qs.set("pageSize", String(params?.pageSize ?? 20));
+    if (params?.uncategorized)     qs.set("uncategorized", "true");
+    return this.request<PaginatedProducts>(`/products?${qs.toString()}`);
+  }
+
+  async getProductCategoryStats(): Promise<{ uncategorized: number }> {
+    return this.request<{ uncategorized: number }>("/products/category-stats");
+  }
+
+  async bulkAssignCategory(productIds: string[], categoryId: string): Promise<void> {
+    await this.request<unknown>("/products/bulk-category", {
+      method: "PUT",
+      body: JSON.stringify({ productIds, categoryId }),
+    });
+  }
+
+  async getProduct(id: string): Promise<BackendProduct> {
+    return this.request<BackendProduct>(`/products/${id}`);
+  }
+
+  async deleteProduct(id: string): Promise<void> {
+    await this.request<unknown>(`/products/${id}`, { method: "DELETE" });
+  }
+
+  async updateProduct(id: string, data: {
+    name: string;
+    description: string;
+    price: number;
+    productDetailsJson?: string | null;
+    dimensionsJson?: string | null;
+    technicalInfoJson?: string | null;
+    otherInfoJson?: string | null;
+  }): Promise<void> {
+    await this.request<unknown>(`/products/${id}`, {
+      method: "PUT",
+      body: JSON.stringify(data),
+    });
+  }
+
+  async createProduct(data: Record<string, unknown>): Promise<BackendProduct> {
+    return this.request<BackendProduct>("/products", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+  }
 
   async login(credentials: LoginRequest): Promise<AuthResponse> {
-    const egloResponse = await this.request<EgloApiResponse>('/auth/login', {
-      method: 'POST',
+    const eglo = await this.request<EgloApiResponse>("/auth/login", {
+      method: "POST",
       body: JSON.stringify({
         email: credentials.email,
         password: credentials.password,
       }),
     });
 
-    return this.convertToAuthResponse(egloResponse);
+    return this.toAuthResponse(eglo);
   }
 
-  async signup(userData: SignupRequest): Promise<{ success: boolean; message: string }> {
-    const egloResponse = await this.request<EgloApiResponse>('/auth/register', {
-      method: 'POST',
+  async signup(data: SignupRequest): Promise<{ success: boolean; message: string }> {
+    const eglo = await this.request<EgloApiResponse>("/auth/register", {
+      method: "POST",
       body: JSON.stringify({
-        email: userData.email,
-        password: userData.password,
+        Email: data.email,
+        Password: data.password,
       }),
     });
 
-    if (!egloResponse.success) {
-      throw new ApiError(egloResponse.message || 'Signup failed', 400, egloResponse.errors);
+    if (!eglo.success) {
+      throw new ApiError(eglo.message || "Signup failed", 400, eglo.errors);
     }
 
-    return { success: egloResponse.success, message: egloResponse.message };
+    return { success: eglo.success, message: eglo.message };
   }
 
-  async logout(): Promise<void> {
-    // No API logout endpoint; clear local token
+  logout(): void {
     this.removeToken();
   }
 
   async refreshToken(): Promise<AuthResponse> {
-    throw new ApiError('Token refresh not implemented', 501);
+    throw new ApiError("Token refresh not implemented", 501);
   }
 
   // --------------------------- Token helpers ---------------------------------
-
   setToken(token: string): void {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('auth_token', token);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("auth_token", token);
     }
   }
 
   getToken(): string | null {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem('auth_token');
-    }
-    return null;
+    return typeof window !== "undefined"
+      ? localStorage.getItem("auth_token")
+      : null;
   }
 
   removeToken(): void {
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem('auth_token');
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("auth_token");
+    }
+  }
+
+  setUserEmail(email: string): void {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("auth_email", email);
+    }
+  }
+
+  getUserEmail(): string | null {
+    return typeof window !== "undefined"
+      ? localStorage.getItem("auth_email")
+      : null;
+  }
+
+  removeUserEmail(): void {
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("auth_email");
     }
   }
 
   isAuthenticated(): boolean {
     return !!this.getToken();
   }
-}
-export const apiService = new ApiService();
 
-// Usage example (uncomment to use):
-// apiService.login({ email: '
+  // ------------------------- Convert helper ----------------------------------
+  private toAuthResponse(r: EgloApiResponse): AuthResponse {
+    if (!r.success || !r.token || !r.user) {
+      throw new ApiError(r.message || "Authentication failed", 400, r.errors);
+    }
+
+    return {
+      token: r.token,
+      user: {
+        id: r.user.userId,
+        email: r.user.email,
+        firstName: "",
+        lastName: "",
+        phone: "",
+        roles: r.user.roles,
+      },
+    };
+  }
+}
+
+export const apiService = new ApiService();

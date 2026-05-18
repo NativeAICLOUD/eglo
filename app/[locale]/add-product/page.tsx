@@ -1,12 +1,13 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "../../../components/Button"
 import { ArrowLeft, ArrowRight, Check, Plus, X } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
-import categoriesData from "../../../data/categories.json"
 import { useTranslations } from 'next-intl'
+import { useRouter, useParams } from "next/navigation"
+import { apiService, BackendCategory } from "../../../lib/api"
 
 type Step = 1 | 2 | 3 | 4
 
@@ -26,23 +27,13 @@ interface ProductImage {
   preview: string
 }
 
-interface CategoryNode {
-  id: string
-  nameKey: string
-  descriptionKey: string
-  images?: { image1?: string; image2?: string }
-  subcategories: CategoryNode[]
-}
-
 export default function AddProductPage() {
+  const router = useRouter()
+  const { locale } = useParams() as { locale: string }
   const [currentStep, setCurrentStep] = useState<Step>(1)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
   const [submitSuccess, setSubmitSuccess] = useState(false)
-  
-  // Log component initialization
-  console.log("🎯 [FRONTEND] AddProductPage component initialized")
-  console.log("🎯 [FRONTEND] Initial state:", { currentStep, isSubmitting, submitError, submitSuccess })
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -332,22 +323,14 @@ export default function AddProductPage() {
     { number: 4, title: "Review & Create", description: "Review your product and create it" }
   ]
 
-  // Get subcategories based on selected category
-  const tCategories = useTranslations('categories')
-  const categories = categoriesData.categories as unknown as CategoryNode[]
+  // Categories loaded from the same backend API as the storefront — single source of truth
+  const [categories, setCategories] = useState<BackendCategory[]>([])
+  useEffect(() => {
+    apiService.getCategories().then(setCategories).catch(() => setCategories([]))
+  }, [])
+
   const selectedCategory = categories.find(cat => cat.id === formData.category)
-  const subcategories = selectedCategory?.subcategories ?? []
-  
-  // Helper function to get category name safely
-  const getCategoryName = (nameKey: string) => {
-    try {
-      const cleanKey = nameKey.replace('categories.', '')
-      return tCategories(cleanKey)
-    } catch (error) {
-      console.warn('Translation error for key:', nameKey, error)
-      return nameKey.replace('categories.', '')
-    }
-  }
+  const subcategories: BackendCategory[] = selectedCategory?.subcategories ?? []
 
   const renderCategorySection = (categoryKey: string, title: string) => {
     const fields = categoryFields[categoryKey]
@@ -459,7 +442,7 @@ export default function AddProductPage() {
       <div className="w-full max-w-4xl">
         {/* Back to Dashboard Link */}
         <div className="absolute top-4 left-4">
-          <Link href="/" className="text-teal-600 hover:text-teal-700 flex items-center gap-2">
+          <Link href={`/${locale}/dashboard/products`} className="text-teal-600 hover:text-teal-700 flex items-center gap-2">
             ← Back to Dashboard
           </Link>
         </div>
@@ -598,7 +581,7 @@ export default function AddProductPage() {
                     <option value="">Select a category</option>
                     {categories.map((category) => (
                       <option key={category.id} value={category.id}>
-                        {getCategoryName(category.nameKey)}
+                        {category.name}
                       </option>
                     ))}
                   </select>
@@ -617,7 +600,7 @@ export default function AddProductPage() {
                       <option value="">Select a subcategory</option>
                       {subcategories.map((subcategory) => (
                         <option key={subcategory.id} value={subcategory.id}>
-                          {getCategoryName(subcategory.nameKey)}
+                          {subcategory.name}
                         </option>
                       ))}
                     </select>
@@ -723,10 +706,10 @@ export default function AddProductPage() {
                       <p className="text-sm text-gray-600">€{formData.price}</p>
                       {formData.category && (
                         <p className="text-sm text-gray-600">
-                          {selectedCategory ? getCategoryName(selectedCategory.nameKey) : ''}
+                          {selectedCategory ? selectedCategory.name : ''}
                           {formData.subcategory && (() => {
                             const sub = subcategories.find(s => s.id === formData.subcategory)
-                            return sub ? ` > ${getCategoryName(sub.nameKey)}` : ''
+                            return sub ? ` > ${sub.name}` : ''
                           })()}
                         </p>
                       )}
@@ -775,10 +758,10 @@ export default function AddProductPage() {
                       <p className="text-sm text-gray-600">€{formData.price}</p>
                       {formData.category && (
                         <p className="text-sm text-gray-600">
-                          {selectedCategory ? getCategoryName(selectedCategory.nameKey) : ''}
+                          {selectedCategory ? selectedCategory.name : ''}
                           {formData.subcategory && (() => {
                             const sub = subcategories.find(s => s.id === formData.subcategory)
-                            return sub ? ` > ${getCategoryName(sub.nameKey)}` : ''
+                            return sub ? ` > ${sub.name}` : ''
                           })()}
                         </p>
                       )}
@@ -810,7 +793,7 @@ export default function AddProductPage() {
               submitSuccess ? (
                 <Button
                   variant="primary"
-                  onClick={() => window.location.href = '/'}
+                  onClick={() => router.push(`/${locale}/dashboard/products`)}
                   className="flex items-center gap-2"
                 >
                   Back to Dashboard

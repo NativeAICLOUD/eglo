@@ -1,13 +1,17 @@
-import { Geist, Inter } from 'next/font/google';
+import { Inter } from 'next/font/google';
 
-const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] });
-const inter = Inter({ variable: '--font-inter', subsets: ['latin'] });
+const inter = Inter({
+  variable: '--font-inter',
+  subsets: ['latin', 'latin-ext', 'cyrillic'],
+  weight: ['400', '500', '600', '700'],
+  display: 'swap',
+  preload: true,
+});
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html>
-      <body className={`${geistSans.variable} ${inter.variable} antialiased`}>{children}</body>
+    <html className={inter.variable}>
+      <body className="antialiased">{children}</body>
     </html>
   );
 }
-  

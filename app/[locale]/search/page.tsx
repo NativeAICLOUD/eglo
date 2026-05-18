@@ -8,28 +8,15 @@ import { Search } from "lucide-react"
 import Link from "next/link"
 import { useTranslations } from 'next-intl'
 import { useParams } from 'next/navigation'
-import productsData from "../../../data/products.json"
-
-interface Product {
-  id: string | number
-  slug?: string
-  name: string
-  description?: string
-  price: number | string
-  category: string
-  subcategory?: string
-  image?: string
-  images?: string[]
-}
+import { apiService, BackendProduct, parseProductName, formatMKD } from "../../../lib/api"
 
 function SearchPageContent() {
   const searchParams = useSearchParams()
   const router = useRouter()
   const query = searchParams.get("q") || ""
   const [searchTerm, setSearchTerm] = useState(query)
-  const [products, setProducts] = useState<Product[]>([])
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([])
-  const [loading, setLoading] = useState(true)
+  const [filteredProducts, setFilteredProducts] = useState<BackendProduct[]>([])
+  const [loading, setLoading] = useState(false)
   const t = useTranslations('search')
   const params = useParams()
   const locale = params.locale as string
@@ -39,42 +26,17 @@ function SearchPageContent() {
       setFilteredProducts([])
       return
     }
-
-    const searchLower = searchQuery.toLowerCase()
-    const results = products.filter((product) => {
-      // Search in name, description, category, and subcategory
-      return (
-        product.name.toLowerCase().includes(searchLower) ||
-        (product.description ?? '').toLowerCase().includes(searchLower) ||
-        product.category.toLowerCase().includes(searchLower) ||
-        (product.subcategory ?? '').toLowerCase().includes(searchLower)
-      )
-    })
-
-    setFilteredProducts(results)
-  }, [products])
-
-  useEffect(() => {
-    try {
-      // Support both flat array and object shape with products[]
-      const productsList: Product[] = Array.isArray(productsData)
-        ? (productsData as Product[])
-        : ((productsData as { products?: Product[] }).products ?? [])
-      setProducts(productsList)
-      setLoading(false)
-    } catch (error) {
-      console.error('Error loading products:', error)
-      setLoading(false)
-    }
+    setLoading(true)
+    apiService.getProducts({ search: searchQuery.trim(), pageSize: 100 })
+      .then(data => { setFilteredProducts(data.items); setLoading(false) })
+      .catch(() => { setFilteredProducts([]); setLoading(false) })
   }, [])
 
   useEffect(() => {
-    if (query && products.length > 0) {
+    if (query) {
       performSearch(query)
-    } else if (products.length > 0) {
-      setFilteredProducts([])
     }
-  }, [query, products, performSearch])
+  }, [query, performSearch])
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
@@ -153,13 +115,13 @@ function SearchPageContent() {
         {filteredProducts.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredProducts.map((product, index) => (
-              <ProductCard 
-                key={`${product.id}-${index}`} 
-                productName={product.name}
-                productDesc={(product.description ?? '')}
-                productPrice={typeof product.price === 'number' ? `€${product.price.toFixed(2)}` : String(product.price)}
-                productImg={(Array.isArray(product.images) ? product.images[0] : product.image) ?? "/assets/images/placeholder.jpg"}
-                productSlug={product.slug ?? String(product.id)}
+              <ProductCard
+                key={`${product.id}-${index}`}
+                productName={parseProductName(product.title)}
+                productDesc={product.sku}
+                productPrice={formatMKD(product.price)}
+                imageUrl={product.imageUrl}
+                productSlug={product.id}
               />
             ))}
           </div>

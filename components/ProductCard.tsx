@@ -1,54 +1,43 @@
 "use client"
 
-import Image from "next/image"
 import Link from "next/link"
-import { useState } from "react"
 import { useTranslations } from 'next-intl'
 import { useParams } from 'next/navigation'
+import productImagesMap from "../data/productImages.json"
+
+const PLACEHOLDER = '/placeholder.svg'
 
 interface ProductCardProps {
   productName: string
   productDesc: string
   productPrice: string
-  productImg: string
+  imageUrl?: string | null
   productSlug?: string
 }
 
-export default function ProductCard({ 
-  productName, 
-  productDesc, 
-  productPrice, 
-  productImg,
+export default function ProductCard({
+  productName,
+  productDesc,
+  productPrice,
+  imageUrl,
   productSlug
 }: ProductCardProps) {
-  const [isHovered, setIsHovered] = useState(false)
   const t = useTranslations('productCard')
   const params = useParams()
   const locale = params.locale as string
 
-  // Create the view image path by replacing the filename
-  const viewImagePath = productImg.replace('.jpg', '-view.jpg')
-
-  // Only use the hover image if it exists in the images array
-  // We'll assume productImg is the first image, and if a corresponding -view.jpg exists in the same folder, it should be in the images array
-  // So, let's check for it in the images array if available
-  // For this, let's accept an optional productImages prop (array) and check for viewImagePath
-  // Fallback: if not provided, just use productImg
-  const productImages = (typeof productImg === 'string' ? [productImg] : productImg) as string[];
-  const hasViewImage = productImages.includes(viewImagePath);
+  const map = productImagesMap as Record<string, string[]>
+  const r2Images = map[productDesc?.trim()] ?? map[productSlug ?? ''] ?? []
+  const resolvedImage = r2Images.length > 0 ? r2Images[0] : (imageUrl || PLACEHOLDER)
 
   const cardContent = (
-    <div 
-      className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
+    <div className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer">
       <div className="relative h-48 bg-gray-100">
-        <Image
-          src={isHovered && hasViewImage ? viewImagePath : productImg}
+        <img
+          src={resolvedImage}
           alt={productName}
-          fill
-          className="object-cover transition-opacity duration-300"
+          className="block object-cover w-full h-full transition-opacity duration-300"
+          onError={(e) => { (e.currentTarget as HTMLImageElement).src = PLACEHOLDER }}
         />
         <div className="absolute top-2 left-2">
           <span className="bg-blue-500 text-white text-xs px-2 py-1 rounded">{t('new')}</span>
@@ -59,7 +48,7 @@ export default function ProductCard({
         <p className="text-gray-600 text-sm mb-3">{productDesc}</p>
         <div className="flex items-center justify-between">
           <span className="text-lg font-bold text-gray-900">{productPrice}</span>
-          <button 
+          <button
             className="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700 transition-colors"
             onClick={(e) => e.stopPropagation()}
           >
@@ -70,7 +59,6 @@ export default function ProductCard({
     </div>
   )
 
-  // If productSlug is provided, wrap in Link, otherwise return just the card
   if (productSlug) {
     return (
       <Link href={`/${locale}/product/${productSlug}`} className="block">
@@ -80,4 +68,4 @@ export default function ProductCard({
   }
 
   return cardContent
-} 
+}

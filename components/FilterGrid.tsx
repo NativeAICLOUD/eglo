@@ -1,20 +1,22 @@
 "use client"
 
-import { useState } from "react"
-import { ChevronDown, X } from "lucide-react"
-import { Button } from "./Button"
+import { useState, useRef, useEffect } from "react"
+import { ChevronDown, X, SlidersHorizontal } from "lucide-react"
 import { useTranslations } from 'next-intl'
 
 interface FilterOption {
   value: string
   label: string
+  swatch?: string
+  count?: number
 }
 
 interface FilterConfig {
   key: string
   label: string
+  type?: string
+  applicableTo?: string
   options: FilterOption[]
-  value?: string
 }
 
 interface FilterGridProps {
@@ -29,370 +31,355 @@ interface FilterGridProps {
   onSelectedFiltersChange?: (filters: Record<string, string[]>) => void
 }
 
-export function FilterGrid({ filters, onFilterChange, onResetFilters, className = "", showMobileButton = true, isFilterPanelOpen, onToggleFilterPanel, selectedFilters: externalSelectedFilters, onSelectedFiltersChange }: FilterGridProps) {
+export function FilterGrid({
+  filters,
+  onFilterChange,
+  onResetFilters,
+  className = "",
+  showMobileButton = true,
+  isFilterPanelOpen,
+  onToggleFilterPanel,
+  selectedFilters: externalSelectedFilters,
+  onSelectedFiltersChange,
+}: FilterGridProps) {
   const t = useTranslations('filterGrid')
   const [openDropdown, setOpenDropdown] = useState<string | null>(null)
-  const [selectedFilters, setSelectedFilters] = useState<Record<string, string[]>>({})
-  const [tempSelectedFilters, setTempSelectedFilters] = useState<Record<string, string[]>>({})
-  const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>({})
-  const [isFilterPanelOpenState, setIsFilterPanelOpenState] = useState(false)
-  
-  // Use external state if provided
-  const filterPanelOpen = isFilterPanelOpen !== undefined ? isFilterPanelOpen : isFilterPanelOpenState
-  const setFilterPanelOpen = onToggleFilterPanel || setIsFilterPanelOpenState
-  
-  // Use external selected filters if provided
-  const currentSelectedFilters = externalSelectedFilters !== undefined ? externalSelectedFilters : selectedFilters
-  const setCurrentSelectedFilters = onSelectedFiltersChange || setSelectedFilters
+  const [internalFilters, setInternalFilters] = useState<Record<string, string[]>>({})
+  const [internalPanelOpen, setInternalPanelOpen] = useState(false)
+  const [mobileOpenSection, setMobileOpenSection] = useState<string | null>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
 
-  const handleFilterClick = (key: string) => {
-    if (openDropdown === key) {
-      setOpenDropdown(null)
-    } else {
-      setOpenDropdown(key)
-      // Initialize temp selection with current selection
-      setTempSelectedFilters(prev => ({
-        ...prev,
-        [key]: currentSelectedFilters[key] || []
-      }))
-    }
-  }
+  const activeFilters = externalSelectedFilters ?? internalFilters
+  const setActiveFilters = onSelectedFiltersChange ?? setInternalFilters
+  const panelOpen = isFilterPanelOpen !== undefined ? isFilterPanelOpen : internalPanelOpen
+  const setPanelOpen = onToggleFilterPanel ?? setInternalPanelOpen
 
-  const toggleCategory = (categoryKey: string) => {
-    setExpandedCategories(prev => ({
-      ...prev,
-      [categoryKey]: !prev[categoryKey]
-    }))
-    // Initialize temp selection with current selection when opening mobile category
-    if (!expandedCategories[categoryKey]) {
-      setTempSelectedFilters(prev => ({
-        ...prev,
-        [categoryKey]: currentSelectedFilters[categoryKey] || []
-      }))
-    }
-  }
-
-  const toggleFilterPanel = () => {
-    const newState = !filterPanelOpen
-    setFilterPanelOpen(newState)
-  }
-
-  const handleCheckboxChange = (filterKey: string, optionValue: string, checked: boolean) => {
-    setTempSelectedFilters(prev => {
-      const currentSelected = prev[filterKey] || []
-      let newSelected: string[]
-      
-      if (checked) {
-        newSelected = [...currentSelected, optionValue]
-      } else {
-        newSelected = currentSelected.filter(value => value !== optionValue)
-      }
-      
-      return {
-        ...prev,
-        [filterKey]: newSelected
-      }
-    })
-  }
-
-  const handleApplyFilter = (filterKey: string) => {
-    const selectedValues = tempSelectedFilters[filterKey] || []
-    const newSelectedFilters = {
-      ...currentSelectedFilters,
-      [filterKey]: selectedValues
-    }
-    setCurrentSelectedFilters(newSelectedFilters)
-    
-    // Call onFilterChange with the selected values
-    if (selectedValues.length > 0) {
-      onFilterChange(filterKey, selectedValues.join(','))
-    } else {
-      onFilterChange(filterKey, '')
-    }
-    
-    setOpenDropdown(null)
-    // Close the mobile category dropdown
-    setExpandedCategories(prev => ({
-      ...prev,
-      [filterKey]: false
-    }))
-  }
-
-  const handleRemoveFilter = (filterKey: string, valueToRemove: string) => {
-    // Remove the specific value from selected filters
-    const newSelectedFilters = { ...currentSelectedFilters }
-    if (newSelectedFilters[filterKey]) {
-      newSelectedFilters[filterKey] = newSelectedFilters[filterKey].filter(value => value !== valueToRemove)
-      if (newSelectedFilters[filterKey].length === 0) {
-        delete newSelectedFilters[filterKey]
+  useEffect(() => {
+    function handler(e: MouseEvent) {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setOpenDropdown(null)
       }
     }
-    setCurrentSelectedFilters(newSelectedFilters)
-    
-    // Update temp selections to reflect the removal
-    setTempSelectedFilters(prev => ({
-      ...prev,
-      [filterKey]: newSelectedFilters[filterKey] || []
-    }))
-    
-    // Call onFilterChange to update parent state
-    if (newSelectedFilters[filterKey] && newSelectedFilters[filterKey].length > 0) {
-      onFilterChange(filterKey, newSelectedFilters[filterKey].join(','))
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [])
+
+  // Lock body scroll when mobile drawer is open
+  useEffect(() => {
+    if (panelOpen) {
+      document.body.style.overflow = 'hidden'
     } else {
-      onFilterChange(filterKey, '')
+      document.body.style.overflow = ''
     }
+    return () => { document.body.style.overflow = '' }
+  }, [panelOpen])
+
+  const getCount = (key: string) => activeFilters[key]?.length ?? 0
+  const totalActive = Object.values(activeFilters).reduce((s, v) => s + v.length, 0)
+
+  const toggle = (filterKey: string, value: string, checked: boolean) => {
+    const current = activeFilters[filterKey] ?? []
+    const next = checked ? [...current, value] : current.filter(v => v !== value)
+    const updated = { ...activeFilters }
+    if (next.length === 0) delete updated[filterKey]
+    else updated[filterKey] = next
+    setActiveFilters(updated)
+    onFilterChange(filterKey, next.join(','))
   }
 
-  const handleResetFilters = () => {
-    // Clear all selections
-    setCurrentSelectedFilters({})
-    setTempSelectedFilters({})
-    
-    // Call reset callback if provided
-    if (onResetFilters) {
-      onResetFilters()
-    }
-    
-    // Close any open dropdowns
+  const removeChip = (filterKey: string, value: string) => toggle(filterKey, value, false)
+
+  const resetAll = () => {
+    setActiveFilters({})
     setOpenDropdown(null)
+    setMobileOpenSection(null)
+    onResetFilters?.()
   }
 
-  const handleClickOutside = (e: React.MouseEvent) => {
-    if ((e.target as HTMLElement).closest('.filter-dropdown')) {
-      return
-    }
-    setOpenDropdown(null)
-  }
+  const renderOptionLabel = (filter: FilterConfig, option: FilterOption, checked: boolean) => (
+    <span className={`flex items-center gap-2 text-sm transition-colors flex-1 ${checked ? 'text-teal-700 font-medium' : 'text-gray-700'}`}>
+      {filter.type === 'color-swatch' && option.swatch && (
+        <span
+          className={`w-4 h-4 rounded-full flex-shrink-0 border ${checked ? 'border-teal-500 ring-1 ring-teal-400' : 'border-gray-300'}`}
+          style={{ backgroundColor: option.swatch }}
+        />
+      )}
+      <span>{option.label}</span>
+      {option.count !== undefined && (
+        <span className="ml-auto text-xs text-gray-400">({option.count})</span>
+      )}
+    </span>
+  )
 
-  const getSelectedCount = (filterKey: string) => {
-    return currentSelectedFilters[filterKey]?.length || 0
-  }
+  const ActiveChips = () => (
+    <div className="flex flex-wrap gap-2">
+      {Object.entries(activeFilters).flatMap(([filterKey, values]) => {
+        const filter = filters.find(f => f.key === filterKey)
+        if (!filter) return []
+        return values.map((value) => {
+          const option = filter.options.find(o => o.value === value)
+          if (!option) return null
+          return (
+            <div
+              key={`${filterKey}-${value}`}
+              className="flex items-center gap-1.5 bg-teal-50 text-teal-700 border border-teal-200 pl-2.5 pr-1.5 py-1 rounded-full text-xs font-medium"
+            >
+              {filter.type === 'color-swatch' && option.swatch && (
+                <span
+                  className="w-3 h-3 rounded-full flex-shrink-0 border border-teal-300"
+                  style={{ backgroundColor: option.swatch }}
+                />
+              )}
+              <span className="text-teal-400 font-normal">{filter.label}:</span>
+              {option.label}
+              <button
+                onClick={() => removeChip(filterKey, value)}
+                className="w-4 h-4 rounded-full flex items-center justify-center hover:bg-teal-200 transition-colors"
+              >
+                <X className="w-2.5 h-2.5" />
+              </button>
+            </div>
+          )
+        }).filter(Boolean)
+      })}
+    </div>
+  )
 
   return (
-    <div 
-      className={`w-full ${className}`}
-      onClick={handleClickOutside}
-    >
-      {/* Desktop Active Filter Badges */}
-      {Object.keys(currentSelectedFilters).length > 0 && (
-        <div className="hidden md:flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold text-gray-900 pr-4">{t('filters')}</h2>
-          <div className="flex flex-wrap gap-2">
-            {Object.entries(currentSelectedFilters).map(([filterKey, values]) => {
-              const filter = filters.find(f => f.key === filterKey)
-              if (!filter) return null
-              
-              return values.map((value, index) => {
-                const option = filter.options.find(o => o.value === value)
-                if (!option) return null
-                
-                return (
-                  <div key={`${filterKey}-${value}-${index}`} className="bg-teal-100 text-teal-800 px-3 py-1 rounded-full text-sm flex items-center gap-1">
-                    {option.label}
-                    <button
-                      onClick={() => handleRemoveFilter(filterKey, value)}
-                      className="text-gray-600 hover:text-gray-800 font-bold"
-                    >
-                      <X className="w-3 h-3" />
-                    </button>
+    <div className={`w-full ${className}`} ref={containerRef}>
+
+      {/* ── Desktop ─────────────────────────────────────────────────── */}
+      <div className="hidden md:block">
+        <div className="flex items-center gap-2 flex-wrap">
+          <div className="flex items-center gap-1.5 text-xs font-semibold text-gray-400 uppercase tracking-wide mr-1 shrink-0">
+            <SlidersHorizontal className="w-3.5 h-3.5" />
+            {t('filters')}
+          </div>
+
+          {filters.map((filter) => {
+            const count = getCount(filter.key)
+            const isOpen = openDropdown === filter.key
+            return (
+              <div key={filter.key} className="relative">
+                <button
+                  onClick={() => setOpenDropdown(isOpen ? null : filter.key)}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-sm font-medium transition-all duration-150 select-none
+                    ${count > 0
+                      ? 'bg-teal-600 text-white border-teal-600 shadow-sm'
+                      : 'bg-white text-gray-700 border-gray-300 hover:border-teal-400 hover:text-teal-600'
+                    }`}
+                >
+                  {filter.label}
+                  {count > 0 && (
+                    <span className="bg-white text-teal-600 rounded-full w-4 h-4 text-[10px] flex items-center justify-center font-bold leading-none">
+                      {count}
+                    </span>
+                  )}
+                  <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-150 ${isOpen ? 'rotate-180' : ''}`} />
+                </button>
+
+                {isOpen && (
+                  <div className="absolute top-full left-0 mt-2 bg-white border border-gray-200 rounded-xl shadow-xl z-30 min-w-[220px] overflow-hidden">
+                    <div className="py-1 max-h-72 overflow-y-auto">
+                      {filter.options.map((option) => {
+                        const checked = activeFilters[filter.key]?.includes(option.value) ?? false
+                        return (
+                          <label
+                            key={option.value}
+                            className="flex items-center gap-3 px-4 py-2.5 hover:bg-gray-50 cursor-pointer group"
+                          >
+                            <input
+                              type="checkbox"
+                              checked={checked}
+                              onChange={(e) => toggle(filter.key, option.value, e.target.checked)}
+                              className="w-4 h-4 rounded border-gray-300 text-teal-600 focus:ring-teal-500 focus:ring-offset-0 cursor-pointer flex-shrink-0"
+                            />
+                            {renderOptionLabel(filter, option, checked)}
+                          </label>
+                        )
+                      })}
+                    </div>
                   </div>
-                )
-              })
+                )}
+              </div>
+            )
+          })}
+
+          {totalActive > 0 && (
+            <button
+              onClick={resetAll}
+              className="ml-1 text-xs text-gray-400 hover:text-red-500 transition-colors flex items-center gap-1 shrink-0"
+            >
+              <X className="w-3 h-3" />
+              {t('resetAllFilters')}
+            </button>
+          )}
+        </div>
+
+        {totalActive > 0 && (
+          <div className="flex flex-wrap gap-2 mt-3 pt-3 border-t border-gray-100">
+            <ActiveChips />
+          </div>
+        )}
+      </div>
+
+      {/* ── Mobile ──────────────────────────────────────────────────── */}
+      <div className="md:hidden">
+        {showMobileButton && (
+          <button
+            onClick={() => setPanelOpen(!panelOpen)}
+            className="w-full flex items-center justify-between px-4 py-3 bg-white border border-gray-200 rounded-lg text-left"
+          >
+            <span className="flex items-center gap-2 text-sm font-medium text-gray-700">
+              <SlidersHorizontal className="w-4 h-4 text-teal-600" />
+              {t('filters')}
+              {totalActive > 0 && (
+                <span className="bg-teal-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                  {totalActive}
+                </span>
+              )}
+            </span>
+            <ChevronDown className={`w-4 h-4 text-teal-600 transition-transform ${panelOpen ? 'rotate-180' : ''}`} />
+          </button>
+        )}
+
+        {/* Backdrop */}
+        {panelOpen && (
+          <div
+            className="fixed inset-0 bg-black/40 z-40"
+            onClick={() => setPanelOpen(false)}
+          />
+        )}
+
+        {/* Slide-out drawer */}
+        <div
+          className={`fixed inset-y-0 right-0 w-[85vw] max-w-sm bg-white z-50 flex flex-col shadow-2xl transition-transform duration-300 ease-in-out ${
+            panelOpen ? 'translate-x-0' : 'translate-x-full'
+          }`}
+        >
+          {/* Drawer header */}
+          <div className="flex items-center justify-between px-4 py-4 border-b border-gray-100 flex-shrink-0">
+            <span className="flex items-center gap-2 font-semibold text-gray-800">
+              <SlidersHorizontal className="w-4 h-4 text-teal-600" />
+              {t('filters')}
+              {totalActive > 0 && (
+                <span className="bg-teal-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                  {totalActive}
+                </span>
+              )}
+            </span>
+            <button
+              onClick={() => setPanelOpen(false)}
+              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              aria-label="Close filters"
+            >
+              <X className="w-5 h-5 text-gray-600" />
+            </button>
+          </div>
+
+          {/* Active chips */}
+          {totalActive > 0 && (
+            <div className="px-4 py-3 border-b border-gray-100 flex-shrink-0">
+              <ActiveChips />
+            </div>
+          )}
+
+          {/* Scrollable accordion filters */}
+          <div className="flex-1 overflow-y-auto">
+            {filters.map((filter, i) => {
+              const count = getCount(filter.key)
+              const expanded = mobileOpenSection === filter.key
+              return (
+                <div key={filter.key} className={i > 0 ? 'border-t border-gray-100' : ''}>
+                  <button
+                    onClick={() => setMobileOpenSection(expanded ? null : filter.key)}
+                    className="w-full flex items-center justify-between px-4 py-3.5 text-left hover:bg-gray-50 transition-colors"
+                  >
+                    <span className="flex items-center gap-2 text-sm font-medium text-gray-800">
+                      {filter.label}
+                      {count > 0 && (
+                        <span className="bg-teal-600 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">
+                          {count}
+                        </span>
+                      )}
+                    </span>
+                    <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform ${expanded ? 'rotate-180' : ''}`} />
+                  </button>
+
+                  {expanded && (
+                    <div className="px-4 pb-3 bg-gray-50">
+                      {filter.type === 'color-swatch' ? (
+                        <div className="grid grid-cols-2 gap-x-4 gap-y-2">
+                          {filter.options.map((option) => {
+                            const checked = activeFilters[filter.key]?.includes(option.value) ?? false
+                            return (
+                              <label key={option.value} className="flex items-center gap-2.5 py-2 cursor-pointer">
+                                <input
+                                  type="checkbox"
+                                  checked={checked}
+                                  onChange={(e) => toggle(filter.key, option.value, e.target.checked)}
+                                  className="w-4 h-4 rounded border-gray-300 text-teal-600 focus:ring-teal-500 focus:ring-offset-0 cursor-pointer flex-shrink-0"
+                                />
+                                <span
+                                  className={`w-4 h-4 rounded-full flex-shrink-0 border ${checked ? 'border-teal-500' : 'border-gray-300'}`}
+                                  style={{ backgroundColor: option.swatch }}
+                                />
+                                <span className={`text-sm ${checked ? 'text-teal-700 font-medium' : 'text-gray-600'}`}>
+                                  {option.label}
+                                  {option.count !== undefined && <span className="text-gray-400 ml-1">({option.count})</span>}
+                                </span>
+                              </label>
+                            )
+                          })}
+                        </div>
+                      ) : (
+                        <div className="grid grid-cols-2 gap-x-4 gap-y-1">
+                          {filter.options.map((option) => {
+                            const checked = activeFilters[filter.key]?.includes(option.value) ?? false
+                            return (
+                              <label key={option.value} className="flex items-center gap-2.5 py-2 cursor-pointer">
+                                <input
+                                  type="checkbox"
+                                  checked={checked}
+                                  onChange={(e) => toggle(filter.key, option.value, e.target.checked)}
+                                  className="w-4 h-4 rounded border-gray-300 text-teal-600 focus:ring-teal-500 focus:ring-offset-0 cursor-pointer flex-shrink-0"
+                                />
+                                <span className={`text-sm ${checked ? 'text-teal-700 font-medium' : 'text-gray-600'}`}>
+                                  {option.label}
+                                  {option.count !== undefined && <span className="text-gray-400 ml-1">({option.count})</span>}
+                                </span>
+                              </label>
+                            )
+                          })}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              )
             })}
           </div>
-        </div>
-      )}
-      
-      {/* Desktop Grid */}
-      <div className="hidden md:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
-        {filters.map((filter) => (
-          <div key={filter.key} className="relative filter-dropdown">
-            <button
-              onClick={() => handleFilterClick(filter.key)}
-              className="w-full flex items-center justify-between px-4 py-3 bg-white border border-gray-200 rounded-lg hover:border-gray-300 transition-colors text-left"
-            >
-              <span className="text-sm font-medium text-gray-700">
-                {filter.label}
-                {getSelectedCount(filter.key) > 0 && (
-                  <span className="ml-2 text-xs bg-teal-100 text-teal-800 px-2 py-1 rounded-full">
-                    {getSelectedCount(filter.key)}
-                  </span>
-                )}
-              </span>
-              <ChevronDown className="w-4 h-4 text-teal-600 flex-shrink-0" />
-            </button>
-            
-            {openDropdown === filter.key && (
-              <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-10 max-h-80 overflow-y-auto">
-                <div className="py-2">
-                  {filter.options.map((option) => {
-                    const isChecked = tempSelectedFilters[filter.key]?.includes(option.value) || false
-                    return (
-                      <label
-                        key={option.value}
-                        className="flex items-center px-4 py-2 hover:bg-gray-50 cursor-pointer"
-                      >
-                        <input
-                          type="checkbox"
-                          checked={isChecked}
-                          onChange={(e) => handleCheckboxChange(filter.key, option.value, e.target.checked)}
-                          className="mr-3 h-4 w-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500"
-                        />
-                        <span className="text-sm text-gray-700">{option.label}</span>
-                      </label>
-                    )
-                  })}
-                  <div className="pt-2 mt-2 pb-2 pr-3 flex justify-end">
-                    <Button
-                      onClick={() => handleApplyFilter(filter.key)}
-                      disabled={!tempSelectedFilters[filter.key] || tempSelectedFilters[filter.key].length === 0}
-                      variant="primary"
-                      size="sm"
-                    >
-                      {t('apply')}
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
-      
-      {/* Reset Filters Button */}
-      {Object.keys(currentSelectedFilters).length > 0 && onResetFilters && (
-        <div className="hidden md:flex items-center justify-start mt-4">
-          <Button
-            onClick={handleResetFilters}
-            variant="primary"
-            size="sm"
-          >
-            {t('resetAllFilters')}
-          </Button>
-        </div>
-      )}
 
-      {/* Mobile Grid */}
-      <div className="md:hidden">
-        {/* Main Filter Toggle Button */}
-        {showMobileButton && (
-          <div className="mb-3">
+          {/* Drawer footer */}
+          <div className="px-4 py-4 border-t border-gray-100 flex gap-3 flex-shrink-0">
+            {totalActive > 0 && (
+              <button
+                onClick={resetAll}
+                className="flex-1 py-2.5 border border-gray-200 rounded-lg text-sm text-gray-600 hover:bg-gray-50 transition-colors font-medium"
+              >
+                {t('resetAllFilters')}
+              </button>
+            )}
             <button
-              onClick={toggleFilterPanel}
-              className="w-full flex items-center justify-between px-4 py-3 bg-white border border-gray-200 rounded-lg hover:border-gray-300 transition-colors text-left"
+              onClick={() => setPanelOpen(false)}
+              className={`py-2.5 bg-teal-600 text-white rounded-lg text-sm font-medium hover:bg-teal-700 transition-colors ${totalActive > 0 ? 'flex-1' : 'w-full'}`}
             >
-              <span className="text-sm font-medium text-gray-700">
-                {t('filters')}
-              </span>
-                                <ChevronDown className={`w-4 h-4 text-teal-600 transition-transform ${filterPanelOpen ? 'rotate-180' : ''}`} />
+              {t('apply')}
             </button>
           </div>
-        )}
-
-        {/* Mobile Filter Categories */}
-        {filterPanelOpen && (
-          <div className="rounded-lg p-4" style={{ backgroundColor: '#e7f5f5' }}>
-            {filters.map((filter, index) => (
-              <div key={filter.key}>
-                {/* Category Header */}
-                <button
-                  onClick={() => toggleCategory(filter.key)}
-                  className="w-full flex items-center justify-between py-3 text-left hover:bg-white/50 transition-colors rounded"
-                >
-                  <span className="text-sm font-medium text-gray-700">
-                    {filter.label}
-                  </span>
-                  <ChevronDown className={`w-4 h-4 text-teal-600 transition-transform ${expandedCategories[filter.key] ? 'rotate-180' : ''}`} />
-                </button>
-                
-                {/* Category Content */}
-                {expandedCategories[filter.key] && (
-                  <div className="pb-4 space-y-2">
-                    {filter.options.map((option) => {
-                      const isChecked = tempSelectedFilters[filter.key]?.includes(option.value) || false
-                      return (
-                        <label
-                          key={option.value}
-                          className="flex items-center px-3 py-2 hover:bg-white/50 rounded cursor-pointer"
-                        >
-                          <input
-                            type="checkbox"
-                            checked={isChecked}
-                            onChange={(e) => handleCheckboxChange(filter.key, option.value, e.target.checked)}
-                            className="mr-3 h-4 w-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500"
-                          />
-                          <span className="text-sm text-gray-700">{option.label}</span>
-                        </label>
-                      )
-                    })}
-                    
-                    {/* Individual Apply Button */}
-                    <div className="pt-3 flex justify-end">
-                      <Button
-                        onClick={() => handleApplyFilter(filter.key)}
-                        disabled={!tempSelectedFilters[filter.key] || tempSelectedFilters[filter.key].length === 0}
-                        variant="primary"
-                        size="sm"
-                      >
-                        {t('apply')}
-                      </Button>
-                    </div>
-                  </div>
-                )}
-                
-                {/* Divider Line (except for last item) */}
-                {index < filters.length - 1 && (
-                  <div className="border-t border-white my-2"></div>
-                )}
-              </div>
-            ))}
-          </div>
-        )}
-        
-        {/* Mobile Active Filter Badges */}
-        {Object.keys(currentSelectedFilters).length > 0 && (
-          <div className="border-l border-r border-b border-gray-200 rounded-b-lg p-4">
-            <div className="flex flex-wrap gap-2 mb-3">
-              {Object.entries(currentSelectedFilters).map(([filterKey, values]) => {
-                const filter = filters.find(f => f.key === filterKey)
-                if (!filter) return null
-                
-                return values.map((value, index) => {
-                  const option = filter.options.find(o => o.value === value)
-                  if (!option) return null
-                  
-                  return (
-                    <div key={`${filterKey}-${value}-${index}`} className="bg-teal-100 text-teal-800 px-3 py-1 rounded-full text-sm flex items-center gap-1">
-                      {option.label}
-                      <button
-                        onClick={() => handleRemoveFilter(filterKey, value)}
-                        className="text-gray-600 hover:text-gray-800 font-semibold"
-                      >
-                        <X className="w-3 h-3" />
-                      </button>
-                    </div>
-                  )
-                })
-              })}
-            </div>
-            
-            {/* Mobile Reset Filters Button */}
-            {onResetFilters && (
-              <div className="flex items-center justify-start">
-                <Button
-                  onClick={handleResetFilters}
-                  variant="primary"
-                  size="sm"
-                >
-                  {t('resetAllFilters')}
-                </Button>
-              </div>
-            )}
-          </div>
-        )}
+        </div>
       </div>
-
 
     </div>
   )
-} 
+}

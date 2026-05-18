@@ -1,17 +1,22 @@
-// next.config.ts
 import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
 
-// Point this to your config file at the project root
 const withNextIntl = createNextIntlPlugin("./next-intl.config.ts");
 
 const nextConfig: NextConfig = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "pub-166082e4b3d54bb296c0e624eb1a1f50.r2.dev",
+      },
+    ],
+  },
   async rewrites() {
     return [
       {
         source: "/api/:path*",
-        destination:
-          "https://nativeapi-h8e7h4cgc6gpgbea.northeurope-01.azurewebsites.net/api/:path*",
+        destination: "http://localhost:5181/api/:path*",
       },
     ];
   },

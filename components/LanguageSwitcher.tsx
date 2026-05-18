@@ -33,7 +33,7 @@ export default function LocaleSwitcher() {
             : 'bg-transparent text-gray-700 hover:bg-gray-200'
         }`}
       >
-        sq
+        shq
       </button>
     </div>
   );

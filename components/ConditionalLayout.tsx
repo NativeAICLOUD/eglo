@@ -15,7 +15,7 @@ export function ConditionalLayout({ children }: ConditionalLayoutProps) {
     /\/login$/.test(pathname) ||
     /\/signup$/.test(pathname) ||
     /\/add-product$/.test(pathname) ||
-    /\/dashboard$/.test(pathname)
+    /\/dashboard(\/.*)?$/.test(pathname)
   
   // Set noPadding to true for product, category, and inspiration pages (supports locale-prefixed paths)
   const noPadding =

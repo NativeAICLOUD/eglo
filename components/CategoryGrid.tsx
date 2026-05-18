@@ -13,22 +13,22 @@ import { ChevronRight } from "lucide-react"
 const categories = [
   {
     key: "pendantLights",
-    image: "/assets/images/pendant-lights.jpg",
+    image: "https://pub-166082e4b3d54bb296c0e624eb1a1f50.r2.dev/products/romazzina_2.jpg",
     href: "/subcategory/pendant-lights",
   },
   {
     key: "ceilingLights",
-    image: "/assets/images/ceiling-lights.jpg",
+    image: "https://pub-166082e4b3d54bb296c0e624eb1a1f50.r2.dev/products/deckenleuchte_4.jpg",
     href: "/subcategory/ceiling-lights",
   },
   {
     key: "wallLights",
-    image: "/assets/images/wall-lights.jpg",
+    image: "https://pub-166082e4b3d54bb296c0e624eb1a1f50.r2.dev/products/Au_enwandleuchten_3.jpg",
     href: "/subcategory/wall-lights",
   },
   {
     key: "tableLamps",
-    image: "/assets/images/table-lamps.jpg",
+    image: "https://pub-166082e4b3d54bb296c0e624eb1a1f50.r2.dev/products/smart-light-web_8.jpg",
     href: "/subcategory/table-lamps",
   },
 ]

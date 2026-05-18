@@ -1,0 +1,14 @@
+{
+  "300384": {
+    "productDetails": {
+      "fullLumen": "5.500",
+      "fullKelvin": "3000",
+      "protectionDegree": "-",
+      "illuminant1": { "mk": "Доаѓа во склоп на артиклот", "sq": "Vjen me artikullin" },
+      "lampSocket1": "LED",
+      "functions": { "mk": "Затемнување", "sq": "Errësim" },
+      "energySavingClass": "E",
+      "itemNumber": "300384"
+    }
+  }
+}
