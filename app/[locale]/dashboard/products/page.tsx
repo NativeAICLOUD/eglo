@@ -41,7 +41,7 @@ function DeleteModal({ name, onConfirm, onCancel, deleting, t }: {
         </div>
         <h3 className="text-lg font-semibold text-gray-900 text-center">{t("products.deleteModal.title")}</h3>
         <p className="text-sm text-gray-500 text-center mt-2">
-          {t("products.deleteModal.message")} <span className="font-medium text-gray-900">"{name}"</span>?
+          {t("products.deleteModal.message")} <span className="font-medium text-gray-900">&quot;{name}&quot;</span>?
         </p>
         <div className="flex gap-3 mt-6">
           <Button variant="outline" className="flex-1" onClick={onCancel} disabled={deleting}>
@@ -216,7 +216,8 @@ export default function DashboardProductsPage() {
   const toggleOne = (id: string) =>
     setSelectedIds(prev => {
       const next = new Set(prev)
-      next.has(id) ? next.delete(id) : next.add(id)
+      if (next.has(id)) next.delete(id)
+      else next.add(id)
       return next
     })
 

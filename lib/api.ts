@@ -137,15 +137,15 @@ export class ApiError extends Error {
 export const isApiError = (e: unknown): e is ApiError =>
   typeof e === "object" &&
   e !== null &&
-  (e as any).name === "ApiError" &&
-  "status" in (e as any);
+  (e as { name: unknown }).name === "ApiError" &&
+  "status" in (e as object);
 
 // ----------------------------- Internals ------------------------------------
 const isObject = (v: unknown): v is Record<string, unknown> =>
   typeof v === "object" && v !== null;
 
 const hasStringMessage = (v: unknown): v is { message: string } =>
-  isObject(v) && typeof (v as any).message === "string";
+  isObject(v) && typeof (v as { message: unknown }).message === "string";
 
 // ----------------------------- Service --------------------------------------
 class ApiService {

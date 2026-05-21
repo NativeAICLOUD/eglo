@@ -5,7 +5,7 @@ import { Button } from "../../../components/Button"
 import { ArrowLeft, ArrowRight, Check, Plus, X } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
-import { useTranslations } from 'next-intl'
+
 import { useRouter, useParams } from "next/navigation"
 import { apiService, BackendCategory } from "../../../lib/api"
 
