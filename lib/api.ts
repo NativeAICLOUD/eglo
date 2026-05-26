@@ -199,6 +199,12 @@ class ApiService {
   }
 
   async getCategories(): Promise<BackendCategory[]> {
+    // Always use the same-origin proxy in the browser to avoid CORS
+    if (typeof window !== "undefined") {
+      const res = await fetch("/api/categories");
+      if (!res.ok) throw new ApiError(`HTTP error! status: ${res.status}`, res.status);
+      return res.json() as Promise<BackendCategory[]>;
+    }
     return this.request<BackendCategory[]>("/categories");
   }
 
