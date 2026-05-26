@@ -40,7 +40,13 @@ export async function GET(request: Request) {
     if (authHeader) headers["Authorization"] = authHeader
 
     const res = await fetch(`${INTERNAL_API_URL}/orders?${searchParams.toString()}`, { headers })
-    const data = await res.json()
+
+    const text = await res.text()
+    let data: unknown = []
+    if (text.trim()) {
+      try { data = JSON.parse(text) } catch { data = { message: text } }
+    }
+
     return Response.json(data, { status: res.status })
   } catch (error) {
     return Response.json(

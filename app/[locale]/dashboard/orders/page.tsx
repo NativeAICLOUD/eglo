@@ -55,7 +55,8 @@ export default function DashboardOrdersPage() {
       const res = await fetch("/api/orders", {
         headers: token ? { Authorization: `Bearer ${token}` } : {},
       })
-      if (!res.ok) throw new Error(`HTTP ${res.status}`)
+      if (res.status === 401) throw new Error("Сесијата истекла — најавете се повторно.")
+      if (!res.ok) throw new Error(`Грешка ${res.status}`)
       setOrders(await res.json())
     } catch (e) {
       setError(e instanceof Error ? e.message : "Грешка при вчитување")
