@@ -1,13 +1,14 @@
 // lib/api.ts
 
-const DEFAULT_API_BASE =
-  process.env.NODE_ENV === "production"
-    ? "/api"                    // proxy routes in production (avoids CORS)
-    : "http://localhost:7169/api"; // direct to local dev server
-
-export const API_BASE_URL = (
-  process.env.NEXT_PUBLIC_API_BASE_URL || DEFAULT_API_BASE
-).replace(/\/$/, "");
+// In the browser, always use same-origin proxy routes (avoids CORS entirely).
+// On the server (SSR), call the Azure API directly via INTERNAL_API_URL.
+export const API_BASE_URL =
+  typeof window !== "undefined"
+    ? "/api"
+    : (
+        process.env.INTERNAL_API_URL ??
+        "https://nativeapi-h8e7h4cgc6gpgbea.northeurope-01.azurewebsites.net/api"
+      ).replace(/\/$/, "");
 
 // ----------------------------- Types ----------------------------------------
 export interface BackendCategory {
@@ -199,12 +200,6 @@ class ApiService {
   }
 
   async getCategories(): Promise<BackendCategory[]> {
-    // Always use the same-origin proxy in the browser to avoid CORS
-    if (typeof window !== "undefined") {
-      const res = await fetch("/api/categories");
-      if (!res.ok) throw new ApiError(`HTTP error! status: ${res.status}`, res.status);
-      return res.json() as Promise<BackendCategory[]>;
-    }
     return this.request<BackendCategory[]>("/categories");
   }
 
