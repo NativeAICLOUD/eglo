@@ -3,6 +3,7 @@ import { CategoryGrid } from "../../components/CategoryGrid"
 import { FeaturedProducts } from "../../components/FeaturedProducts"
 import { CTASection } from "../../components/CtaSection"
 import { StyleGrid } from "../../components/StyleGrid"
+import { GoogleReviews } from "../../components/GoogleReviews"
 
 export default function HomePage() {
   return (
@@ -11,6 +12,7 @@ export default function HomePage() {
       <CategoryGrid />
       <StyleGrid />
       <FeaturedProducts />
+      <GoogleReviews />
       <CTASection />
     </div>
   )
