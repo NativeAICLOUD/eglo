@@ -1,11 +1,12 @@
 // lib/api.ts
 
 const DEFAULT_API_BASE =
-  "http://localhost:7169/api"; // ← use HTTP for local dev
+  process.env.NODE_ENV === "production"
+    ? "/api"                    // proxy routes in production (avoids CORS)
+    : "http://localhost:7169/api"; // direct to local dev server
 
 export const API_BASE_URL = (
-  process.env.NEXT_PUBLIC_API_BASE_URL ||
-  (process.env.NODE_ENV === "production" ? DEFAULT_API_BASE : "/api")
+  process.env.NEXT_PUBLIC_API_BASE_URL || DEFAULT_API_BASE
 ).replace(/\/$/, "");
 
 // ----------------------------- Types ----------------------------------------
