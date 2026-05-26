@@ -224,22 +224,24 @@ export function Header({ noPadding = false }: HeaderProps) {
                 </Link>
               )}
 
-              <Button
-                variant="ghost"
-                size="sm"
-                className="flex items-center gap-1 md:gap-2 p-2 md:p-3 relative"
-              >
-                <ShoppingCart className="w-5 h-5" />
-                <span className="hidden lg:inline">{t("actions.cart")}</span>
-                {cartItemCount > 0 && (
-                  <Badge
-                    variant="secondary"
-                    className="absolute -top-1 -right-1 md:static md:ml-1 bg-teal-600 text-white"
-                  >
-                    {cartItemCount}
-                  </Badge>
-                )}
-              </Button>
+              <Link href={`/${locale}/cart`}>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="flex items-center gap-1 md:gap-2 p-2 md:p-3 relative"
+                >
+                  <ShoppingCart className="w-5 h-5" />
+                  <span className="hidden lg:inline">{t("actions.cart")}</span>
+                  {cartItemCount > 0 && (
+                    <Badge
+                      variant="secondary"
+                      className="absolute -top-1 -right-1 md:static md:ml-1 bg-teal-600 text-white"
+                    >
+                      {cartItemCount}
+                    </Badge>
+                  )}
+                </Button>
+              </Link>
             </div>
           </div>
 
