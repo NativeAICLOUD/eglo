@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import { MapPin, User, ShoppingCart, LogOut, Menu, LayoutDashboard, Settings, Package } from "lucide-react";
+import { MapPin, User, ShoppingCart, LogOut, Menu, LayoutDashboard, Settings, Package, Info } from "lucide-react";
 import { Button } from "./Button";
 import LocaleSwitcher from "./LanguageSwitcher";
 import { PromoBanner } from "./PromoBanner";
@@ -68,6 +68,14 @@ export function Header({ noPadding = false }: HeaderProps) {
 
   return (
     <header className="sticky top-0 z-40 bg-white border-b border-gray-200 transition-shadow duration-300" style={{ boxShadow: scrolled ? '0 2px 8px rgba(0,0,0,0.08)' : 'none' }}>
+      {/* System Notice Banner */}
+      <div className="bg-amber-50 border-b border-amber-200 px-4 py-2">
+        <div className="max-w-7xl mx-auto flex items-center justify-center gap-2 text-amber-800 text-[13px]">
+          <Info className="w-3.5 h-3.5 flex-shrink-0" />
+          <span>Известување: Моментално работиме на подобрување на системот. Некои функционалности може привремено да не бидат достапни. Ви благодариме за разбирањето.</span>
+        </div>
+      </div>
+
       {/* Top Bar */}
       <div className={`bg-white px-4 overflow-hidden transition-all duration-300 ${scrolled ? 'max-h-0 py-0' : 'max-h-16 py-2'}`}>
         <div className="max-w-7xl mx-auto grid grid-cols-3 items-center text-[13px] font-normal text-slate-600">
