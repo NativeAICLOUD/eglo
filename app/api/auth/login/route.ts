@@ -1,3 +1,7 @@
+const INTERNAL_API_URL =
+  process.env.INTERNAL_API_URL ??
+  "https://nativeapi-h8e7h4cgc6gpgbea.northeurope-01.azurewebsites.net/api"
+
 export async function POST(request: Request) {
   try {
     const body = await request.json();
@@ -7,7 +11,7 @@ export async function POST(request: Request) {
       Password: body.password,
     };
 
-    const response = await fetch(`${process.env.INTERNAL_API_URL}/auth/login`, {
+    const response = await fetch(`${INTERNAL_API_URL}/auth/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
