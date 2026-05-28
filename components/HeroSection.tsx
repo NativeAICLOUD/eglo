@@ -29,11 +29,6 @@ export function HeroSection() {
       <div className="relative h-full flex items-center px-6 md:px-10 lg:px-16 pt-16 sm:pt-0">
         <div className="max-w-7xl mx-auto w-full">
           <div className="max-w-xl">
-            {/* Eyebrow tag */}
-            <span className="inline-block text-xs font-semibold uppercase tracking-widest text-amber-300 mb-4">
-              EGLO — Lighting since 1969
-            </span>
-
             {/* Headline */}
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-[1.1] mb-5">
               {t('title')}
