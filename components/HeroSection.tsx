@@ -1,42 +1,65 @@
 "use client"
 
 import Image from "next/image"
-import { Button } from "./Button"
-import { ChevronRight } from "lucide-react"
+import Link from "next/link"
+import { ArrowRight } from "lucide-react"
 import { useTranslations } from 'next-intl'
+import { useParams } from "next/navigation"
 
 export function HeroSection() {
   const t = useTranslations('heroSection')
-  
+  const { locale } = useParams() as { locale: string }
+
   return (
-    <section className="relative min-h-[500px] sm:h-[600px] bg-gradient-to-r from-amber-50 to-orange-50 overflow-hidden -mx-4 md:-mx-6 lg:-mx-8 rounded-4xl sm:rounded-none">
+    <section className="relative min-h-[540px] sm:h-[640px] overflow-hidden -mx-4 md:-mx-6 lg:-mx-8">
+      {/* Background image */}
       <div className="absolute inset-0">
         <Image
           src="/assets/images/banner.png"
           alt="Modern living room with elegant lighting"
           fill
-          className="object-cover"
+          className="object-cover object-center"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent"></div>
+        {/* Stronger left-side gradient for text readability */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/65 via-black/30 to-transparent" />
       </div>
 
-      <div className="relative h-full flex items-center justify-center px-4 md:px-6 lg:px-8 pt-20 sm:pt-28">
-        <div className="max-w-7xl mx-auto w-full text-center">
-          <div className="max-w-2xl mx-auto text-white">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-4 sm:mb-6 px-2">
+      {/* Content — left-aligned */}
+      <div className="relative h-full flex items-center px-6 md:px-10 lg:px-16 pt-16 sm:pt-0">
+        <div className="max-w-7xl mx-auto w-full">
+          <div className="max-w-xl">
+            {/* Eyebrow tag */}
+            <span className="inline-block text-xs font-semibold uppercase tracking-widest text-amber-300 mb-4">
+              EGLO — Lighting since 1969
+            </span>
+
+            {/* Headline */}
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-[1.1] mb-5">
               {t('title')}
-              <span className="block text-amber-300 mt-2">{t('subtitle')}</span>
+              <span className="block text-amber-300 mt-1">{t('subtitle')}</span>
             </h1>
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
-                             <Button 
-                 size="lg" 
-                 variant="primary" 
-                 className="px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg mx-auto w-full sm:w-auto max-w-xs bg-white/20 border-white/30 hover:bg-white/30 text-white backdrop-blur-sm"
-               >
+
+            {/* Sub-copy */}
+            <p className="text-white/75 text-base sm:text-lg mb-8 max-w-sm leading-relaxed">
+              Откријте го совршеното осветлување за вашиот дом — од класично до smart осветлување.
+            </p>
+
+            {/* CTAs */}
+            <div className="flex flex-col sm:flex-row gap-3">
+              <Link
+                href={`/${locale}/category/indoor`}
+                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl bg-teal-500 hover:bg-teal-400 text-white font-semibold text-sm transition-colors"
+              >
                 {t('exploreCollection')}
-                <ChevronRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5" />
-              </Button>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+              <Link
+                href={`/${locale}/about`}
+                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl border border-white/40 hover:bg-white/10 text-white font-semibold text-sm transition-colors backdrop-blur-sm"
+              >
+                За нас
+              </Link>
             </div>
           </div>
         </div>

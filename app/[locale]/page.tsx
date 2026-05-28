@@ -1,4 +1,5 @@
 import { HeroSection } from "../../components/HeroSection"
+import { TrustStrip } from "../../components/TrustStrip"
 import { CategoryGrid } from "../../components/CategoryGrid"
 import { FeaturedProducts } from "../../components/FeaturedProducts"
 import { CTASection } from "../../components/CtaSection"
@@ -9,6 +10,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-white">
       <HeroSection />
+      <TrustStrip />
       <CategoryGrid />
       <StyleGrid />
       <FeaturedProducts />
