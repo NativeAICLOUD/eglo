@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import { MapPin, User, ShoppingCart, LogOut, Menu, LayoutDashboard, Settings, Package, X, Zap } from "lucide-react";
+import { MapPin, User, ShoppingCart, LogOut, Menu, LayoutDashboard, Settings, Package, X } from "lucide-react";
 import { Button } from "./Button";
 import LocaleSwitcher from "./LanguageSwitcher";
 import { PromoBanner } from "./PromoBanner";
@@ -84,7 +84,6 @@ export function Header({ noPadding = false }: HeaderProps) {
       {bannerVisible && (
         <div className="relative bg-gradient-to-r from-teal-600 via-teal-500 to-cyan-500 text-white">
           <div className="max-w-7xl mx-auto px-4 py-2.5 flex items-center justify-center gap-3">
-            <Zap className="w-4 h-4 flex-shrink-0 text-yellow-300" />
             <p className="text-sm font-medium text-center leading-snug">
               Моментално работиме на подобрување на системот.{" "}
               <span className="opacity-80 font-normal">Некои функционалности може привремено да не бидат достапни.</span>
