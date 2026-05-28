@@ -37,7 +37,7 @@ export function HeroSection() {
             {/* Headline */}
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-[1.1] mb-5">
               {t('title')}
-              <span className="block text-amber-300 mt-1">{t('subtitle')}</span>
+              <span className="block text-white mt-1">{t('subtitle')}</span>
             </h1>
 
             {/* Sub-copy */}
