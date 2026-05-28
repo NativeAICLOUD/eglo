@@ -41,7 +41,7 @@ export function HeroSection() {
 
             {/* Sub-copy */}
             <p className="text-white/60 text-sm sm:text-base mb-8 max-w-sm leading-relaxed">
-              Откријте го совршеното осветлување за вашиот дом — од класично до smart осветлување.
+              {t('description')}
             </p>
 
             {/* CTAs */}
