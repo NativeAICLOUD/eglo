@@ -198,10 +198,9 @@
     "topBar": {
       "findStore": "Lokacioni",
       "customerSupport": "Mbështetje për Klientët",
-      "freeShipping": "Transport Falas për Porosi mbi 70€",
-      "freeShippingMobile": "Transport Falas mbi 70€",
+      "freeShipping": "",
+      "freeShippingMobile": "",
       "promos": [
-        "Transport Falas për Porosi mbi 70€",
         "Koleksione të Reja — 2026",
         "Zbritje Ekskluzive për Përdoruesit e Regjistruar",
         "EGLO Smart Light — ndriçim inteligjent për shtëpinë tuaj"
