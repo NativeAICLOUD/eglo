@@ -49,7 +49,7 @@ export function HeroSection() {
             <div className="flex flex-col sm:flex-row gap-3">
               <Link
                 href={`/${locale}/category/indoor`}
-                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl bg-teal-500 hover:bg-teal-400 text-white font-semibold text-sm transition-colors"
+                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl bg-white/20 border border-white/30 hover:bg-white/30 text-white font-semibold text-sm transition-colors backdrop-blur-sm"
               >
                 {t('exploreCollection')}
                 <ArrowRight className="w-4 h-4" />
