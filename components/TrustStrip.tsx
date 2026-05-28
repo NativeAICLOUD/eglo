@@ -11,7 +11,7 @@ const items = [
   {
     icon: ShieldCheck,
     title: "2 години гаранција",
-    desc: "На сите EGLO производи",
+    desc: "",
   },
 ]
 
