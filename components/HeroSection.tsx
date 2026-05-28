@@ -28,15 +28,19 @@ export function HeroSection() {
       {/* Content — left-aligned */}
       <div className="relative h-full flex items-center px-6 md:px-10 lg:px-16 pt-16 sm:pt-0">
         <div className="max-w-7xl mx-auto w-full">
-          <div className="max-w-xl">
+          <div className="max-w-lg">
             {/* Headline */}
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-[1.1] mb-5">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-[1.1] tracking-tight mb-3">
               {t('title')}
-              <span className="block text-white mt-1">{t('subtitle')}</span>
             </h1>
 
+            {/* Subtitle */}
+            <p className="text-lg sm:text-xl text-white/85 font-medium mb-5 leading-snug">
+              {t('subtitle')}
+            </p>
+
             {/* Sub-copy */}
-            <p className="text-white/75 text-base sm:text-lg mb-8 max-w-sm leading-relaxed">
+            <p className="text-white/60 text-sm sm:text-base mb-8 max-w-sm leading-relaxed">
               Откријте го совршеното осветлување за вашиот дом — од класично до smart осветлување.
             </p>
 
@@ -44,14 +48,14 @@ export function HeroSection() {
             <div className="flex flex-col sm:flex-row gap-3">
               <Link
                 href={`/${locale}/category/indoor`}
-                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl bg-white/20 hover:bg-white/30 text-white font-semibold text-sm transition-colors backdrop-blur-sm"
+                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl bg-teal-500 hover:bg-teal-400 text-white font-semibold text-sm transition-colors"
               >
                 {t('exploreCollection')}
                 <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
                 href={`/${locale}/about`}
-                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl hover:bg-white/10 text-white font-semibold text-sm transition-colors backdrop-blur-sm"
+                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 text-white/80 hover:text-white font-semibold text-sm transition-colors"
               >
                 За нас
               </Link>
