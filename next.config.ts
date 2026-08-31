@@ -13,10 +13,11 @@ const nextConfig: NextConfig = {
     ],
   },
   async rewrites() {
+    const internalApiUrl = process.env.INTERNAL_API_URL || "http://localhost:5181/api";
     return [
       {
         source: "/api/:path*",
-        destination: "http://localhost:5181/api/:path*",
+        destination: `${internalApiUrl}/:path*`,
       },
     ];
   },
