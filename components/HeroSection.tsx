@@ -29,33 +29,33 @@ export function HeroSection() {
       <div className="relative h-full flex items-center px-6 md:px-10 lg:px-16 pt-16 sm:pt-0">
         <div className="max-w-7xl mx-auto w-full">
           <div className="max-w-lg">
-            {/* Headline */}
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-[1.1] tracking-tight mb-3">
-              {t('title')}
-            </h1>
-
-            {/* Subtitle */}
-            <p className="text-lg sm:text-xl text-white/85 font-medium mb-5 leading-snug">
+            {/* Kicker */}
+            <p className="text-white/70 text-xs sm:text-sm font-medium uppercase tracking-[0.25em] mb-4">
               {t('subtitle')}
             </p>
 
+            {/* Headline */}
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-medium text-white leading-[1.15] tracking-tight mb-6">
+              {t('title')}
+            </h1>
+
             {/* Sub-copy */}
-            <p className="text-white/60 text-sm sm:text-base mb-8 max-w-sm leading-relaxed">
+            <p className="text-white/60 text-sm sm:text-base mb-10 max-w-sm leading-relaxed font-light">
               {t('description')}
             </p>
 
             {/* CTAs */}
-            <div className="flex flex-col sm:flex-row gap-3">
+            <div className="flex flex-col sm:flex-row gap-4 sm:items-center">
               <Link
                 href={`/${locale}/category/interior-lights`}
-                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl bg-white/20 hover:bg-white/30 text-white font-semibold text-sm transition-colors backdrop-blur-sm"
+                className="group inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl bg-white/20 hover:bg-white/30 text-white font-medium text-sm tracking-wide transition-colors backdrop-blur-sm"
               >
                 {t('exploreCollection')}
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5" />
               </Link>
               <Link
                 href={`/${locale}/about`}
-                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 text-white/80 hover:text-white font-semibold text-sm transition-colors"
+                className="inline-flex w-fit items-center justify-center px-1 py-3.5 text-white/80 hover:text-white font-medium text-sm tracking-wide transition-colors border-b border-transparent hover:border-white/50"
               >
                 {t('aboutUs')}
               </Link>
