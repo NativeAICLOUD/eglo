@@ -1,0 +1,1228 @@
+{
+  "about": {
+    "breadcrumb": {
+      "home": "Home",
+      "about": "About EGLO"
+    },
+    "hero": {
+      "title": "About EGLO",
+      "brightMinds": "Bright minds have always been concerned with the subject of light.",
+      "description": "Although the light bulb is widely believed to have been invented by Thomas Edison, scientists and inventors had already been exploring the use of electric light since the early 19th century. While the first light bulb patents were granted in 1841, Edison enabled their practical use and mass production in 1880.\n\nAt EGLO, we found our place in the history of lighting, which has been successfully developing for more than 50 years.",
+      "motto": "\"Contemporary design, combined with high functionality, at affordable prices.\"",
+      "mottoDescription": "This has always been, and continues to be, our motto. Keeping pace with the times, we develop and manufacture products tailored to our customers' needs. We are currently working intensively on the topic of smart lighting, bringing light and lighting into a digitally networked and easily controllable form.\n\nWhatever the future holds for light, we will continue to deliver contemporary lighting solutions for every area of life, from Austrian Tyrol to the world."
+    },
+    "landmark": {
+      "title": "Milestones",
+      "subtitle": "Moments that showcase our bright history.",
+      "milestones": {
+        "1969": {
+          "title": "Founding of EGLO",
+          "description": "EGLO was founded with a vision of continuous innovation and growth in the world of lighting. From the very beginning, determination, persistence, and constant development were the driving forces behind our success. Our founder, Ludwig Obwieser, began this story with passion and dedication, creating a path that still guides the brand forward today."
+        },
+        "1976": {
+          "title": "First company building in Austria",
+          "description": "EGLO's first company building was completed in Pill, Austria, marking an important step in the company's expansion."
+        },
+        "1986": {
+          "title": "Globalization",
+          "description": "EGLO takes its first step toward internationalization by founding a sales company in Germany. This marks the beginning of EGLO's mission to become a global brand, now present in more than 70 countries."
+        },
+        "2016": {
+          "title": "Company building in Germany",
+          "description": "A new, modern company building opens in Arnsberg, Germany, reflecting EGLO's commitment to innovation and growth in the European market."
+        },
+        "1994": {
+          "title": "First factory in Hungary",
+          "description": "EGLO's first factory is built in Pásztó, Hungary. The factory has grown continuously and now includes a 4-story, 14,000 m² production hall with a fully automated warehouse."
+        },
+        "1997": {
+          "title": "Sustainable growth",
+          "description": "EGLO invests in central warehouses for fast delivery. In 1997, storage space exceeds 10,000 m³ for the first time, a trend that continues over the next 20 years, reaching 200,000 m³ by 2017."
+        },
+        "2001": {
+          "title": "Production in China",
+          "description": "EGLO begins production in China. The office and production building cover an area of more than 120,000 m², employing more than 1,100 people and supporting global growth."
+        },
+        "2006": {
+          "title": "LED technology",
+          "description": "EGLO introduces its first LED products, setting new standards in energy-efficient lighting. Today, almost the entire range consists of long-lasting, energy-saving LED luminaires."
+        },
+        "2016_smart": {
+          "title": "Smart lighting solutions",
+          "description": "EGLO introduces smart lighting, making homes brighter. The company continuously works on solutions for easily and intelligently controlling lighting through smart devices."
+        },
+        "2017": {
+          "title": "Production in India",
+          "description": "A new factory in India begins operations, supporting EGLO's global supply chain and expanding production capacity in Asia."
+        },
+        "2019": {
+          "title": "50th anniversary",
+          "description": "EGLO celebrates 50 years of lighting innovation, with more than 70 companies worldwide and more than 80,000 luminaires produced daily across factories in Hungary, China, and India."
+        },
+        "2021": {
+          "title": "Innovative logistics center in Magdeburg",
+          "description": "A new logistics center opens in Magdeburg, Germany, with space for approximately 76,000 pallets and more than 150 employees, further improving EGLO's European distribution."
+        },
+        "2023": {
+          "title": "Opening of EGLO Lichtwelten",
+          "description": "The largest lighting showroom, a place where visitors can choose from a huge selection of items. On an area of about 10,000 m², a modern 3-story building was created with a total of 7,500 m² of exhibition space and 4,600 m² of outdoor space."
+        }
+      }
+    },
+    "management": {
+      "title": "EGLO Management",
+      "subtitle": "A ship cannot sail the right course without a captain and a helm. With us, this role is shared by the group and extended management.",
+      "extendedManagement": "Extended group management",
+      "cards": {
+        "worldwide": "EGLO worldwide",
+        "principles": "Our principles",
+        "workingAtEglo": "Working at EGLO"
+      },
+      "people": {
+        "management": {
+          "rene": {
+            "name": "Rene Tiefenbacher",
+            "role": "CEO of EGLO Group"
+          },
+          "axel": {
+            "name": "Axel Bechzelt",
+            "role": "General Manager of Sales"
+          },
+          "martin": {
+            "name": "Martin Doppelbauer",
+            "role": "General Manager of Finance and IT\nLegal and Digitalization"
+          }
+        },
+        "extended": {
+          "christianGspan": {
+            "name": "Christian Gspan",
+            "role": "Procurement, transport logistics, QS"
+          },
+          "manuelReinalter": {
+            "name": "Manuel Reinalter",
+            "role": "EU sales, e-commerce, corporate communications"
+          },
+          "tanjaLiscic": {
+            "name": "Tanja Liscic",
+            "role": "Communications, POS, PM"
+          },
+          "christianHuber": {
+            "name": "Christian Huber",
+            "role": "International production, technical development"
+          },
+          "christianWeger": {
+            "name": "Christian Weger",
+            "role": "Finance Bartenbach, LUXIT"
+          }
+        }
+      }
+    }
+  },
+  "worldwide": {
+    "breadcrumb": {
+      "home": "Home",
+      "worldwide": "Worldwide"
+    },
+    "title": "EGLO Worldwide",
+    "subtitle": "If you want to conquer the world, you have to be everywhere.",
+    "description": "Our factories in Hungary, China, and India manufacture products to satisfy our customers. To make this possible, we source ideas from around the world. These ideas are transformed into products available worldwide. Our sales companies in around 50 countries around the world are the key to this.",
+    "labels": {
+      "country": "Country",
+      "company": "Company",
+      "address": "Address",
+      "phone": "Phone",
+      "fax": "Fax",
+      "email": "Email"
+    },
+    "countries": {
+      "HEADQUARTERS AUSTRIA": "HEADQUARTERS AUSTRIA",
+      "AUSTRALIA": "AUSTRALIA",
+      "BELGIUM": "BELGIUM",
+      "BOSNIA AND HERZEGOVINA": "BOSNIA AND HERZEGOVINA",
+      "BULGARIA": "BULGARIA",
+      "CANADA": "CANADA",
+      "CHILE": "CHILE",
+      "CHINA": "CHINA",
+      "COLOMBIA": "COLOMBIA",
+      "COSTA RICA": "COSTA RICA",
+      "CROATIA": "CROATIA",
+      "CZECH REPUBLIC": "CZECH REPUBLIC",
+      "DENMARK": "DENMARK",
+      "ESTONIA": "ESTONIA",
+      "FINLAND": "FINLAND",
+      "FRANCE": "FRANCE",
+      "GERMANY": "GERMANY",
+      "GREAT BRITAIN & IRELAND": "GREAT BRITAIN & IRELAND",
+      "GREECE": "GREECE",
+      "HUNGARY - PRODUCTION & LOGISTICS": "HUNGARY - PRODUCTION & LOGISTICS",
+      "INDIA": "INDIA",
+      "ITALY": "ITALY",
+      "KAZAKHSTAN": "KAZAKHSTAN",
+      "KOSOVO": "KOSOVO",
+      "LATVIA": "LATVIA",
+      "LITHUANIA": "LITHUANIA",
+      "MAGYARORSZÁG – ÉRTÉKESÍTÉS": "HUNGARY - SALES",
+      "MALAYSIA": "MALAYSIA",
+      "MEXICO": "MEXICO",
+      "MIDDLE EAST": "MIDDLE EAST",
+      "MOROCCO - EGLO AFRICA": "MOROCCO - EGLO AFRICA",
+      "THE NETHERLANDS": "THE NETHERLANDS",
+      "NORWAY": "NORWAY",
+      "PERU": "PERU",
+      "POLAND": "POLAND",
+      "PORTUGAL": "PORTUGAL",
+      "ROMANIA": "ROMANIA",
+      "RUSSIA": "RUSSIA",
+      "SERBIA": "SERBIA",
+      "SLOVAKIA": "SLOVAKIA",
+      "SLOVENIA": "SLOVENIA",
+      "SPAIN": "SPAIN",
+      "SWEDEN": "SWEDEN",
+      "SWITZERLAND": "SWITZERLAND",
+      "TURKEY": "TURKEY",
+      "UKRAINE": "UKRAINE",
+      "USA": "USA"
+    }
+  },
+  "workingAtEglo": {
+    "breadcrumb": {
+      "home": "Home",
+      "workingAtEglo": "Working at EGLO"
+    },
+    "title": "Working at EGLO",
+    "quote": "A good company can grow your skills.",
+    "description": "People are organized beings. We organize ourselves into families, associations, institutions, companies, and of course, we organize ourselves. We are in relationships with one another because we cannot exist alone. Only through exchange and interaction with others can we grow and achieve things we could not do alone. That is why, at EGLO, we highly value fair collaboration.\n\nWe are convinced that everyone can contribute to building a shared and successful future.",
+    "noVacancies": "We currently have no open positions."
+  },
+  "header": {
+    "topBar": {
+      "findStore": "Store Locator",
+      "customerSupport": "Customer Support",
+      "freeShipping": "",
+      "freeShippingMobile": "",
+      "promos": [
+        "New collections — 2026",
+        "Exclusive discounts for registered users",
+        "EGLO Smart Light — smart lighting for your home"
+      ]
+    },
+    "search": {
+      "placeholder": "Search the entire store here",
+      "viewAll": "Show all results for",
+      "skuLabel": "Art. no."
+    },
+    "actions": {
+      "login": "Sign in",
+      "logout": "Sign out",
+      "cart": "Cart",
+      "userMenu": {
+        "dashboard":  "Dashboard",
+        "profile":    "Profile",
+        "myProducts": "My Products",
+        "settings":   "Settings",
+        "logout":     "Sign out"
+      }
+    }
+  },
+  "footer": {
+    "contact": {
+      "title": "Stuck in the dark?",
+      "workingHours": "Working hours",
+      "email": "Email",
+      "contactForm": "Contact form",
+      "getInTouch": "Get in touch"
+    },
+    "brand": {
+      "description": "Lighting homes with premium lighting solutions since 1985."
+    },
+    "sections": {
+      "company": "Company",
+      "career": "Career",
+      "service": "Service",
+      "socialNetworks": "Social Networks"
+    },
+    "links": {
+      "aboutEglo": "About EGLO",
+      "egloWorldwide": "EGLO worldwide",
+      "ourPrinciples": "Our principles",
+      "workingAtEglo": "Working at EGLO",
+      "warrantyConditions": "Warranty conditions",
+      "properRecycling": "Proper recycling",
+      "downloads": "DOWNLOADS"
+    },
+    "bottom": {
+      "copyright": "© EGLO Lighting GmbH",
+      "legalText": "All prices include 18% VAT and, where applicable, shipping costs may be added. RRP = Manufacturer's Recommended Retail Price",
+      "privacyPolicies": "Privacy Policies",
+      "print": "Print"
+    }
+  },
+  "navigation": {
+    "inspiration": "Inspiration",
+    "all": "All",
+    "viewAll": "View all",
+    "menu": "Menu"
+  },
+  "categories": {
+    "interiorLights": {
+      "name": "Interior Lighting",
+      "description": "Perfect light for every room. Highlight the uniqueness of your room by using interior lighting. Combine soft colors, elegant furniture, and the latest smart home technology.\n\nEvery room is different — you may want to create a relaxing atmosphere in one, and work in another. Discover our wide range of interior lighting products and find your personal style.",
+      "subcategories": {
+        "smartLighting": {
+          "name": "Smart Lighting",
+          "description": "We have the best smart lighting solutions for your home, with our EGLO Connect and EGLO Access line.\n\nControl your lighting via remote control or app. It's practical and easy to use, with the touch of a button.",
+          "subcategories": {
+            "egloConnectC": { "name": "EGLO connect-c" },
+            "egloAccess":   { "name": "EGLO access" }
+          }
+        },
+        "ledLamps": {
+          "name": "LED Lamps",
+          "description": "LED offers the best lighting technology on the market. Care for our planet by using modern LED lamps.\n\nGive up traditional bulbs — LED lamps are lighting the future. Discover a wide selection of outstanding designs for every taste.",
+          "subcategories": {
+            "ledStripLights": {
+              "name": "LED Strips",
+              "description": "LED strips provide indirect lighting in your home to showcase and illuminate specific pieces of furniture and décor, including bookshelves or frames."
+            },
+            "ledPanel": {
+              "name": "LED Panel",
+              "description": "LED panels provide fantastic lighting through a discreet design and integrated style. By integrating them into your wall or ceiling, LED panels will provide better lighting while also saving space in your home."
+            },
+            "floorLedLights": {
+              "name": "LED Floor Lights",
+              "description": "LED floor lights offer durability, efficiency, and mobility. Our LED floor lamps not only complement your primary lighting but can perfectly fit in to enhance and illuminate your interior."
+            },
+            "ceilingLedLights": {
+              "name": "LED Ceiling Lights",
+              "description": "LED ceiling lights provide much brighter lighting with low power consumption. Unlike conventional ceiling lights, they are approximately 90% more efficient and last up to 50 times longer."
+            },
+            "ledPendantLights": {
+              "name": "LED Pendant Lights",
+              "description": "Our LED pendant lights offer a contemporary style and energy-efficient technology. The wide range provides lighting for every interior, such as lighting your dining table, complementing your décor and saving money at the same time. Explore our large selection of LED pendant lights with our variety of styles, materials, and colors."
+            },
+            "ledWallLights": {
+              "name": "LED Wall Lights",
+              "description": "Our LED wall lights offer an energy-efficient and sustainable lighting solution. This product can be adapted and used in many ways to create indirect or direct lighting in your home."
+            },
+            "ledTableLights": {
+              "name": "LED Table Lamps",
+              "description": "Our collection of LED table lamps is not only functional but can also be used as a decorative element in your home. LED technology provides lighting products that are energy-efficient and eco-friendly."
+            },
+            "ledTubes":            { "name": "LED Tubes" },
+            "ceilingLedFloodlight":{ "name": "LED Ceiling Floodlight" }
+          }
+        },
+        "floorLamps": {
+          "name": "Floor Lamps",
+          "description": "Add special lighting to your home and beautify your rooms with our collection of floor lamps. Diverse and modern, allowing you to match the lamp's style to your home.\n\nWhatever your style, you're sure to find the perfect floor lamp for your home. All you need to do is place the floor lamp wherever you like and you're done!"
+        },
+        "ceilingLights": {
+          "name": "Ceiling Lights",
+          "description": "The ceiling light is one of the most important elements of interior lighting in any room, providing basic lighting and illuminating your interior space.\n\nCreate a beautiful atmosphere in your home by combining ceiling lights with other lighting products. We offer a wide range of different designs that complement every décor."
+        },
+        "pendantLights": {
+          "name": "Pendant Lights",
+          "description": "Pendant lights take center stage as the bright focal point of your room. Our modern and unusual designs offer a unique style for your home.\n\nOur incredible range of pendant lights offers elegant designs. You're sure to find your next standout piece here."
+        },
+        "chandeliers": {
+          "name": "Chandeliers",
+          "description": "Our chandeliers offer a sense of luxury and grandeur. Transform your home and bring sparkle and glamour into your living space."
+        },
+        "wallLamps": {
+          "name": "Wall Lights",
+          "description": "Wall lights are versatile, practical, and easily adaptable to any space.\n\nWhether you use them to light hallways, bathrooms, as accent lighting, or as reading lamps, we offer a wide range of stylish wall lights.",
+          "subcategories": {
+            "mirrorLights": { "name": "Mirror Lights" }
+          }
+        },
+        "tableLamps": {
+          "name": "Table Lamps",
+          "description": "Whether you're reading or working, enrich your interior lighting with a beautiful table lamp.\n\nOur table lamps offer a range of designs, from classic to the latest trends. Discover new styles using high-quality materials.",
+          "subcategories": {
+            "deskLamps":   { "name": "Desk Lamps" },
+            "clampLights": { "name": "Clamp Lamps" }
+          }
+        },
+        "trackSpotlights": {
+          "name": "Spotlights",
+          "description": "Spotlights offer a flexible way to light any room.\n\nGet directional lighting exactly where you need it. Illuminate your home with spotlights and discover our new lighting design options."
+        },
+        "recessedSurface": {
+          "name": "Recessed & Surface-Mounted Lights",
+          "description": "Recessed and surface-mounted lights are small, practical, and discreet. Bring light into every room with our spotlights, EGLO's most adaptable and diverse product line.\n\nEquipped with the latest LED technology, you're ready for the future and save a significant amount on electricity costs."
+        },
+        "underCabinet": {
+          "name": "Under-Cabinet Lights",
+          "description": "You don't want shadows on your work surface while chopping and cutting in the kitchen.\n\nWe have the right solution for you! Illuminate your kitchen work surfaces using under-cabinet lighting. Using LED strips involves a very simple installation process — attach, connect, done."
+        }
+      }
+    },
+    "outdoorLights": {
+      "name": "Outdoor Lighting",
+      "description": "With outdoor lighting, you can turn your yard into a safe and pleasant space. Our wide range provides the perfect combination of style and functionality, ensuring you enjoy your yard without any worries.",
+      "subcategories": {
+        "outdoorLedLights": {
+          "name": "Outdoor LED Lights",
+          "description": "Want to make the exterior of your home energy-efficient? Simply use our outdoor LED lighting products. Forget traditional lights and adapt to the 21st century.\n\nDo you want your home's outdoor lighting design to be energy-efficient? By using our outdoor LED lights, you're investing in an energy-efficient home."
+        },
+        "solarLights": {
+          "name": "Solar Lights",
+          "description": "The advantages of solar lighting are that it's versatile, practical, and sustainable. You don't need any electrical connection. The sun provides all the energy the light needs to operate."
+        },
+        "outdoorWallLights": {
+          "name": "Outdoor Wall Lights",
+          "description": "Our outdoor wall lights provide an excellent solution for your outdoor lighting needs.\n\nExplore our wide range of wall lights and discover how a combination of colors and materials can enrich the look and functionality of your space."
+        },
+        "exteriorCeilingLights": {
+          "name": "Exterior Ceiling Lights",
+          "description": "Our exterior ceiling lights offer an excellent solution for your outdoor lighting needs.\n\nExplore our wide range of ceiling lights and discover how a combination of colors and materials can enrich the look and functionality of your space."
+        },
+        "outdoorSpotlights": {
+          "name": "Outdoor Spotlights",
+          "description": "Who doesn't love nature? We believe your living space extends beyond your patio door. That's why we offer a wide selection of outdoor lighting products that will highlight the beauty of your garden, adding functionality and practicality.\n\nWith EGLO, you can light your garden to your own taste. Thanks to our smart solutions and modern LED technology, you have full control over the atmosphere and lighting."
+        },
+        "earthLuminaires": {
+          "name": "Ground Luminaires",
+          "description": "Ground luminaires are the ideal choice for lighting pathways, flower beds, or special parts of the garden. They combine aesthetics and practicality, creating a warm and pleasant atmosphere in your outdoor space."
+        },
+        "gardenLights": {
+          "name": "Garden Lights",
+          "description": "Light up your garden and yard with our collection of garden lights. Create the perfect atmosphere for enjoying the outdoors, adding style and functionality to your outdoor space."
+        },
+        "facadeLights": {
+          "name": "Facade Lights",
+          "description": "Highlight the beauty of your house with our facade lights. Provide safety and aesthetics to the entrances and exterior walls of your home."
+        },
+        "pathwayLights": {
+          "name": "Pathway Lights",
+          "description": "Light up the paths and walkways in your garden with our collection of pathway lights. Safely and stylishly guide your guests through the outdoor space."
+        },
+        "motionDetectors":      { "name": "Motion Detectors" },
+        "houseNumberLighting":  { "name": "House Number Lighting" },
+        "pedestalLights":       { "name": "Pedestal Lights" },
+        "smartOutdoorLighting": { "name": "Smart Outdoor Lighting" }
+      }
+    },
+    "ceilingFans": {
+      "name": "Ceiling Fans",
+      "description": "Want to sustainably improve the indoor climate of your home? Our ceiling fans aren't just a stylish addition — they're also an eco-friendly solution that saves energy and money.\n\nIn summer, they create pleasant cooling and bring in fresh air, while in winter they efficiently distribute warm air throughout the room.",
+      "subcategories": {
+        "ceilingFansWithLight": {
+          "name": "Ceiling Fans with Light",
+          "description": "Our ceiling fans with light offer lighting, space savings, and air distribution in your home.\n\nCombining functionality with practicality, they light your room and create a pleasant indoor climate."
+        },
+        "ceilingFansWithoutLight": {
+          "name": "Ceiling Fans without Light",
+          "description": "Imagine the feel of a light, natural breeze on your skin — almost as if you're outdoors. EGLO's ceiling fan collection is the perfect choice for improving your indoor climate, especially on hot summer days.\n\nOur fans combine modern design, practicality, and high-quality materials for maximum comfort and style."
+        }
+      }
+    },
+    "illuminants": {
+      "name": "Light Bulbs",
+      "description": "Choose the right bulbs for your home. In our wide range, you can find different models and socket types, for every style and need.",
+      "subcategories": {
+        "e27": {
+          "name": "E27"
+        },
+        "e14": {
+          "name": "E14"
+        },
+        "g4": {
+          "name": "G4"
+        },
+        "g9": {
+          "name": "G9"
+        },
+        "gu53": {
+          "name": "GU5.3"
+        },
+        "gu10": {
+          "name": "GU10"
+        },
+        "r7s": {
+          "name": "R7S"
+        },
+        "gx53": {
+          "name": "GX53"
+        },
+        "gu5-3": {
+          "name": "GU5.3"
+        },
+        "ledBulbs": {
+          "name": "LED Bulbs"
+        },
+        "halogenBulbs": {
+          "name": "Halogen Bulbs"
+        },
+        "filamentBulbs": {
+          "name": "Filament Bulbs"
+        }
+      }
+    },
+    "accessories": {
+      "name": "Accessories",
+      "description": "Quality accessories and components for lighting systems.",
+      "subcategories": {
+        "ledProfiles": { "name": "LED Profiles" },
+        "ledStrips": { "name": "LED Strips" },
+        "mountingFrames": { "name": "Mounting Frames" },
+        "transformers": { "name": "Transformers" },
+        "remoteControls": { "name": "Remote Controls" },
+        "spareParts": { "name": "Spare Parts" }
+      }
+    }
+  },
+  "admin": {
+    "title": "Admin Dashboard",
+    "subtitle": "Manage your products and store",
+    "actions": {
+      "addProduct": "Add Product",
+      "settings": "Settings"
+    },
+    "stats": {
+      "totalProducts": "Total Products",
+      "activeUsers": "Active Users",
+      "categories": "Categories"
+    }
+  },
+  "cart": {
+    "addedToCart": "was added to cart"
+  },
+  "categoryGrid": {
+    "title": "Discover our range",
+    "subtitle": "Explore our range of lighting solutions, designed to bring style and comfort to every corner of your home.",
+    "shopNow": "Shop now",
+    "categories": {
+      "pendantLights": {
+        "title": "Pendant Lights",
+        "description": "Outstanding pieces for the dining room and kitchen",
+        "badge": "Popular"
+      },
+      "ceilingLights": {
+        "title": "Ceiling Lights",
+        "description": "Energy-efficient lighting for every room",
+        "badge": "New"
+      },
+      "wallLights": {
+        "title": "Wall Lights",
+        "description": "Elegant wall-mounted lighting solutions",
+        "badge": "Sale"
+      },
+      "tableLamps": {
+        "title": "Table Lamps",
+        "description": "Perfect lighting for any space",
+        "badge": "Trending"
+      }
+    }
+  },
+  "ctaSection": {
+    "title": "Ready to transform your space?",
+    "subtitle": "Discover our collection of premium lighting solutions and create the perfect atmosphere for your home.",
+    "shopNow": "Shop now",
+    "learnMore": "Learn more"
+  },
+  "featuredProducts": {
+    "title": "Best Sellers",
+    "subtitle": "Favorite products from our latest collection",
+    "viewAllProducts": "View all products",
+    "sale": "Sale"
+  },
+  "filterGrid": {
+    "filters": "Filters",
+    "apply": "Apply",
+    "resetAllFilters": "Reset all filters"
+  },
+  "heroSection": {
+    "title": "Light for the perfect atmosphere",
+    "subtitle": "Discover now",
+    "description": "Discover the perfect lighting for your home — from classic to smart lighting.",
+    "exploreCollection": "Explore the collection",
+    "aboutUs": "About us"
+  },
+  "inspirationHero": {
+    "lightingInspiration": "Lighting Inspiration",
+    "title": "Awaken your imagination",
+    "subtitle": "Explore our exclusive collection of lighting designs, created to turn your spaces into places with special charm and atmosphere",
+    "exploreIdeas": "Explore ideas",
+    "getConsultation": "Get a consultation"
+  },
+  "productCard": {
+    "new": "NEW",
+    "addToCart": "Add to cart"
+  },
+  "roomShowcaseSection": {
+    "title": "Room by room",
+    "subtitle": "Discover how the right lighting transforms every space in your home",
+    "featured": "Featured",
+    "rooms": {
+      "livingRoom": {
+        "title": "Living Room",
+        "subtitle": "Warm and inviting",
+        "description": "Create warmth with layered lighting"
+      },
+      "kitchen": {
+        "title": "Kitchen",
+        "subtitle": "Functional and bright",
+        "description": "Perfect lighting for work and ambiance"
+      },
+      "bedroom": {
+        "title": "Bedroom",
+        "subtitle": "Relaxing",
+        "description": "Soft lighting for rest"
+      },
+      "diningRoom": {
+        "title": "Dining Room",
+        "subtitle": "Refined and impressive",
+        "description": "An impressive atmosphere for any occasion"
+      },
+      "bathroom": {
+        "title": "Bathroom",
+        "subtitle": "Clean and bright",
+        "description": "Bright, even lighting"
+      }
+    }
+  },
+  "styleGallery": {
+    "title": "Style Gallery",
+    "subtitle": "Get inspired by real homes featuring beautiful lighting designs",
+    "viewMoreInspiration": "View more",
+    "exploreStyle": "Explore style",
+    "items": {
+      "scandinavianMinimalism": {
+        "title": "Scandinavian Minimalism",
+        "category": "Living Room"
+      },
+      "industrialChic": {
+        "title": "Industrial Chic",
+        "category": "Kitchen"
+      },
+      "vintageElegance": {
+        "title": "Vintage Elegance",
+        "category": "Dining Room"
+      },
+      "naturalWarmth": {
+        "title": "Natural Warmth",
+        "category": "Bedroom"
+      },
+      "modernLuxury": {
+        "title": "Modern Luxury",
+        "category": "Bathroom"
+      },
+      "bohemianSpirit": {
+        "title": "Bohemian Spirit",
+        "category": "Living Room"
+      }
+    }
+  },
+  "styleGrid": {
+    "title": "Shop by style",
+    "subtitle": "Find lighting that matches your aesthetic and creates the perfect atmosphere for your space",
+    "exploreStyle": "Explore style",
+    "styles": {
+      "scandinavian": {
+        "title": "Scandinavian",
+        "description": "Clean lines and natural warmth"
+      },
+      "natural": {
+        "title": "Natural",
+        "description": "Organic textures and earthy tones"
+      },
+      "vintage": {
+        "title": "Vintage",
+        "description": "Timeless elegance and classic beauty"
+      },
+      "industrial": {
+        "title": "Industrial",
+        "description": "Raw materials and urban sophistication"
+      }
+    }
+  },
+  "trendingIdeasSection": {
+    "trending": "What's trending",
+    "title": "The latest lighting ideas",
+    "subtitle": "Stay up to date with the latest trends and innovations in home lighting",
+    "views": "views",
+    "ideas": {
+      "smartLightingAutomation": {
+        "title": "Smart Lighting Automation",
+        "description": "Control your whole-home lighting with voice commands and schedules",
+        "readTime": "3 min read",
+        "trend": "Rising"
+      },
+      "layeredLightingDesign": {
+        "title": "Layered Lighting Design",
+        "description": "The right combination of lights gives you warmth exactly where it's needed.",
+        "readTime": "5 min read",
+        "trend": "Rising"
+      },
+      "sustainableLedSolutions": {
+        "title": "Sustainable LED Solutions",
+        "description": "Energy-efficient lighting that's beautiful and eco-friendly",
+        "readTime": "4 min read",
+        "trend": "New"
+      }
+    }
+  },
+  "pagination": {
+    "items": "Items {start}-{end} of {total}",
+    "perPage": "Show per page",
+    "prev": "Previous page",
+    "next": "Next page"
+  },
+  "categoryPage": {
+    "breadcrumb": {
+      "home": "Home"
+    },
+    "readMore": "Read more",
+    "categories": "Categories",
+    "expand": "Expand",
+    "collapse": "Collapse",
+    "filters": "Filters",
+    "noProducts": "No products in this category"
+  },
+  "subcategoryPage": {
+    "breadcrumb": {
+      "home": "Home"
+    },
+    "readMore": "Read more",
+    "categories": "Categories",
+    "expand": "Expand",
+    "collapse": "Collapse",
+    "filters": "Filters",
+    "noProducts": "No products in this subcategory"
+  },
+  "products": {
+    "mogano3Ceiling": {
+      "name": "MOGANO 3 ceiling light",
+      "description": "Elegant ceiling light made of premium steel with a sand finish.\n\nEquipped with a high-quality light source and E27 socket for excellent lighting and long-lasting use."
+    },
+    "mogano2Ceiling": {
+      "name": "MOGANO 2 ceiling light",
+      "description": "Compact ceiling light with a steel construction with a sand finish. Ideal for smaller rooms with an exclusive light source and E27 socket."
+    },
+    "moganoWallLight": {
+      "name": "MOGANO wall light",
+      "description": "Elegant wall light with steel construction and IP44 protection. Features an exclusive light source with an E27 socket for outdoor use."
+    },
+    "huesaTableLamp": {
+      "name": "HUESA table lamp",
+      "description": "Modern table lamp with LED technology, USB connectivity, and splash-resistant design. Features adjustable brightness and battery operation, making it ideal for various uses, including outdoor use"
+    },
+    "huesaGardenLight": {
+      "name": "HUESA garden light",
+      "description": "High-quality garden light with LED technology and IP65 protection. Equipped with a motion sensor, adjustable brightness, and battery operation, making it practical and efficient for any yard."
+    },
+    "moganoPathLight": {
+      "name": "MOGANO pathway light",
+      "description": "Elegant pathway light with steel construction and IP65 protection. Equipped with a motion sensor and an exclusive light source for outdoor use."
+    },
+    "e27Bulb": {
+      "name": "E27 bulb",
+      "description": "High-quality E27 LED bulb providing 470 lumens of warm white light. Consumes only 2.2W, making it an excellent choice for energy savings."
+    },
+    "e14Bulb": {
+      "name": "E14 bulb",
+      "description": "Compact E14 candle-shaped LED bulb providing 350 lumens of light. Consumes only 1.8W, making it an energy-efficient choice for your home"
+    },
+    "gu10Bulb": {
+      "name": "GU10 bulb",
+      "description": "High-quality GU10 LED bulb with a directional design for focused lighting, providing 600 lumens of light. Energy-efficient with 4.5W power consumption."
+    },
+    "fallback": {
+      "name": "Sample product",
+      "description": "This is a sample product for demonstration purposes."
+    },
+    "saliterasCCeiling": {
+      "description": "A perfect combination of style and technology — a smart ceiling light with an elegant steel body and a subtle plastic rim. With a single touch you can change the color or control it via app and remote control."
+    },
+    "fueva5SurfaceMounted": {
+      "description": "Modern LED surface-mounted light with a steel body and plastic rim, equipped with an integrated motion sensor for added convenience and safety. Belongs to energy class F and comes with a 5-year warranty."
+    },
+    "cobStripeLightStrip": {
+      "description": "LED strip with 5600 lm and 3000K warm white light. Plastic rim, energy class G, and 5-year warranty."
+    },
+    "competa2WallCeiling": {
+      "description": "LED wall/ceiling panel with 2400 lm and 3000K. Steel body with plastic rim, energy class F, and 5-year warranty."
+    },
+    "boyalFloorLamp": {
+      "description": "Floor LED light with 3400 lm and 3000K. A combination of steel and wood with a plastic rim. Elegant design and 5-year warranty."
+    },
+    "huertaECeilingLight": {
+      "description": "HUERTA-E LED ceiling light with a steel body and plastic rim. Integrated technology with a stable 3000K light and 5-year warranty."
+    },
+    "riodevaCPendantLights": {
+      "description": "RIODEVA-C pendant lights with a contemporary design and LED technology. Ideal for the dining room or kitchen, with a pleasant warm white light."
+    },
+    "casciaWallLight": {
+      "description": "CASCIA wall light with an elegant, minimalist design and an LED light source. Energy-efficient with long-lasting performance."
+    },
+    "almudainaTableLamp": {
+      "description": "ALMUDAINA table lamp with a modern look. LED technology with soft lighting for a desk or nightstand."
+    },
+    "scigliatiFloorLamp": {
+      "description": "SCIGLIATI floor lamp with an elegant design. Offers pleasant ambient lighting and a contemporary style."
+    },
+    "cabezasEWallCeilingLight": {
+      "description": "CABEZAS-E wall/ceiling light with integrated LED technology. Versatile use with a functional design."
+    },
+    "draceraPendantLights": {
+      "description": "DRACERA pendant lights with a modern style and LED source. Ideal as a statement piece above a table or counter."
+    },
+    "ersekaChandelier": {
+      "description": "ERSEKA chandelier with a refined look. Made of quality materials, providing pleasant lighting for any type of room."
+    },
+    "pogliolaWallLight": {
+      "description": "POGLIOLA wall light with a minimalist design. LED technology for efficient lighting."
+    },
+    "recisoESpot": {
+      "description": "RECISO-E spotlight for directional lighting. An excellent choice for highlighting details and décor"
+    },
+    "extendUndercabLight": {
+      "description": "EXTEND surface-mounted light for practical task lighting in the kitchen. Easy installation and energy efficiency."
+    },
+    "g4Bulb": {
+      "description": "G4 bulb with a special base, suitable for compact lights. Offers efficient LED light and long life."
+    },
+    "ledBulbG93w3000kWarmLightDimmable320lm": {
+      "description": "G9 LED bulb 3W 3000K, with adjustable brightness, 320lm. Ideal for warm, pleasant lighting with low power consumption."
+    },
+    "gu53Bulb": {
+      "description": "GU5.3 bulb with directional light. Efficient and long-lasting."
+    },
+    "r7sBulb": {
+      "description": "The linear R7S bulb is designed for use in special luminaires and floodlights. Provides powerful, even lighting, ideal for highlighting large surfaces or details."
+    },
+    "gx53Bulb": {
+      "description": "GX53 bulb with a slim design, perfect for low-profile luminaires and recessed installations. Energy-efficient LED technology."
+    },
+    "marineCeilingLightWithFan": {
+      "description": "MARINELLA ceiling light with fan — combines lighting and cooling in one modern device. LED technology, quiet operation, and 5-year warranty."
+    },
+    "portseaCeilingFan": {
+      "description": "PORTSEA ceiling fan without light — efficient ventilation and quiet operation, ideal for living rooms and bedrooms. Modern design and great performance."
+    },
+    "solarLight": {
+      "description": "Solar light with a built-in battery — easy installation without cables, a sustainable and practical solution for outdoor lighting."
+    },
+    "barcarolaEWallLight": {
+      "description": "BARCAROLA-E wall light for outdoor use. Combines an elegant look with durable construction and LED technology."
+    },
+    "piloneWallCeilingLight": {
+      "description": "PILONE wall/ceiling light for exteriors — versatile mounting, natural lighting, and a modern minimalist design."
+    },
+    "filettiFloodLight": {
+      "description": "FILETTI floodlight for powerful directional lighting of yards and facades. Protected construction and efficient LED light."
+    },
+    "roffiaFloorLamp": {
+      "description": "ROFFIA ground light with a natural look. A design that adds warmth and texture, with pleasant lighting."
+    }
+  },
+  "productPage": {
+    "breadcrumb": {
+      "home": "Home",
+      "products": "Products"
+    },
+    "addToCart": "Add to cart",
+    "quantity": "Quantity",
+    "articleNumber": "Article no.",
+    "noImage": "No image",
+    "vatNotice": "18% VAT included, plus shipping costs",
+    "deliveryNotice": "Delivery in 2-3 business days",
+    "downloadManual": "Download user manual",
+    "warrantyConditions": "Warranty conditions",
+    "dimensions": "Dimensions",
+    "lightInformation": "Light information",
+    "switchingInformation": "Switching information",
+    "technicalInformation": "Technical information",
+    "otherInformation": "Other information"
+  },
+  "principles": {
+    "breadcrumb": {
+      "home": "Home",
+      "principles": "Our principles"
+    },
+    "title": "Our principles",
+    "pillarsTitle": "The pillars of our thinking process",
+    "summary": "EGLO's development has been, and continues to be, rapid: from the number of employees, through sales growth, to production capacity and sales companies around the world: these growth rates outpace the market, and to ensure EGLO continues to grow in the future, business development is guided by great sustainability. We preserve what has been tried and tested and leave room for our principles to work alongside us.",
+    "principles": {
+      "established": {
+        "word": "established",
+        "title": "Preserving and developing what has proven its worth",
+        "description": "Our numbers nearly doubled over 10 years (from 2007 to 2017). The number of companies in the EGLO Sales Group grew fivefold over 20 years (1997 to 2017).\n\nThe first secret to our success is the fact that EGLO is still a family business and can therefore operate independently. Control over development, production, and logistics has also been a success factor from the very beginning. We learn every day and invest in our customers, our partners, our employees, our products, and our service around the world."
+      },
+      "global": {
+        "word": "global",
+        "title": "Global and local",
+        "description": "Around 70 EGLO companies are responsible for sales, service, and in some cases regional marketing in more than 50 countries worldwide. Despite the progress of internationalization and globalization, we are and remain a family company with Tyrolean roots.\n\n\"Think globally, act locally\" is increasingly becoming \"Ask locally, act globally\" as networks and regional needs grow. Customers belong to a regional culture and have different needs, even if they work and shop worldwide. Uniting and reconciling these two worlds is one of our highest aspirations."
+      },
+      "light": {
+        "word": "light",
+        "title": "Light that inspires the masses",
+        "description": "Almost every two hours, a new product is developed at EGLO. That's an average of nearly four new products per working day.\n\nJust last year, more than 900 new products were developed and launched on the market. The current product range includes more than 4,000 items. Every day we produce 80,000 luminaires worldwide.\n\nEven for us, these numbers are always impressive. It takes the ability to listen and a vision to understand what customers want to see and experience in their homes in the future. You can only become a trendsetter if you set the direction yourself. We constantly follow the development of light, life, and life events, absorbing creative impulses from various fields and examining trends for their potential."
+      },
+      "organization": {
+        "word": "organization",
+        "title": "Strong together",
+        "description": "EGLO's rapid growth has always been a challenge for our organization. Our regional-global understanding and the fact that EGLO still is, and will remain, a family business helps us face this challenge. For us, size is an advantage only if things function on a small scale. For this reason, location is essential: for our customers, our partners, and our employees. Only in perfectly organized and well-connected network units can we manage and grow 4,700 employees worldwide.\n\nAnother interesting aspect of our organizational philosophy concerns the continuous support of our partners. We constantly take our employees into account, not just the consumer: \"What do we need and what can we offer? Where is our experience needed? What do our employees expect and what are our own requirements?\" We want to understand and find a common path to success. This is how partnerships are created that will last for decades. This culture is not just part of our organization, but also our personal statement to everyone who works with us."
+      }
+    }
+  },
+  "warranty": {
+    "breadcrumb": {
+      "home": "Home",
+      "warranty": "Warranty conditions"
+    },
+    "title": "Warranty conditions",
+    "cards": {
+      "nonEuCh": {
+        "title": "Warranty conditions outside the EU and Switzerland"
+      },
+      "professional": {
+        "title": "Professional warranty conditions for luminaires"
+      },
+      "euCh": {
+        "title": "Warranty conditions for the EU and Switzerland"
+      },
+      "beChFans": {
+        "title": "Warranty conditions for fans, Belgium and Switzerland"
+      }
+    }
+  },
+  "search": {
+    "title": "Product search",
+    "results": {
+      "title": "Search results for: {query}",
+      "noProducts": "No products found",
+      "found": "{count} products found"
+    },
+    "search": {
+      "placeholder": "Search lights, fans, and more...",
+      "button": "Search"
+    },
+    "noResults": {
+      "title": "No products found",
+      "description": "Try adjusting your search terms or browse our categories",
+      "browseButton": "Browse all products"
+    },
+    "startSearch": {
+      "title": "Start searching",
+      "description": "Enter a search term above to find products"
+    }
+  },
+  "productSpecs": {
+    "labels": {
+      "materialNumber": "Material number",
+      "enclosureMaterial": "Material",
+      "enclosureColour": "Color",
+      "protectionDegree": "Protection level",
+      "illuminant1": "Light source 1",
+      "lampSocket1": "Lamp socket 1",
+      "articleHeight": "Height",
+      "articleDiameter": "Diameter",
+      "netWeight": "Weight",
+      "protectionClass": "Protection class",
+      "mainsVoltage": "Mains voltage",
+      "operationVoltage": "Operating voltage",
+      "switchType": "Switch type",
+      "battery": "Battery",
+      "illuminantType1": "Light source type 1",
+      "eanUpc": "EAN/UPC",
+      "fullLumen": "Total lumen",
+      "fullKelvin": "Total kelvin",
+      "itemNumber": "Item number",
+      "material": "Material",
+      "color": "Color",
+      "securityLevel": "Protection level",
+      "includedLight1": "Included light 1",
+      "openingType1": "Opening type 1",
+      "functions": "Functions",
+      "warranty": "Warranty",
+      "heightInMmIn": "Height (in mm/in)",
+      "diameterInMmIn": "Diameter (in mm/in)",
+      "baseDiameterInMmIn": "Base diameter (in mm/in)",
+      "weight": "Weight",
+      "batteryQuantity": "Battery quantity",
+      "securityClass": "Protection class",
+      "workingVoltage": "Operating voltage",
+      "typeOfCircuitBreaker": "Switch type",
+      "batteryType": "Battery type",
+      "lighterType1": "Light source type 1",
+      "watt1": "Watts",
+      "technology": "Technology",
+      "colorWarmth": "Color temperature",
+      "nominalBrightness": "Nominal brightness",
+      "shapeOfTheBulb": "Bulb shape",
+      "partsInOnePackage": "Parts per package",
+      "energySavingClass": "Energy efficiency class",
+      "lengthInMmIn": "Length (in mm/in)",
+      "brightnessLevels90120Full": "Brightness levels (90°/120°/full)",
+      "nominalLifespan": "Nominal lifespan",
+      "changingCycles": "Switching cycles",
+      "nominalLampPowerInW": "Nominal lamp power (in W)",
+      "ratedLampPowerAccuracy01w": "Rated lamp power (0.1W accuracy)",
+      "equivalentToIncandescentLampW": "Incandescent equivalent (W)",
+      "lampPowerFactor": "Power factor",
+      "lifespanAssessment": "Lifespan assessment",
+      "ambientTemperature": "Ambient temperature",
+      "kw1000h": "kW/1000h",
+      "glassContourMaterial": "Glass/contour material",
+      "glassContourColor": "Glass/contour color",
+      "instructionManual": "User manual",
+      "infoChangeabilityLightSourceDriver": "Light source/driver replaceability info",
+      "sensorAngle": "Sensor angle",
+      "distanceInMeters": "Distance (in meters)",
+      "baseLenghtInMmIn": "Base length (in mm/in)",
+      "baseWidht": "Base width"
+    }
+  },
+  "login": {
+    "title": "Welcome back",
+    "subtitle": "Sign in to your account",
+    "email": "Email",
+    "password": "Password",
+    "rememberMe": "Remember me",
+    "forgotPassword": "Forgot password?",
+    "signIn": "Sign in",
+    "orContinueWith": "Or continue with",
+    "google": "Google",
+    "microsoft": "Microsoft",
+    "dontHaveAccount": "Don't have an account?",
+    "signUp": "Sign up",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "placeholders": {
+      "email": "Enter your email",
+      "password": "Enter your password"
+    }
+  },
+  "signup": {
+    "title": "Create your account",
+    "subtitle": "Join EGLO and start your journey",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "email": "Email",
+    "phone": "Phone number",
+    "password": "Password",
+    "confirmPassword": "Confirm password",
+    "acceptTerms": "I agree to the",
+    "termsOfService": "Terms of Service",
+    "and": "and",
+    "privacyPolicy": "Privacy Policy",
+    "createAccount": "Create account",
+    "orContinueWith": "Or continue with",
+    "google": "Google",
+    "twitter": "Twitter",
+    "alreadyHaveAccount": "Already have an account?",
+    "signIn": "Sign in",
+    "placeholders": {
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Enter your email",
+      "phone": "Enter your phone number",
+      "password": "Create a password",
+      "confirmPassword": "Confirm your password"
+    }
+  },
+  "adminSignup": {
+    "title": "Admin registration test",
+    "subtitle": "Test the registration endpoint with only email and password",
+    "endpoint": "Endpoint: POST /api/auth/register",
+    "useCorsProxy": "Use CORS proxy (if you get CORS errors)",
+    "corsNote": "Enable this if you're getting CORS errors. Note: you may need to visit",
+    "corsDemo": "cors-anywhere demo",
+    "testRegistration": "Test registration",
+    "testingRegistration": "Testing registration...",
+    "backToSignup": "← Back to full registration form",
+    "description": "This form sends only an email and password to test the registration endpoint",
+    "consoleNote": "💡 Open your browser console to see detailed request/response logs"
+  },
+  "adminNavigation": {
+    "title": "Admin Dashboard",
+    "subtitle": "Manage your products and store",
+    "actions": {
+      "addProduct": "Add Product",
+      "settings": "Settings"
+    },
+    "stats": {
+      "totalProducts": "Total Products",
+      "activeUsers": "Active Users",
+      "categories": "Categories",
+      "revenue": "Revenue"
+    },
+    "navigation": {
+      "dashboard": "Dashboard",
+      "products": "Products",
+      "users": "Users",
+      "settings": "Settings",
+      "viewSite": "View Site",
+      "logout": "Sign out"
+    }
+  },
+  "dashboard": {
+    "nav": {
+      "overview":   "Overview",
+      "products":   "Products",
+      "categories": "Categories",
+      "orders":     "Orders",
+      "users":      "Users",
+      "settings":   "Settings",
+      "viewSite":   "View Site",
+      "logout":     "Sign out"
+    },
+    "overview": {
+      "title":            "Overview",
+      "subtitle":         "Welcome to the EGLO admin panel",
+      "viewAll":          "View all",
+      "manageProducts":   "Manage, add, and edit products.",
+      "manageCategories": "Manage product categories.",
+      "stats": {
+        "totalProducts": "Total products",
+        "totalOrders":   "Total orders",
+        "totalUsers":    "Total users",
+        "revenue":       "Revenue"
+      }
+    },
+    "products": {
+      "title":          "Products",
+      "subtitle":       "Manage all products",
+      "addProduct":     "Add product",
+      "search":         "Search products...",
+      "filterCategory": "All categories",
+      "filterStatus":   "All statuses",
+      "noResults":      "No products.",
+      "table": {
+        "image":    "Image",
+        "name":     "Name",
+        "sku":      "SKU",
+        "price":    "Price",
+        "category": "Category",
+        "status":   "Status",
+        "created":  "Created",
+        "actions":  "Actions"
+      },
+      "status": {
+        "active":   "Active",
+        "inactive": "Inactive"
+      },
+      "deleteModal": {
+        "title":   "Delete product",
+        "message": "Are you sure you want to delete",
+        "confirm": "Delete",
+        "cancel":  "Cancel"
+      },
+      "pagination": {
+        "showing": "Showing"
+      },
+      "uncategorized":      "Uncategorized",
+      "unassigned":         "Unassigned",
+      "filterUncategorized":"Uncategorized only",
+      "selected":           "selected",
+      "clearFilters":       "Clear filters",
+      "bulkAssign": {
+        "title":             "Assign category",
+        "subtitle":          "Assign a category to {count} products",
+        "selectCategory":    "Select category...",
+        "assign":            "Assign",
+        "button":            "Assign category",
+        "error":             "Error assigning category. Please try again.",
+        "uncategorizedHint": "Show only products without a category"
+      }
+    },
+    "editProduct": {
+      "title":          "Edit product",
+      "basicInfo":      "Basic information",
+      "specifications": "Specifications",
+      "backToProducts": "Back to products",
+      "save":           "Save changes",
+      "saving":         "Saving...",
+      "cancel":         "Cancel",
+      "savedSuccess":   "Product saved successfully. Redirecting...",
+      "fields": {
+        "name":           "Product name",
+        "sku":            "SKU",
+        "price":          "Price",
+        "category":       "Category",
+        "categoryNone":   "— No category —",
+        "productDetails": "Product details",
+        "dimensions":     "Dimensions",
+        "technicalInfo":  "Technical information",
+        "otherInfo":      "Other information"
+      },
+      "errors": {
+        "nameRequired":  "Product name is required",
+        "priceRequired": "Enter a valid price",
+        "notFound":      "Product not found",
+        "saveFailed":    "Error saving. Please try again."
+      }
+    },
+    "categories": {
+      "subtitle":        "Manage product categories",
+      "addCategory":     "Add category",
+      "noCategories":    "No categories",
+      "noCategoriesDesc":"Add the first product category.",
+      "table": {
+        "name":          "Name",
+        "slug":          "Slug",
+        "subcategories": "Subcategories"
+      }
+    },
+    "orders": {
+      "subtitle":     "Manage customer orders",
+      "noOrders":     "No orders",
+      "noOrdersDesc": "Orders will appear here once customers make purchases."
+    },
+    "users": {
+      "subtitle":    "Manage user accounts",
+      "noUsers":     "No users",
+      "noUsersDesc": "Registered users will appear here."
+    },
+    "settings": {
+      "subtitle":                "Manage admin panel settings",
+      "notifications":           "Notifications",
+      "emailNotifications":      "Email notifications",
+      "emailNotificationsDesc":  "Receive updates about orders and activity.",
+      "security":                "Security",
+      "localization":            "Localization",
+      "saveChanges":             "Save changes",
+      "saved":                   "Saved",
+      "comingSoon":              "Coming soon"
+    }
+  },
+  "profile": {
+    "title": "Profile",
+    "subtitle": "Manage your personal information",
+    "accountInfo": "Account information",
+    "email": "Email",
+    "userId": "User ID",
+    "role": "Role",
+    "roles": "Roles",
+    "changePassword": "Change password",
+    "currentPassword": "Current password",
+    "newPassword": "New password",
+    "confirmPassword": "Confirm password",
+    "saveChanges": "Save changes",
+    "comingSoon": "Coming soon"
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Manage your account preferences",
+    "language": "Language",
+    "languageDesc": "Choose the interface language",
+    "notifications": "Notifications",
+    "emailNotifications": "Email notifications",
+    "emailNotificationsDesc": "Receive updates about orders and promotions",
+    "orderUpdates": "Order updates",
+    "orderUpdatesDesc": "Notifications about your order status",
+    "saveChanges": "Save changes",
+    "saved": "Settings saved",
+    "comingSoon": "Coming soon"
+  },
+  "myProducts": {
+    "title": "My Products",
+    "subtitle": "Products you're following or have favorited",
+    "noProducts": "You have no saved products",
+    "noProductsDesc": "Browse our catalog and save your favorite products",
+    "browse": "Browse products",
+    "comingSoon": "Coming soon"
+  }
+}
