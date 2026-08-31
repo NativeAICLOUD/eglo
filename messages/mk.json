@@ -1348,9 +1348,42 @@
       }
     },
     "orders": {
-      "subtitle":     "Управувај со нарачките на клиентите",
-      "noOrders":     "Нема нарачки",
-      "noOrdersDesc": "Нарачките ќе се прикажат овде кога клиентите ќе купат."
+      "title":          "Нарачки",
+      "subtitle":       "Управувај со нарачките на клиентите",
+      "refresh":        "Освежи",
+      "sessionExpired": "Сесијата истекла — најавете се повторно.",
+      "errorStatus":    "Грешка {status}",
+      "errorLoading":   "Грешка при вчитување",
+      "noOrders":       "Нема нарачки",
+      "noOrdersDesc":   "Нарачките ќе се прикажат овде кога клиентите ќе купат.",
+      "stats": {
+        "totalOrders": "Вкупно нарачки",
+        "processing":  "Во обработка",
+        "shipped":     "Испратени",
+        "revenue":     "Вкупен приход"
+      },
+      "table": {
+        "customer": "Клиент",
+        "date":     "Датум",
+        "delivery": "Достава",
+        "total":    "Вкупно",
+        "status":   "Статус"
+      },
+      "delivery": {
+        "courier":     "Курир",
+        "store":       "Продавница",
+        "courierFull": "Inn Post Radeski (Курир)",
+        "pickupFull":  "Преземање во продавница"
+      },
+      "detail": {
+        "orderDetails": "Детали за нарачката",
+        "id":           "ID:",
+        "date":         "Датум:",
+        "delivery":     "Достава:",
+        "status":       "Статус:",
+        "products":     "Производи ({count})",
+        "total":        "Вкупно"
+      }
     },
     "users": {
       "subtitle":    "Управувај со корисничките сметки",

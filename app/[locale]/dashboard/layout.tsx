@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { DashboardShell } from '../../../components/DashboardShell'
+import DashboardLocaleProvider from '../../../components/providers/DashboardLocaleProvider'
 
 export const metadata: Metadata = {
   title: 'Admin Dashboard - EGLO',
@@ -11,6 +12,13 @@ export const metadata: Metadata = {
   },
 }
 
+// Admin dashboard is an internal tool — defaults to English regardless of
+// which locale (mk/sq/en) the URL was visited under, but admins can switch
+// to Macedonian or Albanian from within the dashboard (see DashboardShell).
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
-  return <DashboardShell>{children}</DashboardShell>
-} 
+  return (
+    <DashboardLocaleProvider>
+      <DashboardShell>{children}</DashboardShell>
+    </DashboardLocaleProvider>
+  )
+}

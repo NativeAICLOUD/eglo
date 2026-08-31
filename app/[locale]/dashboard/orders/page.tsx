@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { ShoppingCart, ChevronDown, ChevronUp, Truck, Store, RefreshCw } from "lucide-react"
+import { useTranslations } from "next-intl"
 
 interface OrderItem {
   productId: string
@@ -42,6 +43,7 @@ function formatDate(iso: string) {
 }
 
 export default function DashboardOrdersPage() {
+  const t = useTranslations("dashboard.orders")
   const [orders, setOrders]   = useState<Order[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError]     = useState<string | null>(null)
@@ -55,11 +57,11 @@ export default function DashboardOrdersPage() {
       const res = await fetch("/api/orders", {
         headers: token ? { Authorization: `Bearer ${token}` } : {},
       })
-      if (res.status === 401) throw new Error("Сесијата истекла — најавете се повторно.")
-      if (!res.ok) throw new Error(`Грешка ${res.status}`)
+      if (res.status === 401) throw new Error(t("sessionExpired"))
+      if (!res.ok) throw new Error(t("errorStatus", { status: res.status }))
       setOrders(await res.json())
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Грешка при вчитување")
+      setError(e instanceof Error ? e.message : t("errorLoading"))
     } finally {
       setLoading(false)
     }
@@ -74,14 +76,14 @@ export default function DashboardOrdersPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Нарачки</h1>
-          <p className="text-gray-500 mt-1 text-sm">Управувај со нарачките на клиентите</p>
+          <h1 className="text-2xl font-bold text-gray-900">{t("title")}</h1>
+          <p className="text-gray-500 mt-1 text-sm">{t("subtitle")}</p>
         </div>
         <button
           onClick={fetchOrders}
           className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
         >
-          <RefreshCw className="w-4 h-4" /> Освежи
+          <RefreshCw className="w-4 h-4" /> {t("refresh")}
         </button>
       </div>
 
@@ -89,10 +91,10 @@ export default function DashboardOrdersPage() {
       {!loading && orders.length > 0 && (
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           {[
-            { label: "Вкупно нарачки", value: orders.length },
-            { label: "Во обработка",  value: orders.filter(o => o.status === "Pending").length },
-            { label: "Испратени",     value: orders.filter(o => o.status === "Shipped" || o.status === "Delivered").length },
-            { label: "Вкупен приход", value: formatMKD(orders.reduce((s, o) => s + o.totalAmount, 0)) },
+            { label: t("stats.totalOrders"), value: orders.length },
+            { label: t("stats.processing"),  value: orders.filter(o => o.status === "Pending").length },
+            { label: t("stats.shipped"),     value: orders.filter(o => o.status === "Shipped" || o.status === "Delivered").length },
+            { label: t("stats.revenue"),     value: formatMKD(orders.reduce((s, o) => s + o.totalAmount, 0)) },
           ].map(s => (
             <div key={s.label} className="bg-white rounded-xl border border-gray-200 shadow-sm px-5 py-4">
               <p className="text-xs text-gray-500">{s.label}</p>
@@ -114,18 +116,18 @@ export default function DashboardOrdersPage() {
           <div className="w-14 h-14 rounded-full bg-teal-50 flex items-center justify-center mb-4">
             <ShoppingCart className="w-7 h-7 text-teal-500" />
           </div>
-          <h3 className="text-base font-semibold text-gray-900 mb-1">Нема нарачки</h3>
-          <p className="text-sm text-gray-400 max-w-xs">Нарачките ќе се прикажат овде кога клиентите ќе купат.</p>
+          <h3 className="text-base font-semibold text-gray-900 mb-1">{t("noOrders")}</h3>
+          <p className="text-sm text-gray-400 max-w-xs">{t("noOrdersDesc")}</p>
         </div>
       ) : (
         <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
           {/* Table header */}
           <div className="hidden md:grid grid-cols-12 gap-4 px-6 py-3 bg-gray-50 border-b border-gray-100 text-xs font-semibold uppercase tracking-wide text-gray-500">
-            <div className="col-span-3">Клиент</div>
-            <div className="col-span-2">Датум</div>
-            <div className="col-span-2">Достава</div>
-            <div className="col-span-2 text-right">Вкупно</div>
-            <div className="col-span-2 text-center">Статус</div>
+            <div className="col-span-3">{t("table.customer")}</div>
+            <div className="col-span-2">{t("table.date")}</div>
+            <div className="col-span-2">{t("table.delivery")}</div>
+            <div className="col-span-2 text-right">{t("table.total")}</div>
+            <div className="col-span-2 text-center">{t("table.status")}</div>
             <div className="col-span-1" />
           </div>
 
@@ -155,7 +157,7 @@ export default function DashboardOrdersPage() {
                   {order.deliveryMethod === "Courier"
                     ? <Truck className="w-4 h-4 text-teal-500 flex-shrink-0" />
                     : <Store className="w-4 h-4 text-teal-500 flex-shrink-0" />}
-                  <span>{order.deliveryMethod === "Courier" ? "Курир" : "Продавница"}</span>
+                  <span>{order.deliveryMethod === "Courier" ? t("delivery.courier") : t("delivery.store")}</span>
                 </div>
 
                 {/* Total */}
@@ -184,14 +186,14 @@ export default function DashboardOrdersPage() {
                   <div className="grid sm:grid-cols-2 gap-6 pt-4">
                     {/* Order info */}
                     <div>
-                      <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">Детали за нарачката</p>
+                      <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">{t("detail.orderDetails")}</p>
                       <div className="space-y-1 text-sm text-gray-700">
-                        <p><span className="text-gray-400">ID: </span><span className="font-mono text-xs">{order.id}</span></p>
-                        <p><span className="text-gray-400">Датум: </span>{formatDate(order.createdAt)}</p>
-                        <p><span className="text-gray-400">Достава: </span>
-                          {order.deliveryMethod === "Courier" ? "Inn Post Radeski (Курир)" : "Преземање во продавница"}
+                        <p><span className="text-gray-400">{t("detail.id")} </span><span className="font-mono text-xs">{order.id}</span></p>
+                        <p><span className="text-gray-400">{t("detail.date")} </span>{formatDate(order.createdAt)}</p>
+                        <p><span className="text-gray-400">{t("detail.delivery")} </span>
+                          {order.deliveryMethod === "Courier" ? t("delivery.courierFull") : t("delivery.pickupFull")}
                         </p>
-                        <p><span className="text-gray-400">Статус: </span>
+                        <p><span className="text-gray-400">{t("detail.status")} </span>
                           <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${STATUS_STYLES[order.status] ?? "bg-gray-100 text-gray-600"}`}>
                             {order.status}
                           </span>
@@ -201,7 +203,7 @@ export default function DashboardOrdersPage() {
 
                     {/* Items */}
                     <div>
-                      <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">Производи ({order.items.length})</p>
+                      <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">{t("detail.products", { count: order.items.length })}</p>
                       <div className="space-y-1.5">
                         {order.items.map((item, i) => (
                           <div key={i} className="flex justify-between text-sm">
@@ -214,7 +216,7 @@ export default function DashboardOrdersPage() {
                           </div>
                         ))}
                         <div className="border-t border-gray-200 pt-1.5 flex justify-between text-sm font-semibold">
-                          <span>Вкупно</span>
+                          <span>{t("detail.total")}</span>
                           <span className="text-teal-600">{formatMKD(order.totalAmount)}</span>
                         </div>
                       </div>

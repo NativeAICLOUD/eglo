@@ -10,6 +10,7 @@ import {
 } from "lucide-react"
 import { useAuth } from "../lib/useAuth"
 import { useTranslations } from "next-intl"
+import { useDashboardLocale } from "./providers/DashboardLocaleProvider"
 
 const NAV_ITEMS = [
   { key: "overview",    href: "",            icon: BarChart3     },
@@ -27,6 +28,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
   const locale    = params.locale as string
   const { user, isAuthenticated, initialized, logout } = useAuth()
   const t         = useTranslations("dashboard")
+  const { locale: dashboardLocale, setLocale: setDashboardLocale } = useDashboardLocale()
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   // Auth guard — only runs after token check is fully complete
@@ -82,7 +84,23 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
       </nav>
 
       {/* Footer */}
-      <div className="border-t border-gray-200 p-3 space-y-1">
+      <div className="border-t border-gray-200 p-3 space-y-2">
+        {/* Dashboard language toggle — independent of the public site's locale */}
+        <div className="flex items-center gap-1 px-1">
+          {(["en", "mk", "sq"] as const).map((code) => (
+            <button
+              key={code}
+              onClick={() => setDashboardLocale(code)}
+              className={`flex-1 px-2 py-1 rounded-md text-xs font-medium transition-colors ${
+                dashboardLocale === code
+                  ? "bg-teal-600 text-white"
+                  : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+              }`}
+            >
+              {code === "sq" ? "shq" : code}
+            </button>
+          ))}
+        </div>
         <Link href={`/${locale}`} onClick={() => setSidebarOpen(false)}>
           <span className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors">
             <Home className="w-5 h-5" />

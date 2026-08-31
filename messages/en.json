@@ -1167,9 +1167,42 @@
       }
     },
     "orders": {
-      "subtitle":     "Manage customer orders",
-      "noOrders":     "No orders",
-      "noOrdersDesc": "Orders will appear here once customers make purchases."
+      "title":          "Orders",
+      "subtitle":       "Manage customer orders",
+      "refresh":        "Refresh",
+      "sessionExpired": "Session expired — please sign in again.",
+      "errorStatus":    "Error {status}",
+      "errorLoading":   "Error loading data",
+      "noOrders":       "No orders",
+      "noOrdersDesc":   "Orders will appear here once customers make purchases.",
+      "stats": {
+        "totalOrders": "Total orders",
+        "processing":  "Processing",
+        "shipped":     "Shipped",
+        "revenue":     "Total revenue"
+      },
+      "table": {
+        "customer": "Customer",
+        "date":     "Date",
+        "delivery": "Delivery",
+        "total":    "Total",
+        "status":   "Status"
+      },
+      "delivery": {
+        "courier":     "Courier",
+        "store":       "Store",
+        "courierFull": "Inn Post Radeski (Courier)",
+        "pickupFull":  "Store pickup"
+      },
+      "detail": {
+        "orderDetails": "Order details",
+        "id":           "ID:",
+        "date":         "Date:",
+        "delivery":     "Delivery:",
+        "status":       "Status:",
+        "products":     "Products ({count})",
+        "total":        "Total"
+      }
     },
     "users": {
       "subtitle":    "Manage user accounts",

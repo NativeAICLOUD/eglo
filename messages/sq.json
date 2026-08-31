@@ -1144,11 +1144,17 @@
   "signup": {
     "title": "Krijo Llogari",
     "subtitle": "Regjistrohuni për të aksesuar të gjitha veçoritë",
+    "firstName": "Emri",
+    "lastName": "Mbiemri",
     "email": "Email",
+    "phone": "Numri i telefonit",
     "password": "Fjalëkalimi",
     "confirmPassword": "Konfirmo fjalëkalimin",
     "placeholders": {
+      "firstName": "Emri",
+      "lastName": "Mbiemri",
       "email": "Shkruani adresën tuaj të emailit",
+      "phone": "Shkruani numrin tuaj të telefonit",
       "password": "Shkruani fjalëkalimin tuaj",
       "confirmPassword": "Konfirmoni fjalëkalimin tuaj"
     },
@@ -1157,6 +1163,8 @@
     "and": "dhe",
     "privacyPolicy": "Politikat e Privatësisë",
     "createAccount": "Krijo Llogari",
+    "google": "Google",
+    "twitter": "Twitter",
     "orContinueWith": "ose vazhdo me",
     "alreadyHaveAccount": "Keni tashmë një llogari?",
     "signIn": "Hyni"
@@ -1173,6 +1181,10 @@
     "rememberMe": "Më mbaj mend",
     "forgotPassword": "Harruat fjalëkalimin?",
     "signIn": "Hyni",
+    "google": "Google",
+    "microsoft": "Microsoft",
+    "showPassword": "Shfaq fjalëkalimin",
+    "hidePassword": "Fshih fjalëkalimin",
     "orContinueWith": "ose vazhdo me",
     "dontHaveAccount": "Nuk keni llogari?",
     "signUp": "Regjistrohuni"
@@ -1343,9 +1355,42 @@
       }
     },
     "orders": {
-      "subtitle":     "Menaxho porositë e klientëve",
-      "noOrders":     "Nuk ka porosi",
-      "noOrdersDesc": "Porositë do të shfaqen këtu kur klientët të blejnë."
+      "title":          "Porositë",
+      "subtitle":       "Menaxho porositë e klientëve",
+      "refresh":        "Rifresko",
+      "sessionExpired": "Sesioni ka skaduar — kyçuni përsëri.",
+      "errorStatus":    "Gabim {status}",
+      "errorLoading":   "Gabim gjatë ngarkimit",
+      "noOrders":       "Nuk ka porosi",
+      "noOrdersDesc":   "Porositë do të shfaqen këtu kur klientët të blejnë.",
+      "stats": {
+        "totalOrders": "Total porosi",
+        "processing":  "Në përpunim",
+        "shipped":     "Dërguar",
+        "revenue":     "Të ardhura totale"
+      },
+      "table": {
+        "customer": "Klienti",
+        "date":     "Data",
+        "delivery": "Dërgesa",
+        "total":    "Totali",
+        "status":   "Statusi"
+      },
+      "delivery": {
+        "courier":     "Korrier",
+        "store":       "Dyqan",
+        "courierFull": "Inn Post Radeski (Korrier)",
+        "pickupFull":  "Marrje në dyqan"
+      },
+      "detail": {
+        "orderDetails": "Detajet e porosisë",
+        "id":           "ID:",
+        "date":         "Data:",
+        "delivery":     "Dërgesa:",
+        "status":       "Statusi:",
+        "products":     "Produkte ({count})",
+        "total":        "Totali"
+      }
     },
     "users": {
       "subtitle":    "Menaxho llogaritë e përdoruesve",
