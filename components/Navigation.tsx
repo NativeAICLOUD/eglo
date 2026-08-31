@@ -96,6 +96,12 @@ export function Navigation({ isMobileMenuOpen, setIsMobileMenuOpen }: Navigation
     setHoveredSubcategory(null)
   }
 
+  const closeMegaMenu = () => {
+    clearClose()
+    setHoveredCategory(null)
+    setHoveredSubcategory(null)
+  }
+
   const getIcon = (iconName: string) => {
     switch (iconName) {
       case "Lightbulb": return <Lightbulb className="w-4 h-4" />
@@ -138,6 +144,7 @@ export function Navigation({ isMobileMenuOpen, setIsMobileMenuOpen }: Navigation
                     ? 'text-teal-600 border-teal-600'
                     : 'text-gray-500 hover:text-teal-600 border-transparent hover:border-teal-600'
                 }`}
+                onClick={closeMegaMenu}
               >
                 {catName(cat.slug, cat.name)}
               </Link>
@@ -191,6 +198,7 @@ export function Navigation({ isMobileMenuOpen, setIsMobileMenuOpen }: Navigation
                             : 'text-gray-700 hover:bg-teal-50 hover:text-teal-700'
                         }`}
                         onMouseEnter={() => setHoveredSubcategory(sub.id)}
+                        onClick={closeMegaMenu}
                       >
                         <span className="font-medium">{subName(activeCategory.slug, sub.slug, sub.name)}</span>
                         {sub.subcategories.length > 0 && (
@@ -212,6 +220,7 @@ export function Navigation({ isMobileMenuOpen, setIsMobileMenuOpen }: Navigation
                   <Link
                     href={`/${locale}/category/${activeCategory.slug}`}
                     className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-teal-600 hover:text-teal-700 transition-colors"
+                    onClick={closeMegaMenu}
                   >
                     {t('all')}
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -241,6 +250,7 @@ export function Navigation({ isMobileMenuOpen, setIsMobileMenuOpen }: Navigation
                             href={`/${locale}/subcategory/${child.slug}`}
                             role="menuitem"
                             className="block px-3 py-2 text-sm text-gray-600 hover:text-teal-700 hover:bg-teal-50 rounded-md transition-colors"
+                            onClick={closeMegaMenu}
                           >
                             {childName(activeCategory.slug, activeSub.slug, child.slug, child.name)}
                           </Link>
@@ -251,6 +261,7 @@ export function Navigation({ isMobileMenuOpen, setIsMobileMenuOpen }: Navigation
                       <Link
                         href={`/${locale}/subcategory/${activeSub.slug}`}
                         className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-teal-600 hover:text-teal-700 transition-colors"
+                        onClick={closeMegaMenu}
                       >
                         {t('all')}
                         <ArrowRight className="w-3.5 h-3.5" />
@@ -291,6 +302,7 @@ export function Navigation({ isMobileMenuOpen, setIsMobileMenuOpen }: Navigation
                       <Link
                         href={`/${locale}${promo.ctaSlug}`}
                         className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-white border border-white/60 rounded-full hover:bg-white hover:text-teal-700 transition-colors"
+                        onClick={closeMegaMenu}
                       >
                         {promoText(promo.ctaText)}
                       </Link>
