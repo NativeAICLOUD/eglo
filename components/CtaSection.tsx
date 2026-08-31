@@ -30,7 +30,7 @@ export function CTASection() {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
-              href={`/${locale}/category/indoor`}
+              href={`/${locale}/category/interior-lights`}
               className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-teal-500 hover:bg-teal-400 text-white font-semibold text-base transition-colors"
             >
               {t('shopNow')}

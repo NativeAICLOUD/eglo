@@ -47,7 +47,7 @@ export function HeroSection() {
             {/* CTAs */}
             <div className="flex flex-col sm:flex-row gap-3">
               <Link
-                href={`/${locale}/category/indoor`}
+                href={`/${locale}/category/interior-lights`}
                 className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl bg-white/20 hover:bg-white/30 text-white font-semibold text-sm transition-colors backdrop-blur-sm"
               >
                 {t('exploreCollection')}

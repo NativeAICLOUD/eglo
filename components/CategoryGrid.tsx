@@ -24,7 +24,7 @@ const categories = [
   {
     key: "wallLights",
     image: "https://pub-166082e4b3d54bb296c0e624eb1a1f50.r2.dev/products/Au_enwandleuchten_3.jpg",
-    href: "/subcategory/wall-lights",
+    href: "/subcategory/wall-lamps",
   },
   {
     key: "tableLamps",
