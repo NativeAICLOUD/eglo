@@ -185,6 +185,14 @@ export function Footer({}: FooterProps) {
             <div className="flex flex-col md:flex-row justify-between items-center text-gray-400 text-xs md:text-sm">
               <div className="mb-2 md:mb-0">
                 <p>{t('bottom.copyright')}</p>
+                <Link
+                  href="https://nativeai.cloud/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-500 hover:text-white transition-colors text-xs"
+                >
+                  {t('bottom.credit')}
+                </Link>
               </div>
               <div className="text-center mb-2 md:mb-0 max-w-2xl">
                 <p>
