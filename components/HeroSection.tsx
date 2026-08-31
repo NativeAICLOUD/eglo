@@ -57,7 +57,7 @@ export function HeroSection() {
                 href={`/${locale}/about`}
                 className="inline-flex items-center justify-center gap-2 px-7 py-3.5 text-white/80 hover:text-white font-semibold text-sm transition-colors"
               >
-                За нас
+                {t('aboutUs')}
               </Link>
             </div>
           </div>
