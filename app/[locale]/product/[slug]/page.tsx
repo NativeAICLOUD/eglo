@@ -3,7 +3,7 @@
 import { notFound } from "next/navigation"
 import Link from "next/link"
 import { ChevronRight, ChevronLeft, Download, Plus, Minus, ChevronDown, X, ZoomIn } from "lucide-react"
-import { useState, use, useEffect, useCallback } from "react"
+import { useState, use, useEffect, useCallback, useRef } from "react"
 import { Button } from "../../../../components/Button"
 import { Input } from "../../../../components/Input"
 import { CartPopup } from "../../../../components/CartPopup"
@@ -47,11 +47,32 @@ export default function ProductPage({ params }: ProductPageProps) {
   })
 
   const { addToCart } = useCart()
+  const touchStartX = useRef<number | null>(null)
+  const touchStartY = useRef<number | null>(null)
 
   const openLightbox = useCallback((idx: number) => {
     setLightboxIndex(idx)
     setLightboxOpen(true)
   }, [])
+
+  const handleLightboxTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX
+    touchStartY.current = e.touches[0].clientY
+  }
+
+  const handleLightboxTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null || touchStartY.current === null) return
+    const dx = e.changedTouches[0].clientX - touchStartX.current
+    const dy = e.changedTouches[0].clientY - touchStartY.current
+    const SWIPE_THRESHOLD = 50
+    // Ignore mostly-vertical gestures so scrolling/dismissing isn't hijacked
+    if (Math.abs(dx) > SWIPE_THRESHOLD && Math.abs(dx) > Math.abs(dy)) {
+      if (dx < 0) setLightboxIndex(i => Math.min(i + 1, images.length - 1)) // swipe left → next
+      else setLightboxIndex(i => Math.max(i - 1, 0)) // swipe right → prev
+    }
+    touchStartX.current = null
+    touchStartY.current = null
+  }
 
   useEffect(() => {
     if (!lightboxOpen) return
@@ -451,8 +472,10 @@ export default function ProductPage({ params }: ProductPageProps) {
       {/* Lightbox */}
       {lightboxOpen && images.length > 0 && (
         <div
-          className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center"
+          className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center touch-pan-y"
           onClick={() => setLightboxOpen(false)}
+          onTouchStart={handleLightboxTouchStart}
+          onTouchEnd={handleLightboxTouchEnd}
         >
           {/* Close */}
           <button
@@ -462,10 +485,10 @@ export default function ProductPage({ params }: ProductPageProps) {
             <X className="w-6 h-6" />
           </button>
 
-          {/* Prev */}
+          {/* Prev — hidden on mobile, swipe is the primary gesture there */}
           {lightboxIndex > 0 && (
             <button
-              className="absolute left-4 text-white/80 hover:text-white bg-white/10 hover:bg-white/20 rounded-full p-3 transition-colors"
+              className="hidden sm:block absolute left-4 text-white/80 hover:text-white bg-white/10 hover:bg-white/20 rounded-full p-3 transition-colors"
               onClick={(e) => { e.stopPropagation(); setLightboxIndex(i => i - 1) }}
             >
               <ChevronLeft className="w-7 h-7" />
@@ -473,20 +496,21 @@ export default function ProductPage({ params }: ProductPageProps) {
           )}
 
           {/* Image */}
-          <div className="max-w-5xl max-h-[90vh] mx-16 flex items-center justify-center" onClick={e => e.stopPropagation()}>
+          <div className="w-full h-full sm:max-w-5xl sm:max-h-[90vh] sm:mx-16 flex items-center justify-center" onClick={e => e.stopPropagation()}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={images[lightboxIndex]}
               alt={`${displayName} ${lightboxIndex + 1}`}
-              className="max-w-full max-h-[90vh] object-contain rounded-lg"
+              className="max-w-full max-h-full sm:max-h-[90vh] object-contain sm:rounded-lg select-none"
+              draggable={false}
               onError={(e) => { (e.currentTarget as HTMLImageElement).src = PLACEHOLDER }}
             />
           </div>
 
-          {/* Next */}
+          {/* Next — hidden on mobile, swipe is the primary gesture there */}
           {lightboxIndex < images.length - 1 && (
             <button
-              className="absolute right-4 text-white/80 hover:text-white bg-white/10 hover:bg-white/20 rounded-full p-3 transition-colors"
+              className="hidden sm:block absolute right-4 text-white/80 hover:text-white bg-white/10 hover:bg-white/20 rounded-full p-3 transition-colors"
               onClick={(e) => { e.stopPropagation(); setLightboxIndex(i => i + 1) }}
             >
               <ChevronRight className="w-7 h-7" />
