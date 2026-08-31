@@ -33,6 +33,7 @@ export default function SettingsPage() {
   const locales = [
     { code: "mk", label: "Македонски" },
     { code: "sq", label: "Shqip" },
+    { code: "en", label: "English" },
   ]
 
   return (

@@ -3,9 +3,17 @@
 import { useState } from "react"
 import { useTranslations } from "next-intl"
 import { Bell, Shield, Globe, Check } from "lucide-react"
+import { useDashboardLocale } from "../../../../components/providers/DashboardLocaleProvider"
+
+const LOCALES = [
+  { code: "en", label: "English" },
+  { code: "mk", label: "Македонски" },
+  { code: "sq", label: "Shqip" },
+] as const
 
 export default function DashboardSettingsPage() {
   const t = useTranslations("dashboard")
+  const { locale: dashboardLocale, setLocale: setDashboardLocale } = useDashboardLocale()
   const [emailNotifications, setEmailNotifications] = useState(true)
   const [saved, setSaved] = useState(false)
 
@@ -60,7 +68,7 @@ export default function DashboardSettingsPage() {
         </div>
       </div>
 
-      {/* Localization placeholder */}
+      {/* Localization — dashboard language is independent of the public site's locale */}
       <div className="bg-white rounded-xl border border-gray-200 shadow-sm divide-y divide-gray-100">
         <div className="px-6 py-4 flex items-center gap-2">
           <Globe className="w-4 h-4 text-teal-600" />
@@ -69,7 +77,22 @@ export default function DashboardSettingsPage() {
           </h3>
         </div>
         <div className="px-6 py-4">
-          <p className="text-sm text-gray-400">{t("settings.comingSoon")}</p>
+          <div className="flex gap-3">
+            {LOCALES.map(l => (
+              <button
+                key={l.code}
+                onClick={() => setDashboardLocale(l.code)}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg border text-sm font-medium transition-colors
+                  ${dashboardLocale === l.code
+                    ? "border-teal-500 bg-teal-50 text-teal-700"
+                    : "border-gray-200 text-gray-600 hover:border-teal-300 hover:bg-gray-50"
+                  }`}
+              >
+                {dashboardLocale === l.code && <Check className="w-3.5 h-3.5" />}
+                {l.label}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
