@@ -33,8 +33,8 @@ export function TrendingIdeas() {
             <TrendingUp className="w-6 h-6 text-teal-600" />
             <span className="text-teal-600 font-semibold uppercase tracking-wide text-sm">{t('trending')}</span>
           </div>
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">{t('title')}</h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <h2 className="text-4xl font-medium tracking-tight text-gray-900 mb-4">{t('title')}</h2>
+          <p className="text-lg text-gray-500 font-light max-w-2xl mx-auto leading-relaxed">
             {t('subtitle')}
           </p>
         </div>
