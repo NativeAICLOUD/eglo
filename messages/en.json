@@ -1187,7 +1187,7 @@
       "delivery": {
         "courier":     "Courier",
         "store":       "Store",
-        "courierFull": "Inn Post Radeski (Courier)",
+        "courierFull": "ELS Post (Courier)",
         "pickupFull":  "Store pickup"
       },
       "detail": {

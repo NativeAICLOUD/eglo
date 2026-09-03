@@ -296,7 +296,15 @@ function DeliveryStep({
               <div className="flex items-center justify-between gap-2 flex-wrap">
                 <div className="flex items-center gap-2">
                   <Truck className="w-4 h-4 text-teal-600" />
-                  <span className="font-medium text-gray-900 text-sm">Inn Post Radeski</span>
+                  <a
+                    href="https://els-post.mk/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    className="font-medium text-gray-900 text-sm hover:text-teal-600 hover:underline transition-colors"
+                  >
+                    ELS Post
+                  </a>
                 </div>
                 <span className={`text-sm font-semibold ${courierFree ? "text-teal-600" : "text-gray-900"}`}>
                   {courierFree ? "Бесплатно" : formatMKD(COURIER_COST)}
@@ -476,7 +484,18 @@ function ReviewStep({
         <h3 className="text-sm font-semibold text-gray-900 mb-3">Начин на достава</h3>
         <div className="flex items-center gap-2 text-sm text-gray-700">
           {deliveryMethod === "courier" ? <Truck className="w-4 h-4 text-teal-600" /> : <Store className="w-4 h-4 text-teal-600" />}
-          <span>{deliveryMethod === "courier" ? "Inn Post Radeski" : "Преземање во продавница"}</span>
+          {deliveryMethod === "courier" ? (
+            <a
+              href="https://els-post.mk/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-teal-600 hover:underline transition-colors"
+            >
+              ELS Post
+            </a>
+          ) : (
+            <span>Преземање во продавница</span>
+          )}
           <span className="ml-auto font-medium">{deliveryCost === 0 ? "Бесплатно" : formatMKD(deliveryCost)}</span>
         </div>
 
