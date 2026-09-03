@@ -32,7 +32,15 @@ export function Footer({}: FooterProps) {
                 <Clock className="w-6 h-6 text-teal-600" />
               </div>
               <p className="text-gray-600 font-medium">{t('contact.workingHours')}</p>
-              <p className="text-gray-500 text-sm">09:00 - 21:00</p>
+              <p className="text-gray-500 text-sm">
+                {t('contact.workingHoursSchedule.weekdays')}: {t('contact.workingHoursSchedule.weekdaysTime')}
+              </p>
+              <p className="text-gray-500 text-sm">
+                {t('contact.workingHoursSchedule.saturday')}: {t('contact.workingHoursSchedule.saturdayTime')}
+              </p>
+              <p className="text-gray-500 text-sm">
+                {t('contact.workingHoursSchedule.sunday')}: {t('contact.workingHoursSchedule.closed')}
+              </p>
             </div>
             
             <div className="flex flex-col items-center text-center">

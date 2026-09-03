@@ -223,6 +223,14 @@
     "contact": {
       "title": "Stuck in the dark?",
       "workingHours": "Working hours",
+      "workingHoursSchedule": {
+        "weekdays": "Monday - Friday",
+        "weekdaysTime": "09:00 - 20:00",
+        "saturday": "Saturday",
+        "saturdayTime": "09:00 - 18:00",
+        "sunday": "Sunday",
+        "closed": "Closed"
+      },
       "email": "Email",
       "contactForm": "Contact form",
       "getInTouch": "Get in touch"

@@ -223,6 +223,14 @@
     "contact": {
       "title": "A po endeni në errësirë?",
       "workingHours": "Orari i Punës",
+      "workingHoursSchedule": {
+        "weekdays": "E Hënë - E Premte",
+        "weekdaysTime": "09:00 - 20:00",
+        "saturday": "E Shtunë",
+        "saturdayTime": "09:00 - 18:00",
+        "sunday": "E Diel",
+        "closed": "Mbyllur"
+      },
       "email": "Email",
       "contactForm": "Forma e Kontaktit",
       "getInTouch": "Na Kontaktoni"

@@ -223,6 +223,14 @@
     "contact": {
       "title": "Дали лутате во темнината?",
       "workingHours": "Работно време",
+      "workingHoursSchedule": {
+        "weekdays": "Понеделник - Петок",
+        "weekdaysTime": "09:00 - 20:00",
+        "saturday": "Сабота",
+        "saturdayTime": "09:00 - 18:00",
+        "sunday": "Недела",
+        "closed": "Затворено"
+      },
       "email": "Е-пошта",
       "contactForm": "Контакт форма",
       "getInTouch": "Контактирајте нè"
