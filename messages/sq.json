@@ -1332,6 +1332,17 @@
         "technicalInfo":  "Informacione teknike",
         "otherInfo":      "Informacione të tjera"
       },
+      "images": {
+        "title":        "Fotot",
+        "count":        "{count} foto",
+        "none":         "Nuk ka foto të shtuara",
+        "upload":       "Ngarko foto (deri në {max} njëherësh)",
+        "uploading":    "Duke ngarkuar...",
+        "delete":       "Fshi foton",
+        "tooMany":      "Mund të ngarkoni maksimumi {max} foto njëherësh",
+        "uploadFailed": "Ngarkimi dështoi. Ju lutem provoni përsëri.",
+        "deleteFailed": "Fshirja dështoi. Ju lutem provoni përsëri."
+      },
       "errors": {
         "nameRequired":  "Emri i produktit është i detyrueshëm",
         "priceRequired": "Ju lutem vendosni një çmim të vlefshëm",

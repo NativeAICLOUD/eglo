@@ -262,6 +262,34 @@ class ApiService {
     });
   }
 
+  /** Uploads one or more image files for a product. Bypasses request() since
+   *  FormData needs the browser to set its own multipart Content-Type/boundary. */
+  async uploadProductImages(id: string, files: File[]): Promise<BackendProductImage[]> {
+    const formData = new FormData();
+    files.forEach(file => formData.append("files", file));
+
+    const token = this.getToken();
+    const res = await fetch(this.url(`/products/${id}/images`), {
+      method: "POST",
+      headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+      body: formData,
+    });
+
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}));
+      throw new Error((body as { message?: string }).message ?? "Image upload failed");
+    }
+
+    const data = await res.json() as { images: BackendProductImage[] };
+    return data.images;
+  }
+
+  async deleteProductImage(productId: string, imageId: string): Promise<void> {
+    await this.request<unknown>(`/products/${productId}/images/${imageId}`, {
+      method: "DELETE",
+    });
+  }
+
   async login(credentials: LoginRequest): Promise<AuthResponse> {
     const eglo = await this.request<EgloApiResponse>("/auth/login", {
       method: "POST",

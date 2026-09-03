@@ -1144,6 +1144,17 @@
         "technicalInfo":  "Technical information",
         "otherInfo":      "Other information"
       },
+      "images": {
+        "title":        "Images",
+        "count":        "{count} images",
+        "none":         "No images added yet",
+        "upload":       "Upload images (up to {max} at once)",
+        "uploading":    "Uploading...",
+        "delete":       "Delete image",
+        "tooMany":      "You can upload at most {max} images at once",
+        "uploadFailed": "Upload failed. Please try again.",
+        "deleteFailed": "Delete failed. Please try again."
+      },
       "errors": {
         "nameRequired":  "Product name is required",
         "priceRequired": "Enter a valid price",

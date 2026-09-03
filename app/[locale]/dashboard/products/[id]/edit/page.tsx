@@ -1,14 +1,24 @@
 "use client"
 
-import { useState, useEffect, use } from "react"
+import { useState, useEffect, use, useRef } from "react"
 import { useRouter, useParams } from "next/navigation"
 import { useTranslations } from "next-intl"
 import Link from "next/link"
-import { ArrowLeft, ChevronDown, ChevronUp, Save } from "lucide-react"
+import Image from "next/image"
+import { ArrowLeft, ChevronDown, ChevronUp, Save, Upload, X, ImageOff } from "lucide-react"
 import { Button } from "../../../../../../components/Button"
 import { Input } from "../../../../../../components/Input"
-import { apiService, parseProductName, BackendCategory } from "../../../../../../lib/api"
+import { apiService, parseProductName, BackendCategory, BackendProductImage } from "../../../../../../lib/api"
 import { Spinner } from "../../../../../../components/Spinner"
+
+const MAX_IMAGES_PER_UPLOAD = 10
+
+function normalizeImages(raw: Array<string | BackendProductImage> | undefined): BackendProductImage[] {
+  if (!raw) return []
+  return raw.map((img, i) =>
+    typeof img === "string" ? { id: `legacy-${i}`, url: img, order: i } : img
+  )
+}
 
 interface FlatCategory { id: string; name: string; depth: number }
 
@@ -137,6 +147,47 @@ export default function EditProductPage({ params }: EditPageProps) {
   const [technical,   setTechnical]   = useState<JsonField[]>([])
   const [other,       setOther]       = useState<JsonField[]>([])
 
+  const [images,        setImages]        = useState<BackendProductImage[]>([])
+  const [uploading,     setUploading]     = useState(false)
+  const [uploadError,   setUploadError]   = useState<string | null>(null)
+  const [deletingImageId, setDeletingImageId] = useState<string | null>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const handleFilesSelected = async (fileList: FileList | null) => {
+    if (!fileList || fileList.length === 0) return
+    setUploadError(null)
+
+    const files = Array.from(fileList)
+    if (files.length > MAX_IMAGES_PER_UPLOAD) {
+      setUploadError(t("editProduct.images.tooMany", { max: MAX_IMAGES_PER_UPLOAD }))
+      return
+    }
+
+    setUploading(true)
+    try {
+      const uploaded = await apiService.uploadProductImages(id, files)
+      setImages(prev => [...prev, ...uploaded])
+    } catch (err) {
+      setUploadError(err instanceof Error ? err.message : t("editProduct.images.uploadFailed"))
+    } finally {
+      setUploading(false)
+      if (fileInputRef.current) fileInputRef.current.value = ""
+    }
+  }
+
+  const handleDeleteImage = async (imageId: string) => {
+    setDeletingImageId(imageId)
+    setUploadError(null)
+    try {
+      await apiService.deleteProductImage(id, imageId)
+      setImages(prev => prev.filter(img => img.id !== imageId))
+    } catch (err) {
+      setUploadError(err instanceof Error ? err.message : t("editProduct.images.deleteFailed"))
+    } finally {
+      setDeletingImageId(null)
+    }
+  }
+
   useEffect(() => {
     apiService.getCategories()
       .then(cats => setFlatCats(flattenCategories(cats)))
@@ -154,6 +205,7 @@ export default function EditProductPage({ params }: EditPageProps) {
         setDimensions(parseJsonFields(p.dimensionsJson))
         setTechnical(parseJsonFields(p.technicalInfoJson))
         setOther(parseJsonFields(p.otherInfoJson))
+        setImages(normalizeImages(p.images))
       })
       .catch(e => {
         if (e?.status === 404) setNotFound(true)
@@ -291,6 +343,73 @@ export default function EditProductPage({ params }: EditPageProps) {
                 </option>
               ))}
             </select>
+          </div>
+        </div>
+
+        {/* Images */}
+        <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 className="font-semibold text-gray-800">{t("editProduct.images.title")}</h2>
+            <span className="text-xs text-gray-400">{t("editProduct.images.count", { count: images.length })}</span>
+          </div>
+
+          {images.length > 0 ? (
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+              {images.map(img => (
+                <div key={img.id} className="relative group aspect-square rounded-lg overflow-hidden border border-gray-200 bg-gray-50">
+                  <Image
+                    src={img.url}
+                    alt=""
+                    fill
+                    className="object-cover"
+                    sizes="200px"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handleDeleteImage(img.id)}
+                    disabled={deletingImageId === img.id}
+                    className="absolute top-1.5 right-1.5 bg-black/60 hover:bg-red-600 text-white rounded-full p-1.5 transition-colors opacity-0 group-hover:opacity-100 disabled:opacity-100"
+                    aria-label={t("editProduct.images.delete")}
+                  >
+                    {deletingImageId === img.id
+                      ? <span className="block w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      : <X className="w-3.5 h-3.5" />
+                    }
+                  </button>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center py-8 text-gray-400 gap-2">
+              <ImageOff className="w-8 h-8" />
+              <p className="text-sm">{t("editProduct.images.none")}</p>
+            </div>
+          )}
+
+          <div>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              multiple
+              className="hidden"
+              onChange={e => handleFilesSelected(e.target.files)}
+            />
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              disabled={uploading}
+              className="w-full flex items-center justify-center gap-2 px-4 py-3 border-2 border-dashed border-gray-300 rounded-lg text-sm font-medium text-gray-600 hover:border-teal-400 hover:text-teal-600 transition-colors disabled:opacity-60"
+            >
+              {uploading
+                ? <span className="w-4 h-4 border-2 border-teal-500 border-t-transparent rounded-full animate-spin" />
+                : <Upload className="w-4 h-4" />
+              }
+              {uploading ? t("editProduct.images.uploading") : t("editProduct.images.upload", { max: MAX_IMAGES_PER_UPLOAD })}
+            </button>
+            {uploadError && (
+              <p className="text-sm text-red-600 mt-2">{uploadError}</p>
+            )}
           </div>
         </div>
 
