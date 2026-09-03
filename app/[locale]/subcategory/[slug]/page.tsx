@@ -1,6 +1,5 @@
 "use client"
 
-import Image from "next/image"
 import Link from "next/link"
 import { ChevronRight, ChevronDown } from "lucide-react"
 import { useState, use, useEffect, useRef } from "react"
@@ -206,21 +205,10 @@ export default function SubcategoryPage({ params }: SubcategoryPageProps) {
           </h1>
 
           {topLevelCategory?.slug !== 'illuminants' && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 items-start">
-              <div className="space-y-2 md:space-y-3 text-gray-600 leading-relaxed text-sm md:text-base">
-                {(subcategory.description ?? '').split('\n\n').map((paragraph: string, index: number) => (
-                  <p key={index}>{paragraph}</p>
-                ))}
-              </div>
-              <div className="relative h-48 sm:h-64 md:h-80 lg:h-96 bg-gray-100 rounded-lg md:rounded-2xl overflow-hidden flex items-center justify-center">
-                <Image
-                  src={subcategory.imageUrl ?? "/assets/images/interior-lights1.jpg"}
-                  alt={`${subcategory.name} example`}
-                  fill
-                  className="object-cover rounded-2xl"
-                  priority
-                />
-              </div>
+            <div className="max-w-3xl space-y-2 md:space-y-3 text-gray-600 leading-relaxed text-sm md:text-base">
+              {(subcategory.description ?? '').split('\n\n').map((paragraph: string, index: number) => (
+                <p key={index}>{paragraph}</p>
+              ))}
             </div>
           )}
         </div>
