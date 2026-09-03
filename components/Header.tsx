@@ -4,7 +4,6 @@ import Image from "next/image";
 import { MapPin, User, ShoppingCart, LogOut, Menu, LayoutDashboard, Settings, Package, X } from "lucide-react";
 import { Button } from "./Button";
 import LocaleSwitcher from "./LanguageSwitcher";
-import { PromoBanner } from "./PromoBanner";
 import { Badge } from "./Badge";
 import { Navigation } from "./Navigation";
 import { SearchBar } from "./SearchBar";
@@ -101,7 +100,7 @@ export function Header({ noPadding = false }: HeaderProps) {
 
       {/* Top Bar */}
       <div className={`bg-white px-4 overflow-hidden transition-all duration-300 ${scrolled ? 'max-h-0 py-0' : 'max-h-16 py-2'}`}>
-        <div className="max-w-7xl mx-auto grid grid-cols-3 items-center text-[13px] font-normal text-slate-600">
+        <div className="max-w-7xl mx-auto flex items-center justify-between text-[13px] font-normal text-slate-600">
           {/* Left — store & support links */}
           <div className="flex items-center gap-3">
             <a
@@ -115,11 +114,6 @@ export function Header({ noPadding = false }: HeaderProps) {
             </a>
             <span className="text-slate-300 hidden md:inline">|</span>
             <span className="hidden md:inline">{t("topBar.customerSupport")}</span>
-          </div>
-
-          {/* Center — animated promo banner */}
-          <div className="hidden sm:flex justify-center overflow-hidden">
-            <PromoBanner />
           </div>
 
           {/* Right — locale switcher */}

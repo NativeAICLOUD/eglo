@@ -199,10 +199,7 @@
       "findStore": "Store Locator",
       "customerSupport": "Customer Support",
       "freeShipping": "",
-      "freeShippingMobile": "",
-      "promos": [
-        "EGLO Smart Light — smart lighting for your home"
-      ]
+      "freeShippingMobile": ""
     },
     "search": {
       "placeholder": "Search the entire store here",
