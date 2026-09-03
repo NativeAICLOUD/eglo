@@ -190,7 +190,10 @@ export default function ProductPage({ params }: ProductPageProps) {
   const apiImages = (product.images ?? []).map(img =>
     typeof img === "string" ? img : (img as { url: string }).url
   ).filter(Boolean)
-  const images: string[] = r2Images.length > 0 ? r2Images : apiImages
+  // Live database images take priority — the static productImagesMap is legacy
+  // fallback data from before per-product image uploads existed, and must never
+  // shadow newly uploaded images for a product that already has an old entry there.
+  const images: string[] = apiImages.length > 0 ? apiImages : r2Images
   const productImageForCart = images[0] ?? product.imageUrl ?? PLACEHOLDER
 
   const sku = productCode
