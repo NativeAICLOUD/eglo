@@ -16,6 +16,7 @@ interface NavigationProps {
 
 export function Navigation({ isMobileMenuOpen, setIsMobileMenuOpen }: NavigationProps) {
   const [categories, setCategories] = useState<BackendCategory[]>([])
+  const [categoriesLoading, setCategoriesLoading] = useState(true)
   const [hoveredCategory, setHoveredCategory] = useState<string | null>(null)
   const [hoveredSubcategory, setHoveredSubcategory] = useState<string | null>(null)
   const [expandedMobileCategory, setExpandedMobileCategory] = useState<string | null>(null)
@@ -60,6 +61,7 @@ export function Navigation({ isMobileMenuOpen, setIsMobileMenuOpen }: Navigation
     apiService.getCategories()
       .then(setCategories)
       .catch(() => setCategories([]))
+      .finally(() => setCategoriesLoading(false))
   }, [])
 
   useEffect(() => {
@@ -129,6 +131,15 @@ export function Navigation({ isMobileMenuOpen, setIsMobileMenuOpen }: Navigation
       {/* ── Desktop nav bar ─────────────────────────────────────────── */}
       <div className="max-w-7xl mx-auto px-4">
         <div className="hidden md:flex items-center justify-center gap-8 py-4" role="menubar">
+          {categoriesLoading && (
+            // Skeleton placeholders keep the nav bar's width/order stable so
+            // "Inspiration" doesn't flash in alone before categories arrive.
+            <>
+              {[88, 104, 96, 72, 84].map((w, i) => (
+                <div key={i} className="h-4 rounded bg-gray-100 animate-pulse" style={{ width: w }} />
+              ))}
+            </>
+          )}
           {categories.map((cat) => (
             <div
               key={cat.id}
