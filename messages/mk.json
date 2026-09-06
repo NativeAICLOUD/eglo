@@ -498,6 +498,12 @@
     "viewAllProducts": "Види ги сите производи",
     "sale": "Попуст"
   },
+  "newArrivals": {
+    "title": "Нови производи",
+    "subtitle": "Најнови додавања во нашата колекција",
+    "viewAllProducts": "Види ги сите производи",
+    "sale": "Попуст"
+  },
   "filterGrid": {
     "filters": "Филтри",
     "apply": "Примени",

@@ -11,8 +11,8 @@ import { apiService, BackendProduct, parseProductName, formatMKD } from "../lib/
 
 const PLACEHOLDER = "/placeholder.svg"
 
-export function FeaturedProducts() {
-  const t = useTranslations('newArrivals')
+export function BestSellersSection() {
+  const t = useTranslations('featuredProducts')
   const params = useParams()
   const locale = params.locale as string
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -24,10 +24,8 @@ export function FeaturedProducts() {
   const GAP = 24
 
   useEffect(() => {
-    // Backend already sorts photographed products first, so this surfaces
-    // real catalog items with real photos rather than placeholders.
-    apiService.getProducts({ page: 1, pageSize: 10 })
-      .then(res => setProducts(res.items))
+    apiService.getBestSellers(10)
+      .then(setProducts)
       .catch(() => setProducts([]))
   }, [])
 
@@ -55,7 +53,7 @@ export function FeaturedProducts() {
   if (products.length === 0) return null
 
   return (
-    <section className="py-16 px-4 bg-white">
+    <section className="py-16 px-4 bg-gray-50">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-10">

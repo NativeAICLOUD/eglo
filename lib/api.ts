@@ -221,6 +221,10 @@ class ApiService {
     return this.request<PaginatedProducts>(`/products?${qs.toString()}`);
   }
 
+  async getBestSellers(take: number = 8): Promise<BackendProduct[]> {
+    return this.request<BackendProduct[]>(`/products/best-sellers?take=${take}`);
+  }
+
   async getProductCategoryStats(): Promise<{ uncategorized: number }> {
     return this.request<{ uncategorized: number }>("/products/category-stats");
   }

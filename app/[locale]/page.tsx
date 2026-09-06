@@ -6,6 +6,7 @@ import { CTASection } from "../../components/CtaSection"
 import { StyleGrid } from "../../components/StyleGrid"
 import { TrendingIdeas } from "../../components/TrendingIdeasSection"
 import { GoogleReviews } from "../../components/GoogleReviews"
+import { BestSellersSection } from "../../components/BestSellersSection"
 
 export default function HomePage() {
   return (
@@ -14,6 +15,7 @@ export default function HomePage() {
       <TrustStrip />
       <CategoryGrid />
       <StyleGrid />
+      <BestSellersSection />
       <FeaturedProducts />
       <TrendingIdeas />
       <GoogleReviews />

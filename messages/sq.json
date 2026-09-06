@@ -507,6 +507,12 @@
     "viewAllProducts": "Shiko Të Gjitha Produktet",
     "sale": "Në Zbritje"
   },
+  "newArrivals": {
+    "title": "Të Rejat",
+    "subtitle": "Shtesat më të fundit në koleksionin tonë",
+    "viewAllProducts": "Shiko Të Gjitha Produktet",
+    "sale": "Në Zbritje"
+  },
   "filterGrid": {
     "filters": "Filtrat",
     "apply": "Apliko",
