@@ -1188,6 +1188,7 @@
       "sessionExpired": "Session expired — please sign in again.",
       "errorStatus":    "Error {status}",
       "errorLoading":   "Error loading data",
+      "statusUpdateError": "Failed to update order status",
       "noOrders":       "No orders",
       "noOrdersDesc":   "Orders will appear here once customers make purchases.",
       "stats": {

@@ -1376,6 +1376,7 @@
       "sessionExpired": "Sesioni ka skaduar — kyçuni përsëri.",
       "errorStatus":    "Gabim {status}",
       "errorLoading":   "Gabim gjatë ngarkimit",
+      "statusUpdateError": "Ndryshimi i statusit të porosisë dështoi",
       "noOrders":       "Nuk ka porosi",
       "noOrdersDesc":   "Porositë do të shfaqen këtu kur klientët të blejnë.",
       "stats": {

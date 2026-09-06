@@ -31,6 +31,8 @@ const STATUS_STYLES: Record<string, string> = {
   Cancelled:  "bg-red-100 text-red-700",
 }
 
+const STATUS_OPTIONS = ["Pending", "Processing", "Shipped", "Delivered", "Cancelled"]
+
 function formatMKD(n: number) {
   return `${Math.round(n).toLocaleString("mk-MK")} ден.`
 }
@@ -48,6 +50,8 @@ export default function DashboardOrdersPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError]     = useState<string | null>(null)
   const [expanded, setExpanded] = useState<string | null>(null)
+  const [updatingId, setUpdatingId] = useState<string | null>(null)
+  const [statusError, setStatusError] = useState<string | null>(null)
 
   const fetchOrders = async () => {
     setLoading(true)
@@ -71,6 +75,30 @@ export default function DashboardOrdersPage() {
 
   const toggle = (id: string) => setExpanded(prev => prev === id ? null : id)
 
+  const updateStatus = async (orderId: string, newStatus: string) => {
+    const previousOrders = orders
+    setOrders(prev => prev.map(o => o.id === orderId ? { ...o, status: newStatus } : o))
+    setUpdatingId(orderId)
+    setStatusError(null)
+    try {
+      const token = typeof window !== "undefined" ? localStorage.getItem("auth_token") : null
+      const res = await fetch(`/api/orders/${orderId}/status`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({ status: newStatus }),
+      })
+      if (!res.ok) throw new Error(t("errorStatus", { status: res.status }))
+    } catch (e) {
+      setOrders(previousOrders)
+      setStatusError(e instanceof Error ? e.message : t("statusUpdateError"))
+    } finally {
+      setUpdatingId(null)
+    }
+  }
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -86,6 +114,15 @@ export default function DashboardOrdersPage() {
           <RefreshCw className="w-4 h-4" /> {t("refresh")}
         </button>
       </div>
+
+      {statusError && (
+        <div className="bg-red-50 border border-red-200 rounded-xl p-4 text-sm text-red-700 flex items-center justify-between">
+          <span>{statusError}</span>
+          <button onClick={() => setStatusError(null)} className="text-red-400 hover:text-red-600 text-xs font-medium">
+            ✕
+          </button>
+        </div>
+      )}
 
       {/* Stats strip */}
       {!loading && orders.length > 0 && (
@@ -134,9 +171,12 @@ export default function DashboardOrdersPage() {
           {orders.map(order => (
             <div key={order.id} className="border-b border-gray-100 last:border-0">
               {/* Row */}
-              <button
+              <div
+                role="button"
+                tabIndex={0}
                 onClick={() => toggle(order.id)}
-                className="w-full text-left grid grid-cols-12 gap-4 px-6 py-4 hover:bg-gray-50 transition-colors items-center"
+                onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggle(order.id) } }}
+                className="w-full text-left grid grid-cols-12 gap-4 px-6 py-4 hover:bg-gray-50 transition-colors items-center cursor-pointer"
               >
                 {/* Customer */}
                 <div className="col-span-10 md:col-span-3">
@@ -166,10 +206,17 @@ export default function DashboardOrdersPage() {
                 </div>
 
                 {/* Status */}
-                <div className="hidden md:flex col-span-2 justify-center">
-                  <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${STATUS_STYLES[order.status] ?? "bg-gray-100 text-gray-600"}`}>
-                    {order.status}
-                  </span>
+                <div className="hidden md:flex col-span-2 justify-center" onClick={(e) => e.stopPropagation()}>
+                  <select
+                    value={order.status}
+                    disabled={updatingId === order.id}
+                    onChange={(e) => updateStatus(order.id, e.target.value)}
+                    className={`px-2.5 py-1 rounded-full text-xs font-medium border-0 cursor-pointer disabled:opacity-50 ${STATUS_STYLES[order.status] ?? "bg-gray-100 text-gray-600"}`}
+                  >
+                    {STATUS_OPTIONS.map(s => (
+                      <option key={s} value={s}>{s}</option>
+                    ))}
+                  </select>
                 </div>
 
                 {/* Expand icon */}
@@ -178,7 +225,7 @@ export default function DashboardOrdersPage() {
                     ? <ChevronUp className="w-4 h-4 text-gray-400" />
                     : <ChevronDown className="w-4 h-4 text-gray-400" />}
                 </div>
-              </button>
+              </div>
 
               {/* Expanded detail */}
               {expanded === order.id && (
@@ -193,10 +240,17 @@ export default function DashboardOrdersPage() {
                         <p><span className="text-gray-400">{t("detail.delivery")} </span>
                           {order.deliveryMethod === "Courier" ? t("delivery.courierFull") : t("delivery.pickupFull")}
                         </p>
-                        <p><span className="text-gray-400">{t("detail.status")} </span>
-                          <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${STATUS_STYLES[order.status] ?? "bg-gray-100 text-gray-600"}`}>
-                            {order.status}
-                          </span>
+                        <p className="flex items-center gap-2"><span className="text-gray-400">{t("detail.status")} </span>
+                          <select
+                            value={order.status}
+                            disabled={updatingId === order.id}
+                            onChange={(e) => updateStatus(order.id, e.target.value)}
+                            className={`px-2 py-0.5 rounded-full text-xs font-medium border-0 cursor-pointer disabled:opacity-50 ${STATUS_STYLES[order.status] ?? "bg-gray-100 text-gray-600"}`}
+                          >
+                            {STATUS_OPTIONS.map(s => (
+                              <option key={s} value={s}>{s}</option>
+                            ))}
+                          </select>
                         </p>
                       </div>
                     </div>
