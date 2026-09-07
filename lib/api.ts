@@ -237,7 +237,15 @@ class ApiService {
   }
 
   async getProduct(id: string): Promise<BackendProduct> {
-    return this.request<BackendProduct>(`/products/${id}`);
+    const p = await this.request<BackendProduct>(`/products/${id}`);
+    // The detail endpoint returns the spec string as `name` and the product
+    // code as `description`, whereas the list endpoint returns them as `title`
+    // and `sku`. Normalize so consumers can rely on `title`/`sku` either way.
+    return {
+      ...p,
+      title: p.title ?? p.name ?? "",
+      sku: p.sku ?? p.description ?? "",
+    };
   }
 
   async deleteProduct(id: string): Promise<void> {
