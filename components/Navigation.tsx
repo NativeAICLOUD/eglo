@@ -68,6 +68,18 @@ export function Navigation({ isMobileMenuOpen, setIsMobileMenuOpen }: Navigation
     return () => { if (closeTimerRef.current) clearTimeout(closeTimerRef.current) }
   }, [])
 
+  // Close all menus whenever navigation actually happens — clicking a
+  // category/subcategory must never leave the mega menu or mobile menu open.
+  useEffect(() => {
+    if (closeTimerRef.current) clearTimeout(closeTimerRef.current)
+    setHoveredCategory(null)
+    setHoveredSubcategory(null)
+    setExpandedMobileCategory(null)
+    setExpandedMobileSubcategory(null)
+    setIsMobileMenuOpen(false)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname])
+
   // Close on Escape
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
