@@ -193,14 +193,6 @@ export function Footer({}: FooterProps) {
             <div className="flex flex-col md:flex-row justify-between items-center text-gray-400 text-xs md:text-sm">
               <div className="mb-2 md:mb-0">
                 <p>{t('bottom.copyright')}</p>
-                <Link
-                  href="https://nativeai.cloud/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gray-500 hover:text-white transition-colors text-xs"
-                >
-                  {t('bottom.credit')}
-                </Link>
               </div>
               <div className="text-center mb-2 md:mb-0 max-w-2xl">
                 <p>
@@ -216,6 +208,21 @@ export function Footer({}: FooterProps) {
                   {t('bottom.print')}
                 </Link>
               </div>
+            </div>
+
+            {/* Credit */}
+            <div className="mt-6 pt-5 border-t border-gray-800/60 flex justify-center">
+              <Link
+                href="https://nativeai.cloud/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex items-center gap-1.5 text-sm text-gray-400 hover:text-gray-300 transition-colors"
+              >
+                <span>{t('bottom.credit')}</span>
+                <span className="font-semibold bg-gradient-to-r from-teal-400 to-cyan-300 bg-clip-text text-transparent group-hover:from-teal-300 group-hover:to-cyan-200 transition-colors">
+                  NativeCloud
+                </span>
+              </Link>
             </div>
           </div>
         </div>
