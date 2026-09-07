@@ -412,7 +412,10 @@ export default function DashboardProductsPage() {
                       />
                     </td>
                     <td className="px-4 py-3">
-                      <div className="w-10 h-10 rounded-lg bg-gray-100 overflow-hidden flex items-center justify-center">
+                      <Link
+                        href={`/${locale}/dashboard/products/${product.id}/edit`}
+                        className="block w-10 h-10 rounded-lg bg-gray-100 overflow-hidden flex items-center justify-center"
+                      >
                         {product.imageUrl
                           ? <img
                               src={product.imageUrl}
@@ -422,10 +425,16 @@ export default function DashboardProductsPage() {
                             />
                           : <img src="/placeholder.svg" alt={displayName} className="w-full h-full object-cover" />
                         }
-                      </div>
+                      </Link>
                     </td>
-                    <td className="px-4 py-3 font-medium text-gray-900 max-w-[200px] truncate" title={displayName}>
-                      {displayName}
+                    <td className="px-4 py-3 font-medium max-w-[200px]">
+                      <Link
+                        href={`/${locale}/dashboard/products/${product.id}/edit`}
+                        className="block truncate text-gray-900 hover:text-teal-600 transition-colors"
+                        title={displayName}
+                      >
+                        {displayName}
+                      </Link>
                     </td>
                     <td className="px-4 py-3 text-gray-500 text-xs font-mono">{product.sku || "—"}</td>
                     <td className="px-4 py-3 text-gray-600">{formatMKD(product.price)}</td>
