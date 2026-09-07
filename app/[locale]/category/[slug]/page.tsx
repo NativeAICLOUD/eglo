@@ -12,7 +12,7 @@ import ProductCard from "../../../../components/ProductCard"
 import { FilterGrid } from "../../../../components/FilterGrid"
 import { Pagination } from "../../../../components/Pagination"
 import { apiService, BackendCategory, BackendProduct, parseProductName, formatMKD } from "../../../../lib/api"
-import { PageSpinner, Spinner } from "../../../../components/Spinner"
+import { PageSpinner, LoadingDots } from "../../../../components/Spinner"
 
 interface CategoryPageProps {
   params: Promise<{
@@ -315,7 +315,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
             {/* Product Grid */}
             {loadingProducts ? (
               <div className="flex justify-center py-16">
-                <Spinner size="lg" />
+                <LoadingDots />
               </div>
             ) : totalCount === 0 ? (
               <div className="text-center py-16 text-gray-400">{t('noProducts')}</div>

@@ -2,7 +2,7 @@
 
 import { notFound } from "next/navigation"
 import Link from "next/link"
-import { ChevronRight, ChevronLeft, Download, Plus, Minus, ChevronDown, X, ZoomIn } from "lucide-react"
+import { ChevronRight, ChevronLeft, Plus, Minus, ChevronDown, X, ZoomIn } from "lucide-react"
 import { useState, use, useEffect, useCallback, useRef } from "react"
 import { Button } from "../../../../components/Button"
 import { Input } from "../../../../components/Input"
@@ -407,16 +407,6 @@ export default function ProductPage({ params }: ProductPageProps) {
                   ))}
               </div>
             )}
-
-            <div className="border-t border-gray-200 pt-4">
-              <Link
-                href="#"
-                className="inline-flex items-center text-teal-600 hover:text-teal-700 font-medium transition-colors text-sm"
-              >
-                <Download className="w-4 h-4 mr-2" />
-                {t('downloadManual')}
-              </Link>
-            </div>
 
             <div className="space-y-4">
               <div className="flex items-center space-x-4">

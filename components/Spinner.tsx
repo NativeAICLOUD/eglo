@@ -17,19 +17,24 @@ export function Spinner({ size = 'md', className = '' }: SpinnerProps) {
   )
 }
 
+export function LoadingDots({ className = '' }: { className?: string }) {
+  return (
+    <div className={`flex gap-2 ${className}`} role="status" aria-label="Loading">
+      {[0, 1, 2].map(i => (
+        <div
+          key={i}
+          className="w-2.5 h-2.5 rounded-full bg-teal-500 animate-bounce"
+          style={{ animationDelay: `${i * 0.15}s` }}
+        />
+      ))}
+    </div>
+  )
+}
+
 export function PageSpinner() {
   return (
-    <div className="min-h-[60vh] flex flex-col items-center justify-center gap-4">
-      <Spinner size="lg" />
-      <div className="flex gap-1">
-        {[0, 1, 2].map(i => (
-          <div
-            key={i}
-            className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-bounce"
-            style={{ animationDelay: `${i * 0.15}s` }}
-          />
-        ))}
-      </div>
+    <div className="min-h-[60vh] flex items-center justify-center">
+      <LoadingDots />
     </div>
   )
 }
