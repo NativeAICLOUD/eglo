@@ -2,12 +2,8 @@
 
 import Image from "next/image"
 import Link from "next/link"
-import { Button } from "./Button"
-import { Card, CardContent } from "./Card"
-//import { Badge } from "./Badge"
 import { useTranslations } from 'next-intl'
 import { useParams } from 'next/navigation'
-
 import { ChevronRight } from "lucide-react"
 
 const categories = [
@@ -48,30 +44,30 @@ export function CategoryGrid() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
           {categories.map((category, index) => (
-            <Link key={index} href={`/${locale}${category.href}`} className="block">
-              <Card className="group cursor-pointer border-0 shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
-                <div className="relative">
-                  <Image
-                    src={category.image || "/placeholder.svg"}
-                    alt={t(`categories.${category.key}.title`)}
-                    width={300}
-                    height={500}
-                    className="w-full h-96 object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-                <CardContent className="p-6">
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2 group-hover:text-teal-600 transition-colors">
-                    {t(`categories.${category.key}.title`)}
-                  </h3>
-                  <p className="text-gray-600 mb-4">{t(`categories.${category.key}.description`)}</p>
-                  <Button variant="ghost" className="p-0 h-auto text-teal-600 hover:text-teal-700 font-semibold">
-                    {t('shopNow')}
-                    <ChevronRight className="ml-1 w-4 h-4" />
-                  </Button>
-                </CardContent>
-              </Card>
+            <Link key={index} href={`/${locale}${category.href}`} className="group block">
+              <div className="relative overflow-hidden rounded-lg bg-gray-50 aspect-[3/4]">
+                <Image
+                  src={category.image || "/placeholder.svg"}
+                  alt={t(`categories.${category.key}.title`)}
+                  width={300}
+                  height={500}
+                  className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                />
+              </div>
+              <div className="pt-5">
+                <h3 className="text-lg font-medium text-gray-900 tracking-tight group-hover:text-teal-600 transition-colors">
+                  {t(`categories.${category.key}.title`)}
+                </h3>
+                <p className="text-sm text-gray-500 font-light mt-1 leading-relaxed">
+                  {t(`categories.${category.key}.description`)}
+                </p>
+                <span className="inline-flex items-center gap-1 mt-3 text-sm font-medium text-teal-600 group-hover:gap-2 transition-all">
+                  {t('shopNow')}
+                  <ChevronRight className="w-4 h-4" />
+                </span>
+              </div>
             </Link>
           ))}
         </div>
