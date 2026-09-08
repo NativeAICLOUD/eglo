@@ -121,13 +121,6 @@ export default function CategoryPage({ params }: CategoryPageProps) {
                   <p key={index}>{paragraph}</p>
                 ))}
               </div>
-              <Link
-                href="#"
-                className="inline-flex items-center text-teal-600 hover:text-teal-700 font-medium transition-colors text-sm md:text-base"
-              >
-                {t('readMore')}
-                <ChevronRight className="ml-1 w-4 h-4" />
-              </Link>
             </div>
 
             {/* Images */}

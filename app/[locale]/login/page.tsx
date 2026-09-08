@@ -121,9 +121,6 @@ export default function LoginPage() {
                 onChange={(e) => setRememberMe(e.target.checked)}
                 label={t('rememberMe')}
               />
-              <a href="#" className="text-sm text-teal-600 hover:text-teal-700 font-medium">
-                {t('forgotPassword')}
-              </a>
             </div>
 
             {/* Submit Button */}

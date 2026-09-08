@@ -437,7 +437,7 @@ export default function ProductPage({ params }: ProductPageProps) {
                 </Button>
               </div>
               <Link
-                href="#"
+                href={`/${locale}/warranty`}
                 className="inline-block text-teal-600 hover:text-teal-700 font-medium transition-colors text-sm"
               >
                 {t('warrantyConditions')}

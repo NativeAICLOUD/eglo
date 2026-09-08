@@ -120,16 +120,6 @@ export function Footer({}: FooterProps) {
                     {t('links.warrantyConditions')}
                   </Link>
                 </li>
-                <li>
-                  <Link href="#" className="hover:text-white transition-colors">
-                    {t('links.properRecycling')}
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#" className="hover:text-white transition-colors">
-                    {t('links.downloads')}
-                  </Link>
-                </li>
               </ul>
             </div>
 
@@ -198,15 +188,6 @@ export function Footer({}: FooterProps) {
                 <p>
                   {t('bottom.legalText')}
                 </p>
-              </div>
-              <div className="flex space-x-4">
-                <Link href="#" className="hover:text-white transition-colors">
-                  {t('bottom.privacyPolicies')}
-                </Link>
-                <span>|</span>
-                <Link href="#" className="hover:text-white transition-colors">
-                  {t('bottom.print')}
-                </Link>
               </div>
             </div>
 

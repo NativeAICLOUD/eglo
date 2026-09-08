@@ -197,13 +197,13 @@ export default function SignupPage() {
                 label={
                   <>
                     {t('acceptTerms')}{" "}
-                    <a href="#" className="text-teal-600 hover:text-teal-700 font-medium">
+                    <span className="text-gray-700 font-medium">
                       {t('termsOfService')}
-                    </a>{" "}
+                    </span>{" "}
                     {t('and')}{" "}
-                    <a href="#" className="text-teal-600 hover:text-teal-700 font-medium">
+                    <span className="text-gray-700 font-medium">
                       {t('privacyPolicy')}
-                    </a>
+                    </span>
                   </>
                 }
                 labelClassName="text-sm"
