@@ -19,6 +19,8 @@ export default function LocaleSwitcher() {
   // Optimistic selection so the pill slides the instant a language is tapped,
   // before the route navigation resolves — mirrors the iOS toggle feel.
   const [pending, setPending] = useState<LocaleCode | null>(null);
+  // Which segment is being pressed by the finger — grows while held.
+  const [pressed, setPressed] = useState<LocaleCode | null>(null);
   const active = pending ?? currentLocale;
   const activeIndex = Math.max(0, LOCALES.findIndex((l) => l.code === active));
 
@@ -43,13 +45,15 @@ export default function LocaleSwitcher() {
       role="tablist"
       aria-label="Language"
     >
-      {/* Sliding pill */}
+      {/* Sliding pill — swells when the active language is pressed */}
       <span
         aria-hidden
-        className="absolute top-1 bottom-1 left-1 rounded-full bg-teal-600 shadow-sm will-change-transform transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
+        className="absolute top-1 bottom-1 left-1 rounded-full bg-teal-600 shadow-sm will-change-transform origin-center transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
         style={{
           width: `calc((100% - 0.5rem) / ${LOCALES.length})`,
-          transform: `translateX(${activeIndex * 100}%)`,
+          transform: `translateX(${activeIndex * 100}%) scale(${
+            pressed && pressed === active ? 1.1 : 1
+          })`,
         }}
       />
       {LOCALES.map(({ code, label }) => (
@@ -58,9 +62,13 @@ export default function LocaleSwitcher() {
           role="tab"
           aria-selected={active === code}
           onClick={() => switchLocale(code)}
-          className={`relative z-10 px-4 py-1 rounded-full text-sm font-medium transition-colors duration-300 focus:outline-none active:scale-95 ${
-            active === code ? 'text-white' : 'text-gray-700 hover:text-gray-900'
-          }`}
+          onPointerDown={() => setPressed(code)}
+          onPointerUp={() => setPressed(null)}
+          onPointerLeave={() => setPressed(null)}
+          onPointerCancel={() => setPressed(null)}
+          className={`relative z-10 px-4 py-1 rounded-full text-sm font-medium origin-center transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] focus:outline-none ${
+            pressed === code ? 'scale-125' : 'scale-100'
+          } ${active === code ? 'text-white' : 'text-gray-700 hover:text-gray-900'}`}
         >
           {label}
         </button>
