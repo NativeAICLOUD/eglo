@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter, usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 const LOCALES = [
   { code: 'mk', label: 'mk' },
@@ -15,22 +16,50 @@ export default function LocaleSwitcher() {
   const pathname = usePathname();
   const currentLocale = pathname.split('/')[1] as LocaleCode;
 
+  // Optimistic selection so the pill slides the instant a language is tapped,
+  // before the route navigation resolves — mirrors the iOS toggle feel.
+  const [pending, setPending] = useState<LocaleCode | null>(null);
+  const active = pending ?? currentLocale;
+  const activeIndex = Math.max(0, LOCALES.findIndex((l) => l.code === active));
+
+  useEffect(() => {
+    if (pending && pending === currentLocale) setPending(null);
+  }, [currentLocale, pending]);
+
   const switchLocale = (newLocale: LocaleCode) => {
+    if (newLocale === active) return;
+    setPending(newLocale);
     const segments = pathname.split('/');
     segments[1] = newLocale;
-    router.push(segments.join('/'));
+    const target = segments.join('/');
+    // Let the pill finish sliding before the route swaps the page, so the
+    // iOS-style toggle animation is always visible.
+    setTimeout(() => router.push(target), 220);
   };
 
   return (
-    <div className="flex items-center bg-gray-100 rounded-full p-1 w-fit">
+    <div
+      className="relative grid grid-cols-3 bg-gray-100 rounded-full p-1 w-fit select-none touch-manipulation"
+      role="tablist"
+      aria-label="Language"
+    >
+      {/* Sliding pill */}
+      <span
+        aria-hidden
+        className="absolute top-1 bottom-1 left-1 rounded-full bg-teal-600 shadow-sm will-change-transform transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
+        style={{
+          width: `calc((100% - 0.5rem) / ${LOCALES.length})`,
+          transform: `translateX(${activeIndex * 100}%)`,
+        }}
+      />
       {LOCALES.map(({ code, label }) => (
         <button
           key={code}
+          role="tab"
+          aria-selected={active === code}
           onClick={() => switchLocale(code)}
-          className={`px-4 py-1 rounded-full text-sm font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-teal-600 ${
-            currentLocale === code
-              ? 'bg-teal-600 text-white shadow'
-              : 'bg-transparent text-gray-700 hover:bg-gray-200'
+          className={`relative z-10 px-4 py-1 rounded-full text-sm font-medium transition-colors duration-300 focus:outline-none active:scale-95 ${
+            active === code ? 'text-white' : 'text-gray-700 hover:text-gray-900'
           }`}
         >
           {label}
