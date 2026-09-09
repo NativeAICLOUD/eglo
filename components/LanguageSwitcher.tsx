@@ -52,7 +52,7 @@ export default function LocaleSwitcher() {
         style={{
           width: `calc((100% - 0.5rem) / ${LOCALES.length})`,
           transform: `translateX(${activeIndex * 100}%) scale(${
-            pressed && pressed === active ? 1.1 : 1
+            pressed && pressed === active ? 1.22 : 1
           })`,
         }}
       />
@@ -67,7 +67,7 @@ export default function LocaleSwitcher() {
           onPointerLeave={() => setPressed(null)}
           onPointerCancel={() => setPressed(null)}
           className={`relative z-10 px-4 py-1 rounded-full text-sm font-medium origin-center transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] focus:outline-none ${
-            pressed === code ? 'scale-125' : 'scale-100'
+            pressed === code ? 'scale-150' : 'scale-100'
           } ${active === code ? 'text-white' : 'text-gray-700 hover:text-gray-900'}`}
         >
           {label}
