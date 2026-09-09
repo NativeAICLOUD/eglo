@@ -118,7 +118,7 @@ export default function LocaleSwitcher() {
           onKeyDown={(e) => {
             if (e.key === 'Enter' || e.key === ' ') commit(code);
           }}
-          className={`relative z-10 px-3 py-0.5 rounded-full text-xs font-medium origin-center transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] focus:outline-none ${
+          className={`relative z-10 px-5 py-2 text-sm md:px-3.5 md:py-1 md:text-[13px] rounded-full font-medium origin-center transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] focus:outline-none ${
             pressed === code ? 'scale-125' : 'scale-100'
           } ${active === code ? 'text-white' : 'text-gray-700'}`}
         >
