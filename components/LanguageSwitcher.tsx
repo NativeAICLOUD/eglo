@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter, usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const LOCALES = [
   { code: 'mk', label: 'mk' },
@@ -16,11 +16,14 @@ export default function LocaleSwitcher() {
   const pathname = usePathname();
   const currentLocale = pathname.split('/')[1] as LocaleCode;
 
-  // Optimistic selection so the pill slides the instant a language is tapped,
+  // Optimistic selection so the pill slides the instant a language is picked,
   // before the route navigation resolves — mirrors the iOS toggle feel.
   const [pending, setPending] = useState<LocaleCode | null>(null);
-  // Which segment is being pressed by the finger — grows while held.
+  // Segment currently under the finger — grows while held / dragged.
   const [pressed, setPressed] = useState<LocaleCode | null>(null);
+  const draggingRef = useRef(false);
+  const trackRef = useRef<HTMLDivElement>(null);
+
   const active = pending ?? currentLocale;
   const activeIndex = Math.max(0, LOCALES.findIndex((l) => l.code === active));
 
@@ -28,24 +31,73 @@ export default function LocaleSwitcher() {
     if (pending && pending === currentLocale) setPending(null);
   }, [currentLocale, pending]);
 
-  const switchLocale = (newLocale: LocaleCode) => {
-    if (newLocale === active) return;
+  // Which language sits under a given horizontal screen position.
+  const localeAtX = (clientX: number): LocaleCode => {
+    const el = trackRef.current;
+    if (!el) return active;
+    const rect = el.getBoundingClientRect();
+    const pad = 4; // p-1 → 0.25rem
+    const inner = rect.width - pad * 2;
+    let rel = clientX - rect.left - pad;
+    rel = Math.max(0, Math.min(inner - 1, rel));
+    const idx = Math.min(LOCALES.length - 1, Math.floor(rel / (inner / LOCALES.length)));
+    return LOCALES[idx].code;
+  };
+
+  const commit = (newLocale: LocaleCode) => {
+    if (newLocale === currentLocale) {
+      setPending(null);
+      return;
+    }
     setPending(newLocale);
     const segments = pathname.split('/');
     segments[1] = newLocale;
     const target = segments.join('/');
-    // Let the pill finish sliding before the route swaps the page, so the
-    // iOS-style toggle animation is always visible.
+    // Let the pill finish sliding before the route swaps the page.
     setTimeout(() => router.push(target), 220);
+  };
+
+  const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    trackRef.current?.setPointerCapture(e.pointerId);
+    draggingRef.current = true;
+    const code = localeAtX(e.clientX);
+    setPressed(code);
+    setPending(code);
+  };
+
+  const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!draggingRef.current) return;
+    const code = localeAtX(e.clientX);
+    setPressed(code);
+    setPending(code);
+  };
+
+  const onPointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!draggingRef.current) return;
+    draggingRef.current = false;
+    const code = localeAtX(e.clientX);
+    setPressed(null);
+    commit(code);
+  };
+
+  const onPointerCancel = () => {
+    draggingRef.current = false;
+    setPressed(null);
+    setPending(null);
   };
 
   return (
     <div
-      className="relative grid grid-cols-3 bg-gray-100 rounded-full p-1 w-fit select-none touch-manipulation"
+      ref={trackRef}
+      className="relative grid grid-cols-3 bg-gray-100 rounded-full p-1 w-fit select-none touch-none cursor-pointer"
       role="tablist"
       aria-label="Language"
+      onPointerDown={onPointerDown}
+      onPointerMove={onPointerMove}
+      onPointerUp={onPointerUp}
+      onPointerCancel={onPointerCancel}
     >
-      {/* Sliding pill — swells when the active language is pressed */}
+      {/* Sliding pill — swells when the segment under the finger is active */}
       <span
         aria-hidden
         className="absolute top-1 bottom-1 left-1 rounded-full bg-teal-600 shadow-sm will-change-transform origin-center transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
@@ -59,16 +111,16 @@ export default function LocaleSwitcher() {
       {LOCALES.map(({ code, label }) => (
         <button
           key={code}
+          type="button"
           role="tab"
           aria-selected={active === code}
-          onClick={() => switchLocale(code)}
-          onPointerDown={() => setPressed(code)}
-          onPointerUp={() => setPressed(null)}
-          onPointerLeave={() => setPressed(null)}
-          onPointerCancel={() => setPressed(null)}
-          className={`relative z-10 px-4 py-1 rounded-full text-sm font-medium origin-center transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] focus:outline-none ${
+          tabIndex={-1}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') commit(code);
+          }}
+          className={`relative z-10 px-5 py-1.5 rounded-full text-base font-medium origin-center transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] focus:outline-none ${
             pressed === code ? 'scale-150' : 'scale-100'
-          } ${active === code ? 'text-white' : 'text-gray-700 hover:text-gray-900'}`}
+          } ${active === code ? 'text-white' : 'text-gray-700'}`}
         >
           {label}
         </button>
