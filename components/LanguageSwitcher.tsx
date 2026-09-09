@@ -104,7 +104,7 @@ export default function LocaleSwitcher() {
         style={{
           width: `calc((100% - 0.5rem) / ${LOCALES.length})`,
           transform: `translateX(${activeIndex * 100}%) scale(${
-            pressed && pressed === active ? 1.22 : 1
+            pressed && pressed === active ? 1.18 : 1
           })`,
         }}
       />
@@ -118,8 +118,8 @@ export default function LocaleSwitcher() {
           onKeyDown={(e) => {
             if (e.key === 'Enter' || e.key === ' ') commit(code);
           }}
-          className={`relative z-10 px-5 py-1.5 rounded-full text-base font-medium origin-center transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] focus:outline-none ${
-            pressed === code ? 'scale-150' : 'scale-100'
+          className={`relative z-10 px-3 py-0.5 rounded-full text-xs font-medium origin-center transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] focus:outline-none ${
+            pressed === code ? 'scale-125' : 'scale-100'
           } ${active === code ? 'text-white' : 'text-gray-700'}`}
         >
           {label}
