@@ -1150,6 +1150,9 @@
         "name":           "Product name",
         "sku":            "SKU",
         "price":          "Price",
+        "discount":               "Discount",
+        "discountPlaceholder":    "e.g. 20",
+        "discountHint":           "Leave empty for no discount. Shown as a sale badge on the storefront.",
         "category":       "Category",
         "categoryNone":   "— No category —",
         "productDetails": "Product details",
@@ -1171,6 +1174,7 @@
       "errors": {
         "nameRequired":  "Product name is required",
         "priceRequired": "Enter a valid price",
+        "discountRange": "Discount must be between 0 and 100",
         "notFound":      "Product not found",
         "saveFailed":    "Error saving. Please try again."
       }

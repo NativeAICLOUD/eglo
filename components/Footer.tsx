@@ -200,7 +200,7 @@ export function Footer({}: FooterProps) {
                 className="group inline-flex items-center gap-1.5 text-sm text-gray-400 hover:text-gray-300 transition-colors"
               >
                 <span>{t('bottom.credit')}</span>
-                <span className="font-semibold bg-gradient-to-r from-teal-400 to-cyan-300 bg-clip-text text-transparent group-hover:from-teal-300 group-hover:to-cyan-200 transition-colors">
+                <span className="font-semibold bg-gradient-to-r from-slate-400 via-slate-200 to-slate-400 bg-clip-text text-transparent group-hover:from-slate-300 group-hover:via-white group-hover:to-slate-300 transition-colors">
                   NativeCloud
                 </span>
               </Link>

@@ -10,7 +10,7 @@ import { CartPopup } from "../../../../components/CartPopup"
 import { useCart } from "../../context/CartContext"
 import { useTranslations } from 'next-intl'
 import { useParams } from 'next/navigation'
-import { apiService, BackendProduct, parseProductName, formatMKD } from "../../../../lib/api"
+import { apiService, BackendProduct, parseProductName, formatMKD, getDiscountedPrice } from "../../../../lib/api"
 import productImagesMap from "../../../../data/productImages.json"
 import productSpecsData from "../../../../data/productSpecs.json"
 
@@ -197,6 +197,8 @@ export default function ProductPage({ params }: ProductPageProps) {
   const productImageForCart = images[0] ?? product.imageUrl ?? PLACEHOLDER
 
   const sku = productCode
+  const hasDiscount = !!product.discountPercentage && product.discountPercentage > 0
+  const finalPrice = hasDiscount ? getDiscountedPrice(product.price, product.discountPercentage) : product.price
 
   const staticSpecs = (productSpecsData as Record<string, { productDetails?: Record<string, unknown> }>)[productCode]
   const resolveSpecValues = (data: Record<string, unknown>): Record<string, unknown> =>
@@ -273,7 +275,7 @@ export default function ProductPage({ params }: ProductPageProps) {
       addToCart({
         id: product.id,
         name: displayName,
-        price: formatMKD(product.price),
+        price: formatMKD(finalPrice),
         image: productImageForCart,
       })
     }
@@ -388,9 +390,21 @@ export default function ProductPage({ params }: ProductPageProps) {
               {sku && (
                 <p className="text-sm text-gray-500 font-mono mb-4">{t('articleNumber')}: {sku}</p>
               )}
-              <p className="text-3xl md:text-4xl font-bold text-gray-900">
-                {formatMKD(product.price ?? 0)}
-              </p>
+              <div className="flex items-baseline gap-3 flex-wrap">
+                <p className="text-3xl md:text-4xl font-bold text-gray-900">
+                  {formatMKD(finalPrice ?? 0)}
+                </p>
+                {hasDiscount && (
+                  <>
+                    <p className="text-xl md:text-2xl text-gray-400 line-through">
+                      {formatMKD(product.price ?? 0)}
+                    </p>
+                    <span className="bg-red-500 text-white text-sm font-semibold px-2 py-1 rounded">
+                      -{Math.round(product.discountPercentage!)}%
+                    </span>
+                  </>
+                )}
+              </div>
               <p className="text-xs text-gray-500 mt-1">{t('vatNotice')}</p>
               <p className="text-xs text-teal-600 font-medium mt-0.5">{t('deliveryNotice')}</p>
             </div>

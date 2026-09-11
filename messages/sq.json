@@ -1338,6 +1338,9 @@
         "name":           "Emri i produktit",
         "sku":            "Kodi (SKU)",
         "price":          "Çmimi",
+        "discount":               "Zbritja",
+        "discountPlaceholder":    "p.sh. 20",
+        "discountHint":           "Lëreni bosh për pa zbritje. Shfaqet si etiketë zbritjeje në faqen e dyqanit.",
         "category":       "Kategoria",
         "categoryNone":   "— Pa kategori —",
         "productDetails": "Detaje produkti",
@@ -1359,6 +1362,7 @@
       "errors": {
         "nameRequired":  "Emri i produktit është i detyrueshëm",
         "priceRequired": "Ju lutem vendosni një çmim të vlefshëm",
+        "discountRange": "Zbritja duhet të jetë ndërmjet 0 dhe 100",
         "notFound":      "Produkti nuk u gjet",
         "saveFailed":    "Gabim gjatë ruajtjes. Ju lutem provoni përsëri."
       }

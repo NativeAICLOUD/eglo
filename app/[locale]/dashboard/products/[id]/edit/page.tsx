@@ -140,6 +140,7 @@ export default function EditProductPage({ params }: EditPageProps) {
   const [name,        setName]        = useState("")
   const [description, setDescription] = useState("")
   const [price,       setPrice]       = useState("")
+  const [discount,    setDiscount]    = useState("")
   const [categoryId,  setCategoryId]  = useState<string>("")
   const [flatCats,    setFlatCats]    = useState<FlatCategory[]>([])
   const [details,     setDetails]     = useState<JsonField[]>([])
@@ -200,6 +201,7 @@ export default function EditProductPage({ params }: EditPageProps) {
         setName(p.title)
         setDescription(p.sku ?? "")
         setPrice(String(p.price))
+        setDiscount(p.discountPercentage ? String(p.discountPercentage) : "")
         setCategoryId(p.categoryId ?? "")
         setDetails(parseJsonFields(p.productDetailsJson))
         setDimensions(parseJsonFields(p.dimensionsJson))
@@ -217,6 +219,7 @@ export default function EditProductPage({ params }: EditPageProps) {
     e.preventDefault()
     if (!name.trim())          { setSaveError(t("editProduct.errors.nameRequired"));  return }
     if (!price || Number(price) <= 0) { setSaveError(t("editProduct.errors.priceRequired")); return }
+    if (discount && (Number(discount) < 0 || Number(discount) > 100)) { setSaveError(t("editProduct.errors.discountRange")); return }
 
     setSaving(true)
     setSaveError(null)
@@ -234,6 +237,7 @@ export default function EditProductPage({ params }: EditPageProps) {
           name:               name.trim(),
           description:        description.trim(),
           price:              parseFloat(price),
+          discountPercentage: discount ? parseFloat(discount) : null,
           categoryId:         categoryId || null,
           productDetailsJson: fieldsToJson(details),
           dimensionsJson:     fieldsToJson(dimensions),
@@ -327,6 +331,20 @@ export default function EditProductPage({ params }: EditPageProps) {
               onChange={e => setPrice(e.target.value)}
               placeholder="5954.55"
             />
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-sm font-medium text-gray-700">{t("editProduct.fields.discount")} (%)</label>
+            <Input
+              type="number"
+              min="0"
+              max="100"
+              step="1"
+              value={discount}
+              onChange={e => setDiscount(e.target.value)}
+              placeholder={t("editProduct.fields.discountPlaceholder")}
+            />
+            <p className="text-xs text-gray-400">{t("editProduct.fields.discountHint")}</p>
           </div>
 
           <div className="space-y-1">

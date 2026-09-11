@@ -37,6 +37,8 @@ export interface BackendProduct {
   description?: string | null;
   /** Price in MKD */
   price: number;
+  /** Percentage off price (0-100), null/undefined means no active discount */
+  discountPercentage?: number | null;
   imageUrl: string | null;
   createdDate: string;
   // Fields present on paginated list + single-product responses
@@ -85,6 +87,12 @@ export function parseProductName(raw: string | null | undefined): string {
 export function formatMKD(price: number): string {
   const mkd = Math.round(price)
   return `${mkd.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} ден.`
+}
+
+/** Returns the discounted price, or the original price if there's no active discount. */
+export function getDiscountedPrice(price: number, discountPercentage?: number | null): number {
+  if (!discountPercentage || discountPercentage <= 0) return price
+  return price - (price * discountPercentage) / 100
 }
 
 export interface LoginRequest {
@@ -260,10 +268,19 @@ class ApiService {
     dimensionsJson?: string | null;
     technicalInfoJson?: string | null;
     otherInfoJson?: string | null;
+    discountPercentage?: number | null;
   }): Promise<void> {
     await this.request<unknown>(`/products/${id}`, {
       method: "PUT",
       body: JSON.stringify(data),
+    });
+  }
+
+  /** Sets or clears (pass null) a product's discount percentage (0-100). */
+  async setProductDiscount(id: string, discountPercentage: number | null): Promise<void> {
+    await this.request<unknown>(`/products/${id}/discount`, {
+      method: "PUT",
+      body: JSON.stringify({ discountPercentage }),
     });
   }
 

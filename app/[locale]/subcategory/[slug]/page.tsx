@@ -9,7 +9,7 @@ import categoryFiltersData from "../../../../data/categoryFilters.json"
 import ProductCard from "../../../../components/ProductCard"
 import { FilterGrid } from "../../../../components/FilterGrid"
 import { Pagination } from "../../../../components/Pagination"
-import { apiService, BackendCategory, BackendProduct, parseProductName, formatMKD } from "../../../../lib/api"
+import { apiService, BackendCategory, BackendProduct, parseProductName } from "../../../../lib/api"
 import { PageSpinner } from "../../../../components/Spinner"
 
 interface SubcategoryPageProps {
@@ -344,7 +344,7 @@ export default function SubcategoryPage({ params }: SubcategoryPageProps) {
 
             {/* Product Grid */}
             {loadingProducts ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-3 md:gap-4">
+              <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-3 md:gap-4">
                 {Array.from({ length: 6 }).map((_, i) => (
                   <div key={i} className="rounded-xl overflow-hidden bg-white border border-gray-100 shadow-sm animate-pulse">
                     <div className="bg-gray-200 aspect-square w-full" />
@@ -360,15 +360,17 @@ export default function SubcategoryPage({ params }: SubcategoryPageProps) {
               <div className="text-center py-16 text-gray-400">{t('noProducts')}</div>
             ) : (
               <>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-3 md:gap-4">
+                <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-3 md:gap-4">
                   {products.map((product, index) => (
                     <ProductCard
                       key={`${product.id}-${index}`}
                       productName={parseProductName(product.title)}
                       productDesc={product.sku}
-                      productPrice={formatMKD(product.price)}
+                      price={product.price}
+                      discountPercentage={product.discountPercentage}
                       imageUrl={product.imageUrl}
                       productSlug={product.id}
+                      createdDate={product.createdDate}
                     />
                   ))}
                 </div>

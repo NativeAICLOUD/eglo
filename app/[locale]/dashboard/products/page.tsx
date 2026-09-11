@@ -7,7 +7,7 @@ import { useTranslations } from "next-intl"
 import { Plus, Search, Pencil, Trash2, X, ChevronLeft, ChevronRight, Tag } from "lucide-react"
 import { Button } from "../../../../components/Button"
 import { Input } from "../../../../components/Input"
-import { apiService, BackendCategory, BackendProduct, parseProductName, formatMKD } from "../../../../lib/api"
+import { apiService, BackendCategory, BackendProduct, parseProductName, formatMKD, getDiscountedPrice } from "../../../../lib/api"
 import { Spinner } from "../../../../components/Spinner"
 
 const PAGE_SIZE = 20
@@ -437,7 +437,19 @@ export default function DashboardProductsPage() {
                       </Link>
                     </td>
                     <td className="px-4 py-3 text-gray-500 text-xs font-mono">{product.sku || "—"}</td>
-                    <td className="px-4 py-3 text-gray-600">{formatMKD(product.price)}</td>
+                    <td className="px-4 py-3 text-gray-600">
+                      {product.discountPercentage ? (
+                        <div className="flex items-center gap-1.5">
+                          <span className="font-medium text-gray-900">{formatMKD(getDiscountedPrice(product.price, product.discountPercentage))}</span>
+                          <span className="text-xs text-gray-400 line-through">{formatMKD(product.price)}</span>
+                          <span className="text-[10px] font-semibold text-red-600 bg-red-50 px-1.5 py-0.5 rounded-full">
+                            -{Math.round(product.discountPercentage)}%
+                          </span>
+                        </div>
+                      ) : (
+                        formatMKD(product.price)
+                      )}
+                    </td>
                     <td className="px-4 py-3">
                       {catName
                         ? <span className="text-gray-700 text-xs">{catName}</span>

@@ -8,7 +8,7 @@ import { Search } from "lucide-react"
 import Link from "next/link"
 import { useTranslations } from 'next-intl'
 import { useParams } from 'next/navigation'
-import { apiService, BackendProduct, parseProductName, formatMKD } from "../../../lib/api"
+import { apiService, BackendProduct, parseProductName } from "../../../lib/api"
 
 function SearchPageContent() {
   const searchParams = useSearchParams()
@@ -53,7 +53,7 @@ function SearchPageContent() {
         <div className="max-w-7xl mx-auto px-4 py-8">
           <div className="animate-pulse">
             <div className="h-8 bg-gray-200 rounded w-1/3 mb-8"></div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {[...Array(8)].map((_, i) => (
                 <div key={i} className="bg-white rounded-lg shadow-sm p-4">
                   <div className="h-48 bg-gray-200 rounded mb-4"></div>
@@ -113,15 +113,17 @@ function SearchPageContent() {
 
         {/* Product Grid */}
         {filteredProducts.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredProducts.map((product, index) => (
               <ProductCard
                 key={`${product.id}-${index}`}
                 productName={parseProductName(product.title)}
                 productDesc={product.sku}
-                productPrice={formatMKD(product.price)}
+                price={product.price}
+                discountPercentage={product.discountPercentage}
                 imageUrl={product.imageUrl}
                 productSlug={product.id}
+                createdDate={product.createdDate}
               />
             ))}
           </div>
@@ -161,7 +163,7 @@ export default function SearchPage() {
         <div className="max-w-7xl mx-auto px-4 py-8">
           <div className="animate-pulse">
             <div className="h-8 bg-gray-200 rounded w-1/3 mb-8"></div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {[...Array(8)].map((_, i) => (
                 <div key={i} className="bg-white rounded-lg shadow-sm p-4">
                   <div className="h-48 bg-gray-200 rounded mb-4"></div>
