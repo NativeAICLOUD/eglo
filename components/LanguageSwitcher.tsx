@@ -100,7 +100,7 @@ export default function LocaleSwitcher() {
       {/* Sliding pill — swells when the segment under the finger is active */}
       <span
         aria-hidden
-        className="absolute top-1 bottom-1 left-1 rounded-full bg-white/80 backdrop-blur-md border border-white/90 shadow-md will-change-transform origin-center transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
+        className="absolute top-1 bottom-1 left-1 rounded-full bg-green-100/80 backdrop-blur-md border border-white/90 shadow-md will-change-transform origin-center transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
         style={{
           width: `calc((100% - 0.5rem) / ${LOCALES.length})`,
           transform: `translateX(${activeIndex * 100}%) scale(${
@@ -120,7 +120,7 @@ export default function LocaleSwitcher() {
           }}
           className={`relative z-10 px-2.5 py-0.5 text-xs rounded-full font-medium origin-center transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] focus:outline-none ${
             pressed === code ? 'scale-125' : 'scale-100'
-          } ${active === code ? 'text-teal-700' : 'text-gray-500'}`}
+          } ${active === code ? 'text-green-700' : 'text-gray-500'}`}
         >
           {label}
         </button>
