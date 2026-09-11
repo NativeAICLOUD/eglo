@@ -89,7 +89,7 @@ export default function LocaleSwitcher() {
   return (
     <div
       ref={trackRef}
-      className="relative grid grid-cols-3 bg-gray-100 rounded-full p-1 w-fit select-none touch-none cursor-pointer"
+      className="relative grid grid-cols-3 bg-gray-100/80 backdrop-blur-sm border border-white/60 shadow-[inset_0_1px_2px_rgba(0,0,0,0.06)] rounded-full p-1 w-fit select-none touch-none cursor-pointer"
       role="tablist"
       aria-label="Language"
       onPointerDown={onPointerDown}
@@ -100,7 +100,7 @@ export default function LocaleSwitcher() {
       {/* Sliding pill — swells when the segment under the finger is active */}
       <span
         aria-hidden
-        className="absolute top-1 bottom-1 left-1 rounded-full bg-teal-600/60 backdrop-blur-md border border-white/40 shadow-lg will-change-transform origin-center transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
+        className="absolute top-1 bottom-1 left-1 rounded-full bg-white/80 backdrop-blur-md border border-white/90 shadow-md will-change-transform origin-center transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
         style={{
           width: `calc((100% - 0.5rem) / ${LOCALES.length})`,
           transform: `translateX(${activeIndex * 100}%) scale(${
@@ -120,7 +120,7 @@ export default function LocaleSwitcher() {
           }}
           className={`relative z-10 px-2.5 py-0.5 text-xs rounded-full font-medium origin-center transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] focus:outline-none ${
             pressed === code ? 'scale-125' : 'scale-100'
-          } ${active === code ? 'text-white' : 'text-gray-700'}`}
+          } ${active === code ? 'text-teal-700' : 'text-gray-500'}`}
         >
           {label}
         </button>
