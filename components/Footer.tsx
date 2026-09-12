@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image"
 import { Clock, Mail, FileText, Facebook, Youtube, Linkedin, Instagram } from "lucide-react"
 import { useTranslations } from 'next-intl'
 import { useParams } from 'next/navigation'
@@ -197,12 +198,16 @@ export function Footer({}: FooterProps) {
                 href="https://nativeai.cloud/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center gap-1.5 text-sm text-gray-400 hover:text-gray-300 transition-colors"
+                className="group inline-flex items-center gap-2 text-sm text-gray-400 hover:text-gray-300 transition-colors"
               >
-                <span>{t('bottom.credit')}</span>
-                <span className="font-semibold bg-gradient-to-r from-slate-400 via-slate-200 to-slate-400 bg-clip-text text-transparent group-hover:from-slate-300 group-hover:via-white group-hover:to-slate-300 transition-colors">
-                  NativeCloud
-                </span>
+                <span>Designed &amp; engineered by</span>
+                <Image
+                  src="/assets/images/nativecloud-logo-white.svg"
+                  alt="NativeCloud"
+                  width={82}
+                  height={41}
+                  className="h-5 w-auto opacity-90 group-hover:opacity-100 transition-opacity"
+                />
               </Link>
             </div>
           </div>
