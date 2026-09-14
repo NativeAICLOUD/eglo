@@ -5,10 +5,10 @@ import { useRouter, useParams } from "next/navigation"
 import { useTranslations } from "next-intl"
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowLeft, ChevronDown, ChevronUp, Save, Upload, X, ImageOff } from "lucide-react"
+import { ArrowLeft, Save, Upload, X, ImageOff } from "lucide-react"
 import { Button } from "../../../../../../components/Button"
 import { Input } from "../../../../../../components/Input"
-import { apiService, parseProductName, BackendCategory, BackendProductImage } from "../../../../../../lib/api"
+import { apiService, parseProductName, BackendCategory, BackendProductImage, specTextToJson, specJsonToLines } from "../../../../../../lib/api"
 import { Spinner } from "../../../../../../components/Spinner"
 
 const MAX_IMAGES_PER_UPLOAD = 10
@@ -29,96 +29,6 @@ function flattenCategories(cats: BackendCategory[], depth = 0): FlatCategory[] {
     if (c.subcategories?.length) out.push(...flattenCategories(c.subcategories, depth + 1))
   }
   return out
-}
-
-interface JsonField { key: string; value: string }
-
-function parseJsonFields(raw: string | null | undefined): JsonField[] {
-  if (!raw) return []
-  try {
-    const obj = JSON.parse(raw)
-    if (typeof obj !== "object" || obj === null) return []
-    return Object.entries(obj).map(([key, value]) => ({ key, value: String(value) }))
-  } catch { return [] }
-}
-
-function fieldsToJson(fields: JsonField[]): string | null {
-  const filled = fields.filter(f => f.key.trim() && f.value.trim())
-  if (filled.length === 0) return null
-  return JSON.stringify(Object.fromEntries(filled.map(f => [f.key.trim(), f.value.trim()])))
-}
-
-function JsonSection({
-  title, fields, onChange,
-}: {
-  title: string
-  fields: JsonField[]
-  onChange: (fields: JsonField[]) => void
-}) {
-  const [open, setOpen] = useState(false)
-
-  const update = (i: number, part: Partial<JsonField>) => {
-    const next = [...fields]
-    next[i] = { ...next[i], ...part }
-    onChange(next)
-  }
-  const add    = () => onChange([...fields, { key: "", value: "" }])
-  const remove = (i: number) => onChange(fields.filter((_, idx) => idx !== i))
-
-  return (
-    <div className="border border-gray-200 rounded-lg overflow-hidden">
-      <button
-        type="button"
-        onClick={() => setOpen(o => !o)}
-        className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 hover:bg-gray-100 transition-colors text-left"
-      >
-        <span className="text-sm font-medium text-gray-700">{title}</span>
-        <div className="flex items-center gap-2">
-          {fields.filter(f => f.key.trim()).length > 0 && (
-            <span className="text-xs bg-teal-100 text-teal-700 px-2 py-0.5 rounded-full">
-              {fields.filter(f => f.key.trim()).length}
-            </span>
-          )}
-          {open ? <ChevronUp className="w-4 h-4 text-gray-400" /> : <ChevronDown className="w-4 h-4 text-gray-400" />}
-        </div>
-      </button>
-
-      {open && (
-        <div className="px-4 py-3 space-y-2">
-          {fields.map((f, i) => (
-            <div key={i} className="flex gap-2">
-              <Input
-                placeholder="Key"
-                value={f.key}
-                onChange={e => update(i, { key: e.target.value })}
-                className="flex-1 text-sm"
-              />
-              <Input
-                placeholder="Value"
-                value={f.value}
-                onChange={e => update(i, { value: e.target.value })}
-                className="flex-1 text-sm"
-              />
-              <button
-                type="button"
-                onClick={() => remove(i)}
-                className="text-gray-400 hover:text-red-500 px-1 text-lg leading-none"
-              >
-                ×
-              </button>
-            </div>
-          ))}
-          <button
-            type="button"
-            onClick={add}
-            className="text-sm text-teal-600 hover:text-teal-700 font-medium"
-          >
-            + Add field
-          </button>
-        </div>
-      )}
-    </div>
-  )
 }
 
 interface EditPageProps {
@@ -143,10 +53,7 @@ export default function EditProductPage({ params }: EditPageProps) {
   const [discount,    setDiscount]    = useState("")
   const [categoryId,  setCategoryId]  = useState<string>("")
   const [flatCats,    setFlatCats]    = useState<FlatCategory[]>([])
-  const [details,     setDetails]     = useState<JsonField[]>([])
-  const [dimensions,  setDimensions]  = useState<JsonField[]>([])
-  const [technical,   setTechnical]   = useState<JsonField[]>([])
-  const [other,       setOther]       = useState<JsonField[]>([])
+  const [specsText,   setSpecsText]   = useState("")
 
   const [images,        setImages]        = useState<BackendProductImage[]>([])
   const [uploading,     setUploading]     = useState(false)
@@ -203,10 +110,14 @@ export default function EditProductPage({ params }: EditPageProps) {
         setPrice(String(p.price))
         setDiscount(p.discountPercentage ? String(p.discountPercentage) : "")
         setCategoryId(p.categoryId ?? "")
-        setDetails(parseJsonFields(p.productDetailsJson))
-        setDimensions(parseJsonFields(p.dimensionsJson))
-        setTechnical(parseJsonFields(p.technicalInfoJson))
-        setOther(parseJsonFields(p.otherInfoJson))
+        // Merge all legacy spec sections into one ordered list of "Key: Value" lines —
+        // nothing existing gets lost, it just all lives in one field going forward.
+        setSpecsText([
+          ...specJsonToLines(p.productDetailsJson),
+          ...specJsonToLines(p.dimensionsJson),
+          ...specJsonToLines(p.technicalInfoJson),
+          ...specJsonToLines(p.otherInfoJson),
+        ].join("\n"))
         setImages(normalizeImages(p.images))
       })
       .catch(e => {
@@ -239,10 +150,12 @@ export default function EditProductPage({ params }: EditPageProps) {
           price:              parseFloat(price),
           discountPercentage: discount ? parseFloat(discount) : null,
           categoryId:         categoryId || null,
-          productDetailsJson: fieldsToJson(details),
-          dimensionsJson:     fieldsToJson(dimensions),
-          technicalInfoJson:  fieldsToJson(technical),
-          otherInfoJson:      fieldsToJson(other),
+          // All specs now live in one field — the legacy section fields are cleared out
+          // since their content was already merged into specsText when the product loaded.
+          productDetailsJson: specTextToJson(specsText),
+          dimensionsJson:     null,
+          technicalInfoJson:  null,
+          otherInfoJson:      null,
         }),
       })
 
@@ -431,13 +344,17 @@ export default function EditProductPage({ params }: EditPageProps) {
           </div>
         </div>
 
-        {/* JSON spec sections */}
-        <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm space-y-3">
+        {/* Specifications */}
+        <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm space-y-2">
           <h2 className="font-semibold text-gray-800">{t("editProduct.specifications")}</h2>
-          <JsonSection title={t("editProduct.fields.productDetails")} fields={details}    onChange={setDetails}    />
-          <JsonSection title={t("editProduct.fields.dimensions")}     fields={dimensions} onChange={setDimensions} />
-          <JsonSection title={t("editProduct.fields.technicalInfo")}  fields={technical}  onChange={setTechnical}  />
-          <JsonSection title={t("editProduct.fields.otherInfo")}      fields={other}      onChange={setOther}      />
+          <p className="text-xs text-gray-400">{t("editProduct.specificationsHint")}</p>
+          <textarea
+            value={specsText}
+            onChange={e => setSpecsText(e.target.value)}
+            rows={10}
+            placeholder={t("editProduct.specificationsPlaceholder")}
+            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm font-mono text-gray-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+          />
         </div>
 
         {/* Error / success */}

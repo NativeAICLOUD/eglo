@@ -95,6 +95,54 @@ export function getDiscountedPrice(price: number, discountPercentage?: number | 
   return price - (price * discountPercentage) / 100
 }
 
+/** Strip a trailing colon some admin-entered spec labels carry, e.g. "Material:" → "Material" */
+export function stripTrailingColon(label: string): string {
+  return label.replace(/[:：]+\s*$/, '').trim()
+}
+
+/** Turn camelCase/snake_case/kebab-case into normal Title Case text — used as a display
+ *  fallback for spec labels that have no i18n dictionary entry. */
+export function humanizeSpecLabel(label: string): string {
+  const spaced = label
+    .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
+    .replace(/[_-]+/g, ' ')
+    .trim()
+  if (!spaced) return label
+  return spaced.charAt(0).toUpperCase() + spaced.slice(1)
+}
+
+/** Convert a "Key: Value" per-line specifications blob (the admin Notes-style textarea)
+ *  into a JSON object string, preserving line order. Returns null when there's nothing to save. */
+export function specTextToJson(text: string): string | null {
+  const entries: [string, string][] = []
+  for (const rawLine of text.split('\n')) {
+    const line = rawLine.trim()
+    if (!line) continue
+    const idx = line.indexOf(':')
+    if (idx === -1) continue
+    const key = line.slice(0, idx).trim()
+    const value = line.slice(idx + 1).trim()
+    if (!key || !value) continue
+    entries.push([key, value])
+  }
+  return entries.length > 0 ? JSON.stringify(Object.fromEntries(entries)) : null
+}
+
+/** Convert a stored specifications JSON object string back into "Key: Value" lines, for
+ *  prefilling the admin textarea. Legacy camelCase keys are humanized for readability. */
+export function specJsonToLines(raw: string | null | undefined): string[] {
+  if (!raw) return []
+  try {
+    const obj = JSON.parse(raw)
+    if (typeof obj !== 'object' || obj === null) return []
+    return Object.entries(obj)
+      .filter(([, v]) => v !== undefined && v !== null && String(v).trim() !== '')
+      .map(([k, v]) => `${humanizeSpecLabel(stripTrailingColon(k))}: ${String(v).trim()}`)
+  } catch {
+    return []
+  }
+}
+
 export interface LoginRequest {
   email: string;
   password: string;

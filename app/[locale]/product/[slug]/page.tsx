@@ -2,15 +2,16 @@
 
 import { notFound } from "next/navigation"
 import Link from "next/link"
-import { ChevronRight, ChevronLeft, Plus, Minus, ChevronDown, X, ZoomIn } from "lucide-react"
+import { ChevronRight, ChevronLeft, Plus, Minus, ChevronDown, X, ZoomIn, Pencil } from "lucide-react"
 import { useState, use, useEffect, useCallback, useRef } from "react"
 import { Button } from "../../../../components/Button"
 import { Input } from "../../../../components/Input"
 import { CartPopup } from "../../../../components/CartPopup"
 import { useCart } from "../../context/CartContext"
+import { useAuth } from "../../../../lib/useAuth"
 import { useTranslations } from 'next-intl'
 import { useParams } from 'next/navigation'
-import { apiService, BackendProduct, parseProductName, formatMKD, getDiscountedPrice } from "../../../../lib/api"
+import { apiService, BackendProduct, parseProductName, formatMKD, getDiscountedPrice, stripTrailingColon, humanizeSpecLabel } from "../../../../lib/api"
 import productImagesMap from "../../../../data/productImages.json"
 import productSpecsData from "../../../../data/productSpecs.json"
 
@@ -47,6 +48,8 @@ export default function ProductPage({ params }: ProductPageProps) {
   })
 
   const { addToCart } = useCart()
+  const { user } = useAuth()
+  const isAdmin = !!user?.roles?.some(r => ["superadmin", "admin"].includes(r.toLowerCase()))
   const touchStartX = useRef<number | null>(null)
   const touchStartY = useRef<number | null>(null)
 
@@ -225,10 +228,14 @@ export default function ProductPage({ params }: ProductPageProps) {
     ).join('')
   }
 
-  const translateSpecLabel = (label: string): string => {
-    try { return tSpecLabels(label) } catch {}
-    try { return tSpecLabels(toSpecKey(label)) } catch {}
-    return label
+  const translateSpecLabel = (rawLabel: string): string => {
+    const label = stripTrailingColon(rawLabel)
+    // next-intl doesn't throw on a missing key — it silently returns the raw
+    // "namespace.key" path — so we must check with .has() rather than try/catch.
+    if (tSpecLabels.has(label)) return tSpecLabels(label)
+    const camelKey = toSpecKey(label)
+    if (tSpecLabels.has(camelKey)) return tSpecLabels(camelKey)
+    return humanizeSpecLabel(label)
   }
 
   const toggleSection = (section: keyof typeof expandedSections) => {
@@ -387,8 +394,19 @@ export default function ProductPage({ params }: ProductPageProps) {
               <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-2">
                 {displayName}
               </h1>
-              {sku && (
-                <p className="text-sm text-gray-500 font-mono mb-4">{t('articleNumber')}: {sku}</p>
+              {(sku || isAdmin) && (
+                <p className="text-sm text-gray-500 font-mono mb-4 flex items-center gap-3 flex-wrap">
+                  {sku && <span>{t('articleNumber')}: {sku}</span>}
+                  {isAdmin && (
+                    <Link
+                      href={`/${locale}/dashboard/products/${product.id}/edit`}
+                      className="inline-flex items-center gap-1.5 text-xs font-sans font-medium text-teal-700 bg-teal-50 hover:bg-teal-100 border border-teal-200 rounded-full px-3 py-1 transition-colors"
+                    >
+                      <Pencil className="w-3 h-3" />
+                      {t('editProduct')}
+                    </Link>
+                  )}
+                </p>
               )}
               <div className="flex items-baseline gap-3 flex-wrap">
                 <p className="text-3xl md:text-4xl font-bold text-gray-900">

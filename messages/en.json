@@ -835,6 +835,7 @@
     "addToCart": "Add to cart",
     "quantity": "Quantity",
     "articleNumber": "Article no.",
+    "editProduct": "Edit product",
     "noImage": "No image",
     "vatNotice": "18% VAT included, plus shipping costs",
     "deliveryNotice": "Delivery in 2-3 business days",
@@ -1141,6 +1142,8 @@
       "title":          "Edit product",
       "basicInfo":      "Basic information",
       "specifications": "Specifications",
+      "specificationsHint": "One per line, as \"Label: Value\". Shown on the product page in this order.",
+      "specificationsPlaceholder": "Material: Zinc-plated steel\nColour: Black\nProtection Degree: IP44\nLamp socket: E27",
       "backToProducts": "Back to products",
       "save":           "Save changes",
       "saving":         "Saving...",
@@ -1154,11 +1157,7 @@
         "discountPlaceholder":    "e.g. 20",
         "discountHint":           "Leave empty for no discount. Shown as a sale badge on the storefront.",
         "category":       "Category",
-        "categoryNone":   "— No category —",
-        "productDetails": "Product details",
-        "dimensions":     "Dimensions",
-        "technicalInfo":  "Technical information",
-        "otherInfo":      "Other information"
+        "categoryNone":   "— No category —"
       },
       "images": {
         "title":        "Images",
