@@ -1,30 +1,38 @@
 "use client"
 
 import Image from "next/image"
+import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 import { useTranslations } from 'next-intl'
+import { useParams } from 'next/navigation'
 
 const styles = [
   {
     key: "scandinavian",
     image: "/assets/images/scandinavian.jpg",
+    searchTerm: "Scandinavian",
   },
   {
     key: "natural",
     image: "/assets/images/natural.jpg",
+    searchTerm: "Natural",
   },
   {
     key: "vintage",
     image: "/assets/images/vintage-retro.jpg",
+    searchTerm: "Vintage",
   },
   {
     key: "industrial",
     image: "/assets/images/industrial-2_3.jpg",
+    searchTerm: "Industrial",
   },
 ]
 
 export function StyleGrid() {
   const t = useTranslations('styleGrid')
+  const params = useParams()
+  const locale = params.locale as string
 
   return (
     <section className="py-20 px-4 bg-white">
@@ -38,7 +46,11 @@ export function StyleGrid() {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 items-stretch">
           {styles.map((style, index) => (
-            <div key={index} className="group cursor-pointer h-full">
+            <Link
+              key={index}
+              href={`/${locale}/search?q=${encodeURIComponent(style.searchTerm)}`}
+              className="group cursor-pointer h-full block"
+            >
               {/* Card Container with Border */}
               <div className="border border-gray-200 rounded-xl p-4 hover:border-gray-300 hover:shadow-lg transition-all duration-300 h-full flex flex-col" style={{ backgroundColor: '#f4f2f1' }}>
                 {/* Image Container */}
@@ -68,7 +80,7 @@ export function StyleGrid() {
                   <p className="text-gray-600 text-sm leading-relaxed flex-1">{t(`styles.${style.key}.description`)}</p>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
