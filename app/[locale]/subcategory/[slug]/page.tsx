@@ -370,7 +370,6 @@ export default function SubcategoryPage({ params }: SubcategoryPageProps) {
                       discountPercentage={product.discountPercentage}
                       imageUrl={product.imageUrl}
                       productSlug={product.id}
-                      createdDate={product.createdDate}
                     />
                   ))}
                 </div>

@@ -123,7 +123,6 @@ function SearchPageContent() {
                 discountPercentage={product.discountPercentage}
                 imageUrl={product.imageUrl}
                 productSlug={product.id}
-                createdDate={product.createdDate}
               />
             ))}
           </div>

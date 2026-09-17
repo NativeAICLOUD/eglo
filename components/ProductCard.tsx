@@ -8,15 +8,12 @@ import { formatMKD, getDiscountedPrice } from "../lib/api"
 
 const PLACEHOLDER = '/placeholder.svg'
 
-const NEW_BADGE_WINDOW_DAYS = 30
-
 interface ProductCardProps {
   productName: string
   productDesc: string
   price: number
   imageUrl?: string | null
   productSlug?: string
-  createdDate?: string
   discountPercentage?: number | null
 }
 
@@ -26,7 +23,6 @@ export default function ProductCard({
   price,
   imageUrl,
   productSlug,
-  createdDate,
   discountPercentage
 }: ProductCardProps) {
   const t = useTranslations('productCard')
@@ -37,7 +33,6 @@ export default function ProductCard({
   const r2Images = map[productDesc?.trim()] ?? map[productSlug ?? ''] ?? []
   const resolvedImage = r2Images.length > 0 ? r2Images[0] : (imageUrl || PLACEHOLDER)
 
-  const isNew = !!createdDate && (Date.now() - new Date(createdDate).getTime()) < NEW_BADGE_WINDOW_DAYS * 24 * 60 * 60 * 1000
   const hasDiscount = !!discountPercentage && discountPercentage > 0
   const finalPrice = hasDiscount ? getDiscountedPrice(price, discountPercentage) : price
 
@@ -51,9 +46,6 @@ export default function ProductCard({
           onError={(e) => { (e.currentTarget as HTMLImageElement).src = PLACEHOLDER }}
         />
         <div className="absolute top-2 left-2 flex flex-col items-start gap-1">
-          {isNew && (
-            <span className="bg-blue-500 text-white text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 sm:py-1 rounded">{t('new')}</span>
-          )}
           {hasDiscount && (
             <span className="bg-red-500 text-white text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 sm:py-1 rounded font-semibold">
               -{Math.round(discountPercentage!)}%
