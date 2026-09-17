@@ -11,7 +11,7 @@ import { useCart } from "../../context/CartContext"
 import { useAuth } from "../../../../lib/useAuth"
 import { useTranslations } from 'next-intl'
 import { useParams } from 'next/navigation'
-import { apiService, BackendProduct, parseProductName, formatMKD, getDiscountedPrice, stripTrailingColon, humanizeSpecLabel } from "../../../../lib/api"
+import { apiService, BackendProduct, parseProductName, formatMKD, getDiscountedPrice, stripTrailingColon, humanizeSpecLabel, trimmedImageSrc } from "../../../../lib/api"
 import productImagesMap from "../../../../data/productImages.json"
 import productSpecsData from "../../../../data/productSpecs.json"
 
@@ -324,17 +324,17 @@ export default function ProductPage({ params }: ProductPageProps) {
               {images.length > 0 ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
-                  src={images[selectedImage]}
+                  src={trimmedImageSrc(images[selectedImage])}
                   alt={displayName}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-contain"
                   onError={(e) => { (e.currentTarget as HTMLImageElement).src = PLACEHOLDER }}
                 />
               ) : product.imageUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
-                  src={product.imageUrl}
+                  src={trimmedImageSrc(product.imageUrl)}
                   alt={displayName}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-contain"
                   onError={(e) => { (e.currentTarget as HTMLImageElement).src = PLACEHOLDER }}
                 />
               ) : (
@@ -377,9 +377,9 @@ export default function ProductPage({ params }: ProductPageProps) {
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
-                      src={img}
+                      src={trimmedImageSrc(img)}
                       alt={`${displayName} ${idx + 1}`}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-contain"
                       onError={(e) => { (e.currentTarget as HTMLImageElement).src = PLACEHOLDER }}
                     />
                   </button>
@@ -520,13 +520,14 @@ export default function ProductPage({ params }: ProductPageProps) {
             </button>
           )}
 
-          {/* Image */}
-          <div className="w-full h-full sm:max-w-5xl sm:max-h-[90vh] sm:mx-16 flex items-center justify-center" onClick={e => e.stopPropagation()}>
+          {/* Image — wrapper has no fixed box size, it just centers whatever
+              size the (now intrinsically-sized) image ends up rendering at */}
+          <div className="w-full h-full flex items-center justify-center px-4 sm:px-20" onClick={e => e.stopPropagation()}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={images[lightboxIndex]}
+              src={trimmedImageSrc(images[lightboxIndex])}
               alt={`${displayName} ${lightboxIndex + 1}`}
-              className="max-w-full max-h-full sm:max-h-[90vh] object-contain sm:rounded-lg select-none"
+              className="w-auto h-auto max-w-full max-h-[85vh] sm:max-h-[90vh] object-contain rounded-lg select-none"
               draggable={false}
               onError={(e) => { (e.currentTarget as HTMLImageElement).src = PLACEHOLDER }}
             />

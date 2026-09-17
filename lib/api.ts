@@ -95,6 +95,21 @@ export function getDiscountedPrice(price: number, discountPercentage?: number | 
   return price - (price * discountPercentage) / 100
 }
 
+const R2_IMAGE_HOST = 'pub-166082e4b3d54bb296c0e624eb1a1f50.r2.dev'
+
+/** Route a product photo through the whitespace-trim proxy so source images with
+ *  large embedded padding (common for tall/narrow fixtures) display larger without
+ *  stretching or cropping the product. Non-catalog URLs pass through untouched. */
+export function trimmedImageSrc(url: string | null | undefined): string {
+  if (!url) return url ?? ''
+  try {
+    if (new URL(url).hostname !== R2_IMAGE_HOST) return url
+  } catch {
+    return url
+  }
+  return `/api/image-trim?url=${encodeURIComponent(url)}`
+}
+
 /** Strip a trailing colon some admin-entered spec labels carry, e.g. "Material:" → "Material" */
 export function stripTrailingColon(label: string): string {
   return label.replace(/[:：]+\s*$/, '').trim()
