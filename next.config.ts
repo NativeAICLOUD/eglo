@@ -4,6 +4,9 @@ import createNextIntlPlugin from "next-intl/plugin";
 const withNextIntl = createNextIntlPlugin("./next-intl.config.ts");
 
 const nextConfig: NextConfig = {
+  // sharp is a native addon — must stay external to the serverless bundle
+  // rather than being bundled like plain JS, or its binary fails at runtime.
+  serverExternalPackages: ["sharp"],
   images: {
     remotePatterns: [
       {
