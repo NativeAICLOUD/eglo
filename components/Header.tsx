@@ -21,6 +21,10 @@ export function Header({ noPadding = false }: HeaderProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  // Mobile-only: hides the whole header (logo + menu) while scrolling down for
+  // more product-browsing space, and brings it back on any upward scroll.
+  const [hideHeader, setHideHeader] = useState(false);
+  const lastScrollY = useRef(0);
   const userMenuRef = useRef<HTMLDivElement>(null);
   const { getTotalItems } = useCart();
   const cartItemCount = getTotalItems();
@@ -51,6 +55,19 @@ export function Header({ noPadding = false }: HeaderProps) {
     const onScroll = () => {
       const y = window.scrollY;
       setScrolled(prev => (prev ? y > 20 : y > 80));
+
+      // Mobile hide-on-scroll-down — ignore tiny jitters, react only once the
+      // user has moved a meaningful amount so it doesn't flicker.
+      const delta = y - lastScrollY.current;
+      if (Math.abs(delta) > 8) {
+        const scrollingDown = delta > 0;
+        setHideHeader(scrollingDown && y > 120);
+        if (scrollingDown) {
+          setIsMobileMenuOpen(false);
+          setUserMenuOpen(false);
+        }
+        lastScrollY.current = y;
+      }
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -66,7 +83,10 @@ export function Header({ noPadding = false }: HeaderProps) {
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-white border-b border-gray-200 transition-shadow duration-300" style={{ boxShadow: scrolled ? '0 2px 8px rgba(0,0,0,0.08)' : 'none' }}>
+    <header
+      className={`sticky top-0 z-40 bg-white border-b border-gray-200 transition-[transform,box-shadow] duration-300 md:translate-y-0 ${hideHeader ? '-translate-y-full' : 'translate-y-0'}`}
+      style={{ boxShadow: scrolled ? '0 2px 8px rgba(0,0,0,0.08)' : 'none' }}
+    >
       {/* Top Bar */}
       <div className={`bg-white px-4 overflow-hidden transition-all duration-300 ${scrolled ? 'max-h-0 py-0' : 'max-h-16 py-2'}`}>
         <div className="max-w-7xl mx-auto flex items-center justify-between text-[13px] font-normal text-slate-600">
