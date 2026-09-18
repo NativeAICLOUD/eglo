@@ -36,6 +36,10 @@ export default function ProductPage({ params }: ProductPageProps) {
   const [product, setProduct] = useState<BackendProduct | null>(null)
   const [loading, setLoading] = useState(true)
   const [selectedImage, setSelectedImage] = useState(0)
+  // Drives the main preview box's shape so very tall/narrow products (e.g. floor
+  // lamps) aren't stuck inside a rigid square with large empty side margins.
+  // Clamped so the two-column layout can't be broken by an extreme image.
+  const [mainImageAspect, setMainImageAspect] = useState(1)
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [lightboxIndex, setLightboxIndex] = useState(0)
   const [quantity, setQuantity] = useState(1)
@@ -318,7 +322,8 @@ export default function ProductPage({ params }: ProductPageProps) {
           {/* Product Images */}
           <div className="space-y-4">
             <div
-              className="relative aspect-square bg-gray-100 rounded-lg overflow-hidden group cursor-zoom-in"
+              className="relative bg-gray-100 rounded-lg overflow-hidden group cursor-zoom-in w-full"
+              style={{ aspectRatio: mainImageAspect, maxHeight: '70vh' }}
               onClick={() => images.length > 0 && openLightbox(selectedImage)}
             >
               {images.length > 0 ? (
@@ -327,6 +332,14 @@ export default function ProductPage({ params }: ProductPageProps) {
                   src={trimmedImageSrc(images[selectedImage])}
                   alt={displayName}
                   className="w-full h-full object-contain"
+                  onLoad={(e) => {
+                    const el = e.currentTarget
+                    if (el.naturalWidth && el.naturalHeight) {
+                      // Clamp so one extreme photo can't blow out the page layout —
+                      // still a big improvement over a fixed square for tall/wide items.
+                      setMainImageAspect(Math.min(1.4, Math.max(0.4, el.naturalWidth / el.naturalHeight)))
+                    }
+                  }}
                   onError={(e) => { (e.currentTarget as HTMLImageElement).src = PLACEHOLDER }}
                 />
               ) : product.imageUrl ? (
@@ -335,6 +348,12 @@ export default function ProductPage({ params }: ProductPageProps) {
                   src={trimmedImageSrc(product.imageUrl)}
                   alt={displayName}
                   className="w-full h-full object-contain"
+                  onLoad={(e) => {
+                    const el = e.currentTarget
+                    if (el.naturalWidth && el.naturalHeight) {
+                      setMainImageAspect(Math.min(1.4, Math.max(0.4, el.naturalWidth / el.naturalHeight)))
+                    }
+                  }}
                   onError={(e) => { (e.currentTarget as HTMLImageElement).src = PLACEHOLDER }}
                 />
               ) : (
