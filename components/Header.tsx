@@ -89,7 +89,11 @@ export function Header({ noPadding = false }: HeaderProps) {
           unreliable in Safari/WebKit and can make the header fail to render or
           reappear correctly, especially on iOS. */}
       <div
-        className={`bg-white border-b border-gray-200 transition-[transform,box-shadow] duration-300 md:translate-y-0 ${hideHeader ? '-translate-y-full' : 'translate-y-0'}`}
+        className={`bg-white border-b border-gray-200 transition-[transform,box-shadow] duration-300 md:translate-y-0 ${
+          // Plain -100% would land the border exactly on the viewport edge instead
+          // of off-screen (visible as a thin line) — clear it with a couple extra px.
+          hideHeader ? '-translate-y-[calc(100%+2px)]' : 'translate-y-0'
+        }`}
         style={{ boxShadow: scrolled ? '0 2px 8px rgba(0,0,0,0.08)' : 'none' }}
       >
       {/* Top Bar */}

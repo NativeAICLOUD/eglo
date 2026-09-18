@@ -136,7 +136,7 @@ export function Navigation({ isMobileMenuOpen, setIsMobileMenuOpen }: Navigation
 
   return (
     <nav
-      className="border-t border-gray-100 relative"
+      className="border-t border-gray-100 relative bg-white"
       aria-label="Main navigation"
       onMouseLeave={scheduleClose}
     >
