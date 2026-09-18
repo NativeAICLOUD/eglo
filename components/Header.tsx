@@ -83,10 +83,15 @@ export function Header({ noPadding = false }: HeaderProps) {
   };
 
   return (
-    <header
-      className={`sticky top-0 z-40 bg-white border-b border-gray-200 transition-[transform,box-shadow] duration-300 md:translate-y-0 ${hideHeader ? '-translate-y-full' : 'translate-y-0'}`}
-      style={{ boxShadow: scrolled ? '0 2px 8px rgba(0,0,0,0.08)' : 'none' }}
-    >
+    <header className="sticky top-0 z-40">
+      {/* Transform lives on this inner wrapper, not the sticky element itself —
+          combining `position: sticky` with a `transform` on the same element is
+          unreliable in Safari/WebKit and can make the header fail to render or
+          reappear correctly, especially on iOS. */}
+      <div
+        className={`bg-white border-b border-gray-200 transition-[transform,box-shadow] duration-300 md:translate-y-0 ${hideHeader ? '-translate-y-full' : 'translate-y-0'}`}
+        style={{ boxShadow: scrolled ? '0 2px 8px rgba(0,0,0,0.08)' : 'none' }}
+      >
       {/* Top Bar */}
       <div className={`bg-white px-4 overflow-hidden transition-all duration-300 ${scrolled ? 'max-h-0 py-0' : 'max-h-16 py-2'}`}>
         <div className="max-w-7xl mx-auto flex items-center justify-between text-[13px] font-normal text-slate-600">
@@ -257,8 +262,12 @@ export function Header({ noPadding = false }: HeaderProps) {
           </div>
         </div>
       </div>
+      </div>
 
-      {/* Navigation */}
+      {/* Navigation — deliberately outside the transformed wrapper above: a
+          `transform` on an ancestor (even translateY(0)) creates a new
+          containing block for `position: fixed` descendants, which would
+          break this menu's full-screen overlay. */}
       <Navigation
         isMobileMenuOpen={isMobileMenuOpen}
         setIsMobileMenuOpen={setIsMobileMenuOpen}
