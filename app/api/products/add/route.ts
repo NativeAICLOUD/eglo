@@ -14,15 +14,18 @@ export async function POST(request: Request) {
       )
     }
 
+    // Must match CreateProductDto exactly (name, description, price, *Json, discountPercentage) —
+    // it has no categoryId field at all; category is assigned via a separate
+    // PUT /products/{id}/category call once the draft exists (see add-product page).
     const egloApiBody = {
-      title:              body.name,          // form field "name" → API field "title"
-      sku:                body.description,   // form field "description" → API field "sku"
+      name:               body.name,
+      description:        body.description ?? null,
       price:              parseFloat(body.price) || 0,
-      categoryId:         body.category   || null,
-      productDetailsJson: JSON.stringify(body.productDetails  || {}),
-      dimensionsJson:     JSON.stringify(body.dimensions      || {}),
-      technicalInfoJson:  JSON.stringify(body.technicalInfo   || {}),
-      otherInfoJson:      JSON.stringify(body.otherInfo       || {}),
+      productDetailsJson: body.productDetailsJson ?? null,
+      dimensionsJson:     null,
+      technicalInfoJson:  null,
+      otherInfoJson:      null,
+      discountPercentage: body.discountPercentage ? parseFloat(body.discountPercentage) : null,
     }
 
     const upstream = await fetch(`${INTERNAL_API_URL}/products`, {

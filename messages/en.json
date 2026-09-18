@@ -1174,7 +1174,31 @@
         "priceRequired": "Enter a valid price",
         "discountRange": "Discount must be between 0 and 100",
         "notFound":      "Product not found",
-        "saveFailed":    "Error saving. Please try again."
+        "saveFailed":    "Error saving. Please try again.",
+        "categorySaveFailed": "Product saved, but the category couldn't be updated. Please try selecting it again."
+      }
+    },
+    "addProductPage": {
+      "title":    "Add product",
+      "subtitle": "Create a new product",
+      "create":   "Create product",
+      "creating": "Creating...",
+      "fields": {
+        "category":        "Category *",
+        "categoryNone":    "— Select a category —",
+        "subcategory":     "Subcategory *",
+        "subcategoryNone": "— Select a subcategory —"
+      },
+      "images": {
+        "none": "No images selected yet"
+      },
+      "errors": {
+        "categoryRequired": "Please select a category and subcategory",
+        "imageRequired":    "At least one product image is required",
+        "createFailed":     "Failed to create product. Please try again.",
+        "partialCategory":  "Product was created but the category couldn't be saved. Open it from Products to finish setup.",
+        "partialImages":    "Product was created but images failed to upload. Open it from Products to finish setup.",
+        "partialPublish":   "Product was created but couldn't be published. Open it from Products to finish setup."
       }
     },
     "categories": {

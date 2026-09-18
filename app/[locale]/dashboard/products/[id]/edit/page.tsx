@@ -31,6 +31,22 @@ function flattenCategories(cats: BackendCategory[], depth = 0): FlatCategory[] {
   return out
 }
 
+// The dropdown is a single flattened list, but the backend's category-assignment
+// endpoint needs the (parent category, subcategory) pair — look the parent up by
+// searching the original tree for whichever entry the admin picked.
+function findCategoryPair(
+  cats: BackendCategory[],
+  selectedId: string,
+  parent?: BackendCategory
+): { categoryId: string; subcategoryId: string } | null {
+  for (const cat of cats) {
+    if (cat.id === selectedId && parent) return { categoryId: parent.id, subcategoryId: cat.id }
+    const found = findCategoryPair(cat.subcategories ?? [], selectedId, cat)
+    if (found) return found
+  }
+  return null
+}
+
 interface EditPageProps {
   params: Promise<{ id: string }>
 }
@@ -53,6 +69,7 @@ export default function EditProductPage({ params }: EditPageProps) {
   const [discount,    setDiscount]    = useState("")
   const [categoryId,  setCategoryId]  = useState<string>("")
   const [flatCats,    setFlatCats]    = useState<FlatCategory[]>([])
+  const [categoriesTree, setCategoriesTree] = useState<BackendCategory[]>([])
   const [specsText,   setSpecsText]   = useState("")
 
   const [images,        setImages]        = useState<BackendProductImage[]>([])
@@ -98,7 +115,7 @@ export default function EditProductPage({ params }: EditPageProps) {
 
   useEffect(() => {
     apiService.getCategories()
-      .then(cats => setFlatCats(flattenCategories(cats)))
+      .then(cats => { setCategoriesTree(cats); setFlatCats(flattenCategories(cats)) })
       .catch(() => {})
   }, [])
 
@@ -164,6 +181,27 @@ export default function EditProductPage({ params }: EditPageProps) {
         const body = await res.json().catch(() => ({}))
         setSaveError((body as { message?: string }).message ?? t("editProduct.errors.saveFailed"))
         return
+      }
+
+      // The main PUT above has no categoryId field on its DTO — category changes
+      // only persist through this dedicated endpoint, which needs both the parent
+      // category and subcategory, resolved from whichever entry was picked.
+      if (categoryId) {
+        const pair = findCategoryPair(categoriesTree, categoryId)
+        if (pair) {
+          const catRes = await fetch(`/api/products/${id}/category`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              ...(token ? { Authorization: `Bearer ${token}` } : {}),
+            },
+            body: JSON.stringify(pair),
+          })
+          if (!catRes.ok) {
+            setSaveError(t("editProduct.errors.categorySaveFailed"))
+            return
+          }
+        }
       }
 
       setSaved(true)
