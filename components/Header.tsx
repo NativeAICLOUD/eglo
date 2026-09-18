@@ -91,8 +91,8 @@ export function Header({ noPadding = false }: HeaderProps) {
       <div
         className={`bg-white border-b border-gray-200 transition-[transform,box-shadow] duration-300 md:translate-y-0 ${
           // Plain -100% would land the border exactly on the viewport edge instead
-          // of off-screen (visible as a thin line) — clear it with a couple extra px.
-          hideHeader ? '-translate-y-[calc(100%+2px)]' : 'translate-y-0'
+          // of off-screen (visible as a thin line) — clear it with extra margin.
+          hideHeader ? '-translate-y-[calc(100%+8px)]' : 'translate-y-0'
         }`}
         style={{ boxShadow: scrolled ? '0 2px 8px rgba(0,0,0,0.08)' : 'none' }}
       >
@@ -268,16 +268,16 @@ export function Header({ noPadding = false }: HeaderProps) {
           </div>
         </div>
       </div>
-      </div>
 
-      {/* Navigation — deliberately outside the transformed wrapper above: a
-          `transform` on an ancestor (even translateY(0)) creates a new
-          containing block for `position: fixed` descendants, which would
-          break this menu's full-screen overlay. */}
+      {/* Navigation lives inside the transformed wrapper so the category bar
+          hides together with the rest of the header on scroll. Its mobile
+          full-screen menu portals itself straight to <body>, so it's immune
+          to this wrapper's transform regardless of nesting. */}
       <Navigation
         isMobileMenuOpen={isMobileMenuOpen}
         setIsMobileMenuOpen={setIsMobileMenuOpen}
       />
+      </div>
     </header>
   );
 }

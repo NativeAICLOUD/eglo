@@ -3,6 +3,7 @@
 import Link from "next/link"
 import Image from "next/image"
 import { useState, useRef, useEffect } from "react"
+import { createPortal } from "react-dom"
 import { Lightbulb, Fan, Zap, Home, ChevronRight, X, ArrowRight } from "lucide-react"
 import { useTranslations } from 'next-intl'
 import { useParams, usePathname } from 'next/navigation'
@@ -22,6 +23,10 @@ export function Navigation({ isMobileMenuOpen, setIsMobileMenuOpen }: Navigation
   const [expandedMobileCategory, setExpandedMobileCategory] = useState<string | null>(null)
   const [expandedMobileSubcategory, setExpandedMobileSubcategory] = useState<string | null>(null)
   const closeTimerRef = useRef<NodeJS.Timeout | null>(null)
+  // The mobile overlay is portaled to <body> (see below) so document must be
+  // available — only render the portal after mount to avoid an SSR mismatch.
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
   const t = useTranslations('navigation')
   const tCat = useTranslations('categories')
   const params = useParams()
@@ -339,10 +344,12 @@ export function Navigation({ isMobileMenuOpen, setIsMobileMenuOpen }: Navigation
         )}
       </div>
 
-      {/* ── Mobile navigation ────────────────────────────────────────── */}
-      <div className="md:hidden">
-        {isMobileMenuOpen && (
-          <div className="fixed inset-0 bg-black/50 z-50">
+      {/* ── Mobile navigation ── portaled straight to <body> so it's never
+          affected by an ancestor's transform (the header's hide-on-scroll
+          wrapper), which would otherwise break this overlay's full-screen
+          fixed positioning. ─────────────────────────────────────────── */}
+      {mounted && isMobileMenuOpen && createPortal(
+          <div className="md:hidden fixed inset-0 bg-black/50 z-50">
             <div className="absolute inset-0 bg-white flex flex-col">
 
               {/* Header */}
@@ -471,9 +478,9 @@ export function Navigation({ isMobileMenuOpen, setIsMobileMenuOpen }: Navigation
               </div>
 
             </div>
-          </div>
-        )}
-      </div>
+          </div>,
+          document.body
+      )}
     </nav>
   )
 }
