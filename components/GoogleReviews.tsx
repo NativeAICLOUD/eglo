@@ -33,7 +33,7 @@ const REVIEWS = [
   },
 ]
 
-const GOOGLE_REVIEWS_URL = "https://www.google.com/search?q=EGLO+Македонија+reviews"
+const GOOGLE_REVIEWS_URL = "https://www.google.com/search?q=eglo+macedonia&oq=eglo+mac&gs_lcrp=EgZjaHJvbWUqBggAEEUYOzIGCAAQRRg7MgYIARBFGDkyBggCEEUYQDIGCAMQRRg8MgYIBBBFGDwyBggFEEUYPNIBCDI3MzJqMGo0qAIAsAIB&sourceid=chrome&source=chrome.ob&ie=UTF-8&sei=nwqtaq-XBdLNwPAP_rqWgAM"
 
 function Stars({ count }: { count: number }) {
   return (

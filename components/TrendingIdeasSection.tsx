@@ -1,8 +1,10 @@
 "use client"
 
 import Image from "next/image"
+import Link from "next/link"
 import { TrendingUp, Clock, Users } from "lucide-react"
 import { useTranslations } from 'next-intl'
+import { useParams } from 'next/navigation'
 
 const trendingIdeas = [
   {
@@ -24,6 +26,8 @@ const trendingIdeas = [
 
 export function TrendingIdeas() {
   const t = useTranslations('trendingIdeasSection')
+  const params = useParams()
+  const locale = params.locale as string
 
   return (
     <section className="py-20 px-4 bg-gradient-to-b from-gray-50 to-white">
@@ -41,34 +45,36 @@ export function TrendingIdeas() {
 
         <div className="grid md:grid-cols-3 gap-8">
           {trendingIdeas.map((idea, index) => (
-            <article key={index} className="group cursor-pointer">
-              <div className="relative h-64 rounded-xl overflow-hidden mb-6">
-                <Image
-                  src={idea.image || "/placeholder.svg"}
-                  alt={t(`ideas.${idea.key}.title`)}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-              </div>
+            <Link key={index} href={`/${locale}/inspiration`} className="group cursor-pointer block">
+              <article>
+                <div className="relative h-64 rounded-xl overflow-hidden mb-6">
+                  <Image
+                    src={idea.image || "/placeholder.svg"}
+                    alt={t(`ideas.${idea.key}.title`)}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                </div>
 
-              <div className="space-y-3">
-                <h3 className="text-xl font-semibold text-gray-900 group-hover:text-teal-600 transition-colors duration-300">
-                  {t(`ideas.${idea.key}.title`)}
-                </h3>
-                <p className="text-gray-600 leading-relaxed">{t(`ideas.${idea.key}.description`)}</p>
+                <div className="space-y-3">
+                  <h3 className="text-xl font-semibold text-gray-900 group-hover:text-teal-600 transition-colors duration-300">
+                    {t(`ideas.${idea.key}.title`)}
+                  </h3>
+                  <p className="text-gray-600 leading-relaxed">{t(`ideas.${idea.key}.description`)}</p>
 
-                <div className="flex items-center gap-4 text-sm text-gray-500">
-                  <div className="flex items-center gap-1">
-                    <Clock className="w-4 h-4" />
-                    {t(`ideas.${idea.key}.readTime`)}
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Users className="w-4 h-4" />
-                    {idea.views} {t('views')}
+                  <div className="flex items-center gap-4 text-sm text-gray-500">
+                    <div className="flex items-center gap-1">
+                      <Clock className="w-4 h-4" />
+                      {t(`ideas.${idea.key}.readTime`)}
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Users className="w-4 h-4" />
+                      {idea.views} {t('views')}
+                    </div>
                   </div>
                 </div>
-              </div>
-            </article>
+              </article>
+            </Link>
           ))}
         </div>
       </div>

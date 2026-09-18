@@ -22,9 +22,9 @@ export function Footer({}: FooterProps) {
             <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-2">
               {t('contact.title')}
             </h2>
-            <p className="text-teal-600 text-xl md:text-2xl font-semibold">
+            <a href="tel:+38976338000" className="text-teal-600 text-xl md:text-2xl font-semibold hover:text-teal-500 transition-colors">
               +389 76 338 000
-            </p>
+            </a>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
@@ -49,7 +49,9 @@ export function Footer({}: FooterProps) {
                 <Mail className="w-6 h-6 text-teal-600" />
               </div>
               <p className="text-gray-600 font-medium">{t('contact.email')}</p>
-              <p className="text-teal-600 text-sm">info-macedonia@eglo.com</p>
+              <a href="mailto:info-macedonia@eglo.com" className="text-teal-600 text-sm hover:text-teal-500 transition-colors">
+                info-macedonia@eglo.com
+              </a>
             </div>
             
             <div className="flex flex-col items-center text-center">

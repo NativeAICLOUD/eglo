@@ -111,7 +111,9 @@ export function Header({ noPadding = false }: HeaderProps) {
               <span>{t("topBar.findStore")}</span>
             </a>
             <span className="text-slate-300 hidden md:inline">|</span>
-            <span className="hidden md:inline">{t("topBar.customerSupport")}</span>
+            <a href="mailto:info-macedonia@eglo.com" className="hidden md:inline hover:text-teal-600 transition-colors">
+              {t("topBar.customerSupport")}
+            </a>
           </div>
 
           {/* Right — locale switcher */}
