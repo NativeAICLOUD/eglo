@@ -7,6 +7,12 @@ const nextConfig: NextConfig = {
   // sharp is a native addon — must stay external to the serverless bundle
   // rather than being bundled like plain JS, or its binary fails at runtime.
   serverExternalPackages: ["sharp"],
+  // sharp loads its libvips binary via dlopen() at runtime, which static file
+  // tracing can't see — without this, Vercel's deployed function is missing
+  // libvips-cpp.so and every call fails with ERR_DLOPEN_FAILED.
+  outputFileTracingIncludes: {
+    "/api/image-trim": ["./node_modules/@img/**/*"],
+  },
   images: {
     remotePatterns: [
       {
