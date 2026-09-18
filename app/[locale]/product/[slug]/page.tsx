@@ -335,9 +335,10 @@ export default function ProductPage({ params }: ProductPageProps) {
                   onLoad={(e) => {
                     const el = e.currentTarget
                     if (el.naturalWidth && el.naturalHeight) {
-                      // Clamp so one extreme photo can't blow out the page layout —
-                      // still a big improvement over a fixed square for tall/wide items.
-                      setMainImageAspect(Math.min(1.4, Math.max(0.4, el.naturalWidth / el.naturalHeight)))
+                      // maxHeight on the container already stops very tall/narrow
+                      // photos (floor lamps etc.) from blowing out the page layout,
+                      // so this only needs to guard against a degenerate 0 ratio.
+                      setMainImageAspect(Math.min(1.4, Math.max(0.15, el.naturalWidth / el.naturalHeight)))
                     }
                   }}
                   onError={(e) => { (e.currentTarget as HTMLImageElement).src = PLACEHOLDER }}
@@ -351,7 +352,7 @@ export default function ProductPage({ params }: ProductPageProps) {
                   onLoad={(e) => {
                     const el = e.currentTarget
                     if (el.naturalWidth && el.naturalHeight) {
-                      setMainImageAspect(Math.min(1.4, Math.max(0.4, el.naturalWidth / el.naturalHeight)))
+                      setMainImageAspect(Math.min(1.4, Math.max(0.15, el.naturalWidth / el.naturalHeight)))
                     }
                   }}
                   onError={(e) => { (e.currentTarget as HTMLImageElement).src = PLACEHOLDER }}
