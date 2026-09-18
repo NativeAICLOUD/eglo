@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl'
 import { useParams } from 'next/navigation'
 import productImagesMap from "../data/productImages.json"
 import { formatMKD, getDiscountedPrice, trimmedImageSrc } from "../lib/api"
+import { useCart } from "../app/[locale]/context/CartContext"
 
 const PLACEHOLDER = '/placeholder.svg'
 
@@ -28,6 +29,7 @@ export default function ProductCard({
   const t = useTranslations('productCard')
   const params = useParams()
   const locale = params.locale as string
+  const { addToCart } = useCart()
 
   const map = productImagesMap as Record<string, string[]>
   const r2Images = map[productDesc?.trim()] ?? map[productSlug ?? ''] ?? []
@@ -35,6 +37,20 @@ export default function ProductCard({
 
   const hasDiscount = !!discountPercentage && discountPercentage > 0
   const finalPrice = hasDiscount ? getDiscountedPrice(price, discountPercentage) : price
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    // preventDefault stops the wrapping <Link>'s navigation directly (more
+    // reliable than stopPropagation alone, which only blocks bubbling).
+    e.preventDefault()
+    e.stopPropagation()
+    if (!productSlug) return
+    addToCart({
+      id: productSlug,
+      name: productName,
+      price: formatMKD(finalPrice),
+      image: trimmedImageSrc(resolvedImage),
+    })
+  }
 
   const cardContent = (
     <div className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer">
@@ -65,7 +81,7 @@ export default function ProductCard({
           </span>
           <button
             className="bg-teal-600 text-white text-xs sm:text-base px-2 py-1 sm:px-4 sm:py-2 rounded hover:bg-teal-700 transition-colors whitespace-nowrap"
-            onClick={(e) => e.stopPropagation()}
+            onClick={handleAddToCart}
           >
             {t('addToCart')}
           </button>

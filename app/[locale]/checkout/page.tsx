@@ -316,7 +316,7 @@ function DeliveryStep({
               <p className="text-xs text-teal-700 font-medium mt-1">
                 Бесплатна достава за сите нарачки над {formatMKD(FREE_THRESHOLD)}.
               </p>
-              <p className="text-xs text-gray-400 mt-0.5">5 работни дена</p>
+              <p className="text-xs text-gray-400 mt-0.5">2-3 работни дена</p>
             </div>
           </div>
         </button>
