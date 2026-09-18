@@ -4,7 +4,7 @@ import Link from "next/link"
 import { useTranslations } from 'next-intl'
 import { useParams } from 'next/navigation'
 import productImagesMap from "../data/productImages.json"
-import { formatMKD, getDiscountedPrice } from "../lib/api"
+import { formatMKD, getDiscountedPrice, trimmedImageSrc } from "../lib/api"
 
 const PLACEHOLDER = '/placeholder.svg'
 
@@ -40,9 +40,9 @@ export default function ProductCard({
     <div className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer">
       <div className="relative h-32 sm:h-48 bg-gray-100">
         <img
-          src={resolvedImage}
+          src={trimmedImageSrc(resolvedImage)}
           alt={productName}
-          className="block object-cover w-full h-full transition-opacity duration-300"
+          className="block object-contain object-top w-full h-full transition-opacity duration-300"
           onError={(e) => { (e.currentTarget as HTMLImageElement).src = PLACEHOLDER }}
         />
         <div className="absolute top-2 left-2 flex flex-col items-start gap-1">
