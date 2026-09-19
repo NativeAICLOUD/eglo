@@ -84,15 +84,15 @@ export function Header({ noPadding = false }: HeaderProps) {
 
   return (
     <header className="sticky top-0 z-40">
-      {/* Transform lives on this inner wrapper, not the sticky element itself —
-          combining `position: sticky` with a `transform` on the same element is
-          unreliable in Safari/WebKit and can make the header fail to render or
-          reappear correctly, especially on iOS. */}
+      {/* Collapses via max-height rather than a transform. A translateY-based
+          hide kept leaving a hairline seam on iOS Safari (a known WebKit
+          compositing artifact with transformed sticky-adjacent elements,
+          however far off-screen the math says it should be) — height
+          collapse genuinely removes the box instead of just repainting it
+          off-canvas, so there's nothing left to leave a seam. */}
       <div
-        className={`bg-white border-b border-gray-200 transition-[transform,box-shadow] duration-300 md:translate-y-0 ${
-          // Plain -100% would land the border exactly on the viewport edge instead
-          // of off-screen (visible as a thin line) — clear it with extra margin.
-          hideHeader ? '-translate-y-[calc(100%+8px)]' : 'translate-y-0'
+        className={`bg-white border-b border-gray-200 overflow-hidden md:max-h-none md:overflow-visible transition-[max-height,box-shadow] duration-300 ease-in-out ${
+          hideHeader ? 'max-h-0 border-b-0' : 'max-h-[420px]'
         }`}
         style={{ boxShadow: scrolled ? '0 2px 8px rgba(0,0,0,0.08)' : 'none' }}
       >
