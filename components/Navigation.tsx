@@ -179,18 +179,22 @@ export function Navigation({ isMobileMenuOpen, setIsMobileMenuOpen }: Navigation
             </div>
           ))}
 
-          {/* Inspiration — closes the mega-menu on hover */}
-          <Link
-            href={`/${locale}/inspiration`}
-            className={`text-[15px] font-medium tracking-[-0.01em] transition-colors pb-0.5 border-b-2 ${
-              pathname.startsWith(`/${locale}/inspiration`)
-                ? 'text-teal-600 border-teal-600'
-                : 'text-gray-500 hover:text-teal-600 border-transparent hover:border-teal-600'
-            }`}
-            onMouseEnter={() => { clearClose(); setHoveredCategory(null) }}
-          >
-            {t('inspiration')}
-          </Link>
+          {/* Inspiration — closes the mega-menu on hover. Wrapped in the same
+              bare menuitem div as the category items (rather than being a
+              lone flex-item <a>) so it shares identical box metrics and
+              can't drift out of vertical alignment with the rest of the bar. */}
+          <div role="menuitem" onMouseEnter={() => { clearClose(); setHoveredCategory(null) }}>
+            <Link
+              href={`/${locale}/inspiration`}
+              className={`text-[15px] font-medium tracking-[-0.01em] transition-colors pb-0.5 border-b-2 ${
+                pathname.startsWith(`/${locale}/inspiration`)
+                  ? 'text-teal-600 border-teal-600'
+                  : 'text-gray-500 hover:text-teal-600 border-transparent hover:border-teal-600'
+              }`}
+            >
+              {t('inspiration')}
+            </Link>
+          </div>
         </div>
       </div>
 
