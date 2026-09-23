@@ -14,6 +14,10 @@ const nextConfig: NextConfig = {
     "/api/image-trim": ["./node_modules/@img/**/*"],
   },
   images: {
+    // Vercel's image optimization quota on this plan is exhausted (402
+    // OPTIMIZED_IMAGE_REQUEST_PAYMENT_REQUIRED), which breaks every uncached
+    // <Image>. Serve images directly from their source instead.
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: "https",
