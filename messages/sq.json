@@ -468,6 +468,69 @@
   "cart": {
     "addedToCart": "është shtuar në shportë"
   },
+  "checkout": {
+    "title": "Pagesa",
+    "breadcrumb": {
+      "home": "Kryesore",
+      "cart": "Shporta",
+      "checkout": "Pagesa"
+    },
+    "steps": {
+      "cart": "Shporta",
+      "delivery": "Dërgesa",
+      "address": "Adresa",
+      "review": "Rishikim"
+    },
+    "common": {
+      "free": "Falas",
+      "continue": "Vazhdo",
+      "back": "Prapa",
+      "required": "E detyrueshme"
+    },
+    "delivery": {
+      "title": "Mënyra e dërgesës",
+      "courierDescription": "Shërbimi kurier do ta dorëzojë porosinë tuaj në adresën e dëshiruar në ditët e punës nga ora 8 deri në 16 dhe të shtunave nga ora 9 deri në 14.",
+      "freeThresholdNotice": "Dërgesë falas për të gjitha porositë mbi {amount}.",
+      "courierTime": "2-3 ditë pune",
+      "pickupTitle": "Marrje në dyqan",
+      "pickupDescription": "Merrni porosinë tuaj personalisht në dyqanin tonë."
+    },
+    "address": {
+      "shippingTitle": "Adresa e dërgesës",
+      "detailsTitle": "Të dhënat tuaja",
+      "fields": {
+        "firstName": "Emri",
+        "lastName": "Mbiemri",
+        "email": "Email",
+        "phone": "Telefoni",
+        "street": "Adresa (rruga dhe numri)",
+        "city": "Qyteti"
+      },
+      "pickupNotice": "Merrni porosinë në:"
+    },
+    "review": {
+      "products": "Produktet",
+      "quantity": "Sasia",
+      "subtotal": "Totali i produkteve",
+      "totalDue": "Totali për pagesë",
+      "placing": "Duke porositur...",
+      "placeOrder": "Bëj porosinë"
+    },
+    "summary": {
+      "title": "Përmbledhja e porosisë",
+      "total": "Totali"
+    },
+    "success": {
+      "title": "Porosia u pranua!",
+      "message": "Faleminderit për porosinë. Do të merrni konfirmimin me email së shpejti.",
+      "orderNumber": "Numri i porosisë:",
+      "continueShopping": "Vazhdo blerjen"
+    },
+    "errors": {
+      "generic": "Ndodhi një gabim. Ju lutem provoni përsëri.",
+      "status": "Gabim: {status}"
+    }
+  },
   "categoryGrid": {
     "title": "Zbuloni Asortimentin Tonë",
     "subtitle": "Eksploroni gamën tonë gjithëpërfshirëse të zgjidhjeve të ndriçimit të dizajnuara për të përmirësuar çdo hapësirë në shtëpinë tuaj",

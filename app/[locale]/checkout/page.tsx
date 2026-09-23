@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { useParams, useRouter } from "next/navigation"
+import { useTranslations } from "next-intl"
 import { ChevronLeft, Truck, Store, Check, ShoppingBag, AlertCircle } from "lucide-react"
 import { useCart, parseMKD } from "../context/CartContext"
 import { useAuth } from "../../../lib/useAuth"
@@ -29,6 +30,7 @@ export default function CheckoutPage() {
   const router = useRouter()
   const { items, getTotal, clearCart } = useCart()
   const { user } = useAuth()
+  const t = useTranslations("checkout")
 
   const [step, setStep] = useState<Step>("delivery")
   const [deliveryMethod, setDeliveryMethod] = useState<"courier" | "pickup">("courier")
@@ -73,14 +75,15 @@ export default function CheckoutPage() {
 
   // --- Address validation ---
   const validateAddress = (): boolean => {
+    const required = t("common.required")
     const errs: Partial<AddressForm> = {}
-    if (!address.firstName.trim()) errs.firstName = "Задолжително"
-    if (!address.lastName.trim()) errs.lastName = "Задолжително"
-    if (!address.email.trim()) errs.email = "Задолжително"
+    if (!address.firstName.trim()) errs.firstName = required
+    if (!address.lastName.trim()) errs.lastName = required
+    if (!address.email.trim()) errs.email = required
     if (deliveryMethod === "courier") {
-      if (!address.phone.trim()) errs.phone = "Задолжително"
-      if (!address.street.trim()) errs.street = "Задолжително"
-      if (!address.city.trim()) errs.city = "Задолжително"
+      if (!address.phone.trim()) errs.phone = required
+      if (!address.street.trim()) errs.street = required
+      if (!address.city.trim()) errs.city = required
     }
     setErrors(errs)
     return Object.keys(errs).length === 0
@@ -126,7 +129,7 @@ export default function CheckoutPage() {
 
       if (!res.ok) {
         const body = await res.json().catch(() => ({}))
-        throw new Error((body as { message?: string }).message || `Грешка: ${res.status}`)
+        throw new Error((body as { message?: string }).message || t("errors.status", { status: res.status }))
       }
 
       const data = await res.json().catch(() => ({})) as { id?: string; orderId?: string }
@@ -134,7 +137,7 @@ export default function CheckoutPage() {
       clearCart()
       setStep("success")
     } catch (err) {
-      setOrderError(err instanceof Error ? err.message : "Настана грешка. Обидете се повторно.")
+      setOrderError(err instanceof Error ? err.message : t("errors.generic"))
     } finally {
       setPlacing(false)
     }
@@ -147,16 +150,16 @@ export default function CheckoutPage() {
           <div className="w-16 h-16 rounded-full bg-teal-100 flex items-center justify-center mx-auto mb-4">
             <Check className="w-8 h-8 text-teal-600" />
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Нарачката е примена!</h2>
-          <p className="text-gray-500 mb-2">Ви благодариме за нарачката. Ќе добиете потврда по е-пошта наскоро.</p>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">{t("success.title")}</h2>
+          <p className="text-gray-500 mb-2">{t("success.message")}</p>
           {orderId && (
-            <p className="text-sm text-gray-400 mb-6">Број на нарачка: <span className="font-mono text-gray-700">{orderId}</span></p>
+            <p className="text-sm text-gray-400 mb-6">{t("success.orderNumber")} <span className="font-mono text-gray-700">{orderId}</span></p>
           )}
           <Link
             href={`/${locale}`}
             className="inline-flex items-center gap-2 px-6 py-3 bg-teal-600 hover:bg-teal-700 text-white text-sm font-semibold rounded-lg transition-colors"
           >
-            Продолжи со купување
+            {t("success.continueShopping")}
           </Link>
         </div>
       </div>
@@ -168,18 +171,18 @@ export default function CheckoutPage() {
       <div className="max-w-5xl mx-auto">
         {/* Title + breadcrumb */}
         <div className="mb-6">
-          <h1 className="text-2xl font-bold text-gray-900">Плаќање</h1>
+          <h1 className="text-2xl font-bold text-gray-900">{t("title")}</h1>
           <div className="flex items-center gap-1 text-sm text-gray-500 mt-1">
-            <Link href={`/${locale}`} className="hover:text-teal-600 transition-colors">Почетна</Link>
+            <Link href={`/${locale}`} className="hover:text-teal-600 transition-colors">{t("breadcrumb.home")}</Link>
             <span>/</span>
-            <Link href={`/${locale}/cart`} className="hover:text-teal-600 transition-colors">Кошничка</Link>
+            <Link href={`/${locale}/cart`} className="hover:text-teal-600 transition-colors">{t("breadcrumb.cart")}</Link>
             <span>/</span>
-            <span className="text-gray-700">Плаќање</span>
+            <span className="text-gray-700">{t("breadcrumb.checkout")}</span>
           </div>
         </div>
 
         {/* Step indicator */}
-        <StepIndicator currentStep={currentStepNum} locale={locale} />
+        <StepIndicator currentStep={currentStepNum} />
 
         <div className="mt-6 grid lg:grid-cols-3 gap-6 items-start">
           {/* Main content */}
@@ -230,12 +233,13 @@ export default function CheckoutPage() {
 
 // ─── Step indicator ───────────────────────────────────────────────────────────
 
-function StepIndicator({ currentStep, locale }: { currentStep: number; locale: string }) {
+function StepIndicator({ currentStep }: { currentStep: number }) {
+  const t = useTranslations("checkout.steps")
   const steps = [
-    { num: 1, label: "Кошничка", href: `/${locale}/cart` },
-    { num: 2, label: "Достава", href: null },
-    { num: 3, label: "Адреса", href: null },
-    { num: 4, label: "Преглед", href: null },
+    { num: 1, label: t("cart") },
+    { num: 2, label: t("delivery") },
+    { num: 3, label: t("address") },
+    { num: 4, label: t("review") },
   ]
   return (
     <div className="flex items-center">
@@ -272,11 +276,12 @@ function DeliveryStep({
   onContinue: () => void
   subtotal: number
 }) {
+  const t = useTranslations("checkout")
   const courierFree = subtotal >= FREE_THRESHOLD
 
   return (
     <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
-      <h2 className="text-base font-semibold text-gray-900 mb-5">Начин на достава</h2>
+      <h2 className="text-base font-semibold text-gray-900 mb-5">{t("delivery.title")}</h2>
 
       <div className="space-y-3">
         {/* Courier */}
@@ -307,16 +312,16 @@ function DeliveryStep({
                   </a>
                 </div>
                 <span className={`text-sm font-semibold ${courierFree ? "text-teal-600" : "text-gray-900"}`}>
-                  {courierFree ? "Бесплатно" : formatMKD(COURIER_COST)}
+                  {courierFree ? t("common.free") : formatMKD(COURIER_COST)}
                 </span>
               </div>
               <p className="text-xs text-gray-500 mt-1.5 leading-relaxed">
-                Куриерскиот сервис ќе ја достави вашата нарачка на саканата адреса во работните денови од 8 до 16 часот и саботите од 9 до 14 часот.
+                {t("delivery.courierDescription")}
               </p>
               <p className="text-xs text-teal-700 font-medium mt-1">
-                Бесплатна достава за сите нарачки над {formatMKD(FREE_THRESHOLD)}.
+                {t("delivery.freeThresholdNotice", { amount: formatMKD(FREE_THRESHOLD) })}
               </p>
-              <p className="text-xs text-gray-400 mt-0.5">2-3 работни дена</p>
+              <p className="text-xs text-gray-400 mt-0.5">{t("delivery.courierTime")}</p>
             </div>
           </div>
         </button>
@@ -338,11 +343,11 @@ function DeliveryStep({
               <div className="flex items-center justify-between gap-2 flex-wrap">
                 <div className="flex items-center gap-2">
                   <Store className="w-4 h-4 text-teal-600" />
-                  <span className="font-medium text-gray-900 text-sm">Преземање во продавница</span>
+                  <span className="font-medium text-gray-900 text-sm">{t("delivery.pickupTitle")}</span>
                 </div>
-                <span className="text-sm font-semibold text-teal-600">Бесплатно</span>
+                <span className="text-sm font-semibold text-teal-600">{t("common.free")}</span>
               </div>
-              <p className="text-xs text-gray-500 mt-1.5">Подигнете ја вашата нарачка лично во нашата продавница.</p>
+              <p className="text-xs text-gray-500 mt-1.5">{t("delivery.pickupDescription")}</p>
               <p className="text-xs text-gray-400 mt-0.5">{STORE_ADDRESS}</p>
             </div>
           </div>
@@ -353,7 +358,7 @@ function DeliveryStep({
         onClick={onContinue}
         className="mt-6 w-full py-3 bg-teal-600 hover:bg-teal-700 text-white text-sm font-semibold rounded-lg transition-colors"
       >
-        Продолжи
+        {t("common.continue")}
       </button>
     </div>
   )
@@ -371,28 +376,29 @@ function AddressStep({
   onBack: () => void
   onContinue: () => void
 }) {
+  const t = useTranslations("checkout")
   return (
     <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
       <h2 className="text-base font-semibold text-gray-900 mb-5">
-        {deliveryMethod === "courier" ? "Адреса на испорака" : "Ваши податоци"}
+        {deliveryMethod === "courier" ? t("address.shippingTitle") : t("address.detailsTitle")}
       </h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <Field label="Име" value={form.firstName} error={errors.firstName} onChange={v => onChange("firstName", v)} />
-        <Field label="Презиме" value={form.lastName} error={errors.lastName} onChange={v => onChange("lastName", v)} />
-        <Field label="Е-пошта" type="email" value={form.email} error={errors.email} onChange={v => onChange("email", v)} className="sm:col-span-2" />
-        <Field label="Телефон" type="tel" value={form.phone} error={errors.phone} onChange={v => onChange("phone", v)} />
+        <Field label={t("address.fields.firstName")} value={form.firstName} error={errors.firstName} onChange={v => onChange("firstName", v)} />
+        <Field label={t("address.fields.lastName")} value={form.lastName} error={errors.lastName} onChange={v => onChange("lastName", v)} />
+        <Field label={t("address.fields.email")} type="email" value={form.email} error={errors.email} onChange={v => onChange("email", v)} className="sm:col-span-2" />
+        <Field label={t("address.fields.phone")} type="tel" value={form.phone} error={errors.phone} onChange={v => onChange("phone", v)} />
 
         {deliveryMethod === "courier" && (
           <>
-            <Field label="Адреса (улица и број)" value={form.street} error={errors.street} onChange={v => onChange("street", v)} className="sm:col-span-2" />
-            <Field label="Град" value={form.city} error={errors.city} onChange={v => onChange("city", v)} />
+            <Field label={t("address.fields.street")} value={form.street} error={errors.street} onChange={v => onChange("street", v)} className="sm:col-span-2" />
+            <Field label={t("address.fields.city")} value={form.city} error={errors.city} onChange={v => onChange("city", v)} />
           </>
         )}
 
         {deliveryMethod === "pickup" && (
           <div className="sm:col-span-2 p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-800">
-            Подигнете ја нарачката на: <strong>{STORE_ADDRESS}</strong>
+            {t("address.pickupNotice")} <strong>{STORE_ADDRESS}</strong>
           </div>
         )}
       </div>
@@ -402,13 +408,13 @@ function AddressStep({
           onClick={onBack}
           className="flex items-center gap-2 px-4 py-2.5 border border-gray-200 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors"
         >
-          <ChevronLeft className="w-4 h-4" /> Назад
+          <ChevronLeft className="w-4 h-4" /> {t("common.back")}
         </button>
         <button
           onClick={onContinue}
           className="flex-1 py-2.5 bg-teal-600 hover:bg-teal-700 text-white text-sm font-semibold rounded-lg transition-colors"
         >
-          Продолжи
+          {t("common.continue")}
         </button>
       </div>
     </div>
@@ -450,11 +456,12 @@ function ReviewStep({
   placing: boolean; error: string | null
   onBack: () => void; onPlace: () => void
 }) {
+  const t = useTranslations("checkout")
   return (
     <div className="space-y-4">
       {/* Cart items */}
       <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
-        <h3 className="text-sm font-semibold text-gray-900 mb-4">Производи</h3>
+        <h3 className="text-sm font-semibold text-gray-900 mb-4">{t("review.products")}</h3>
         <div className="space-y-3">
           {items.map(item => (
             <div key={item.id} className="flex items-center gap-3">
@@ -469,7 +476,7 @@ function ReviewStep({
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm text-gray-900 line-clamp-1">{item.name}</p>
-                <p className="text-xs text-gray-500">Количина: {item.quantity}</p>
+                <p className="text-xs text-gray-500">{t("review.quantity")}: {item.quantity}</p>
               </div>
               <span className="text-sm font-medium text-gray-900 flex-shrink-0">
                 {formatMKD(parseMKD(item.price) * item.quantity)}
@@ -481,7 +488,7 @@ function ReviewStep({
 
       {/* Delivery info */}
       <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
-        <h3 className="text-sm font-semibold text-gray-900 mb-3">Начин на достава</h3>
+        <h3 className="text-sm font-semibold text-gray-900 mb-3">{t("delivery.title")}</h3>
         <div className="flex items-center gap-2 text-sm text-gray-700">
           {deliveryMethod === "courier" ? <Truck className="w-4 h-4 text-teal-600" /> : <Store className="w-4 h-4 text-teal-600" />}
           {deliveryMethod === "courier" ? (
@@ -494,13 +501,13 @@ function ReviewStep({
               ELS Post
             </a>
           ) : (
-            <span>Преземање во продавница</span>
+            <span>{t("delivery.pickupTitle")}</span>
           )}
-          <span className="ml-auto font-medium">{deliveryCost === 0 ? "Бесплатно" : formatMKD(deliveryCost)}</span>
+          <span className="ml-auto font-medium">{deliveryCost === 0 ? t("common.free") : formatMKD(deliveryCost)}</span>
         </div>
 
         <h3 className="text-sm font-semibold text-gray-900 mt-4 mb-2">
-          {deliveryMethod === "courier" ? "Адреса на испорака" : "Ваши податоци"}
+          {deliveryMethod === "courier" ? t("address.shippingTitle") : t("address.detailsTitle")}
         </h3>
         <div className="text-sm text-gray-600 space-y-0.5">
           <p>{address.firstName} {address.lastName}</p>
@@ -515,15 +522,15 @@ function ReviewStep({
       <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
         <div className="space-y-2 text-sm">
           <div className="flex justify-between text-gray-600">
-            <span>Вкупно производи</span><span>{formatMKD(subtotal)}</span>
+            <span>{t("review.subtotal")}</span><span>{formatMKD(subtotal)}</span>
           </div>
           <div className="flex justify-between text-gray-600">
-            <span>Достава</span>
-            <span>{deliveryCost === 0 ? "Бесплатно" : formatMKD(deliveryCost)}</span>
+            <span>{t("steps.delivery")}</span>
+            <span>{deliveryCost === 0 ? t("common.free") : formatMKD(deliveryCost)}</span>
           </div>
         </div>
         <div className="border-t border-gray-100 mt-3 pt-3 flex justify-between font-semibold text-base">
-          <span>Вкупно за плаќање</span>
+          <span>{t("review.totalDue")}</span>
           <span className="text-teal-600">{formatMKD(total)}</span>
         </div>
       </div>
@@ -541,14 +548,14 @@ function ReviewStep({
           disabled={placing}
           className="flex items-center gap-2 px-4 py-3 border border-gray-200 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
         >
-          <ChevronLeft className="w-4 h-4" /> Назад
+          <ChevronLeft className="w-4 h-4" /> {t("common.back")}
         </button>
         <button
           onClick={onPlace}
           disabled={placing}
           className="flex-1 py-3 bg-teal-600 hover:bg-teal-700 disabled:opacity-60 text-white text-sm font-semibold rounded-lg transition-colors"
         >
-          {placing ? "Нарачување..." : "Нарачај"}
+          {placing ? t("review.placing") : t("review.placeOrder")}
         </button>
       </div>
     </div>
@@ -563,9 +570,10 @@ function OrderSummary({
   items: ReturnType<typeof useCart>["items"]
   subtotal: number; deliveryCost: number; total: number
 }) {
+  const t = useTranslations("checkout")
   return (
     <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 sticky top-24">
-      <h2 className="text-sm font-semibold text-gray-900 mb-4">Преглед на нарачката</h2>
+      <h2 className="text-sm font-semibold text-gray-900 mb-4">{t("summary.title")}</h2>
 
       <div className="space-y-3 max-h-60 overflow-y-auto">
         {items.map(item => (
@@ -592,14 +600,14 @@ function OrderSummary({
 
       <div className="border-t border-gray-100 mt-4 pt-4 space-y-2 text-sm">
         <div className="flex justify-between text-gray-600">
-          <span>Производи</span><span>{formatMKD(subtotal)}</span>
+          <span>{t("review.products")}</span><span>{formatMKD(subtotal)}</span>
         </div>
         <div className="flex justify-between text-gray-600">
-          <span>Достава</span>
-          <span>{deliveryCost === 0 ? "Бесплатно" : formatMKD(deliveryCost)}</span>
+          <span>{t("steps.delivery")}</span>
+          <span>{deliveryCost === 0 ? t("common.free") : formatMKD(deliveryCost)}</span>
         </div>
         <div className="flex justify-between font-semibold text-base border-t border-gray-100 pt-2 mt-2">
-          <span>Вкупно</span>
+          <span>{t("summary.total")}</span>
           <span className="text-teal-600">{formatMKD(total)}</span>
         </div>
       </div>

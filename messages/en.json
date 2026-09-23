@@ -492,6 +492,69 @@
   "cart": {
     "addedToCart": "was added to cart"
   },
+  "checkout": {
+    "title": "Checkout",
+    "breadcrumb": {
+      "home": "Home",
+      "cart": "Cart",
+      "checkout": "Checkout"
+    },
+    "steps": {
+      "cart": "Cart",
+      "delivery": "Delivery",
+      "address": "Address",
+      "review": "Review"
+    },
+    "common": {
+      "free": "Free",
+      "continue": "Continue",
+      "back": "Back",
+      "required": "Required"
+    },
+    "delivery": {
+      "title": "Delivery method",
+      "courierDescription": "The courier service will deliver your order to the desired address on working days from 8am to 4pm and Saturdays from 9am to 2pm.",
+      "freeThresholdNotice": "Free delivery for all orders over {amount}.",
+      "courierTime": "2-3 business days",
+      "pickupTitle": "Pickup in store",
+      "pickupDescription": "Pick up your order in person at our store."
+    },
+    "address": {
+      "shippingTitle": "Shipping address",
+      "detailsTitle": "Your details",
+      "fields": {
+        "firstName": "First name",
+        "lastName": "Last name",
+        "email": "Email",
+        "phone": "Phone",
+        "street": "Address (street and number)",
+        "city": "City"
+      },
+      "pickupNotice": "Pick up the order at:"
+    },
+    "review": {
+      "products": "Products",
+      "quantity": "Quantity",
+      "subtotal": "Products total",
+      "totalDue": "Total to pay",
+      "placing": "Placing order...",
+      "placeOrder": "Place order"
+    },
+    "summary": {
+      "title": "Order summary",
+      "total": "Total"
+    },
+    "success": {
+      "title": "Order received!",
+      "message": "Thank you for your order. You'll receive a confirmation by email shortly.",
+      "orderNumber": "Order number:",
+      "continueShopping": "Continue shopping"
+    },
+    "errors": {
+      "generic": "An error occurred. Please try again.",
+      "status": "Error: {status}"
+    }
+  },
   "categoryGrid": {
     "title": "Discover our range",
     "subtitle": "Explore our range of lighting solutions, designed to bring style and comfort to every corner of your home.",
