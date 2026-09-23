@@ -27,6 +27,15 @@ export interface BackendProductImage {
   order?: number;
 }
 
+export interface PromoPopupSettings {
+  enabled: boolean;
+  title: string;
+  text: string;
+  imageUrl?: string | null;
+  ctaText?: string | null;
+  ctaLink?: string | null;
+}
+
 export interface BackendProduct {
   id: string;
   /** Full EGLO spec string e.g. "LED-DL SCHWARZ/WEISS 'PALMARES'" — returned as "name" by detail endpoint */
@@ -380,6 +389,39 @@ class ApiService {
     await this.request<unknown>(`/products/${productId}/images/${imageId}`, {
       method: "DELETE",
     });
+  }
+
+  async getPromoPopup(): Promise<PromoPopupSettings> {
+    return this.request<PromoPopupSettings>("/promo-popup");
+  }
+
+  async updatePromoPopup(settings: PromoPopupSettings): Promise<void> {
+    await this.request<unknown>("/promo-popup", {
+      method: "PUT",
+      body: JSON.stringify(settings),
+    });
+  }
+
+  /** Bypasses request() since FormData needs the browser to set its own
+   *  multipart Content-Type/boundary. */
+  async uploadPromoPopupImage(file: File): Promise<string> {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const token = this.getToken();
+    const res = await fetch(this.url("/promo-popup/image"), {
+      method: "POST",
+      headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+      body: formData,
+    });
+
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}));
+      throw new Error((body as { message?: string }).message ?? "Image upload failed");
+    }
+
+    const data = await res.json() as { url: string };
+    return data.url;
   }
 
   async login(credentials: LoginRequest): Promise<AuthResponse> {

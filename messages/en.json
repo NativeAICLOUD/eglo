@@ -1324,6 +1324,31 @@
       "notifications":           "Notifications",
       "emailNotifications":      "Email notifications",
       "emailNotificationsDesc":  "Receive updates about orders and activity.",
+      "promoPopup": {
+        "title":   "Promotional popup",
+        "enabled": "Enabled",
+        "loading": "Loading...",
+        "hint":    "Shown to visitors on the storefront when enabled — use it to announce an active discount or promotion.",
+        "fields": {
+          "title":              "Title",
+          "titlePlaceholder":   "e.g. 20% Off Everything!",
+          "text":               "Text",
+          "textPlaceholder":    "e.g. Save big on our entire lighting collection this week only.",
+          "ctaText":            "Button text",
+          "ctaTextPlaceholder": "e.g. Shop now",
+          "ctaLink":            "Button link",
+          "image":              "Image",
+          "uploadImage":        "Upload image",
+          "uploading":          "Uploading...",
+          "removeImage":        "Remove image"
+        },
+        "save":   "Save popup",
+        "saving": "Saving...",
+        "errors": {
+          "uploadFailed": "Image upload failed. Please try again.",
+          "saveFailed":   "Failed to save. Please try again."
+        }
+      },
       "security":                "Security",
       "localization":            "Localization",
       "saveChanges":             "Save changes",

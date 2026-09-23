@@ -4,6 +4,7 @@ import { ReactNode } from "react"
 import { usePathname } from "next/navigation"
 import { Header } from "./Header"
 import { Footer } from "./Footer"
+import { PromoPopup } from "./PromoPopup"
 
 interface EgloDefaultLayoutProps {
   children: ReactNode
@@ -39,6 +40,7 @@ export function EgloDefaultLayout({ children, noPadding = false }: EgloDefaultLa
         )}
       </main>
       <Footer noPadding={shouldHaveNoPadding} />
+      <PromoPopup />
     </div>
   )
 } 
