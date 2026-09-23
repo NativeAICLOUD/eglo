@@ -1455,6 +1455,21 @@
         "name":          "Emri",
         "slug":          "Slug",
         "subcategories": "Nënkategoritë"
+      },
+      "add": {
+        "name": "Emri",
+        "namePlaceholder": "p.sh. Llamba tavoline",
+        "slug": "Slug (URL)",
+        "slugHint": "Përdoret në link, p.sh. /category/table-lamps. Plotësohet automatikisht nga emri.",
+        "parent": "Kategoria prind",
+        "parentNone": "Asnjë — kategori kryesore",
+        "save": "Krijo kategorinë",
+        "saving": "Duke krijuar...",
+        "cancel": "Anulo",
+        "errors": {
+          "required": "Emri dhe slug-u janë të detyrueshëm.",
+          "saveFailed": "Krijimi i kategorisë dështoi. Provoni përsëri."
+        }
       }
     },
     "orders": {

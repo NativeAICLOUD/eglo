@@ -292,6 +292,14 @@ class ApiService {
     return this.request<BackendCategory[]>("/categories");
   }
 
+  async createCategory(input: { name: string; slug: string; parentId?: string | null; icon?: string | null }): Promise<string> {
+    const res = await this.request<{ id: string }>("/categories", {
+      method: "POST",
+      body: JSON.stringify({ ...input, sortOrder: 0 }),
+    });
+    return res.id;
+  }
+
   async getCategoryBySlug(slug: string): Promise<BackendCategory> {
     return this.request<BackendCategory>(`/categories/by-slug/${slug}`);
   }

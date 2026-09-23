@@ -1291,6 +1291,21 @@
         "name":          "Name",
         "slug":          "Slug",
         "subcategories": "Subcategories"
+      },
+      "add": {
+        "name": "Name",
+        "namePlaceholder": "e.g. Table lamps",
+        "slug": "Slug (URL)",
+        "slugHint": "Used in the link, e.g. /category/table-lamps. Filled in automatically from the name.",
+        "parent": "Parent category",
+        "parentNone": "None — top-level category",
+        "save": "Create category",
+        "saving": "Creating...",
+        "cancel": "Cancel",
+        "errors": {
+          "required": "Name and slug are required.",
+          "saveFailed": "Failed to create the category. Please try again."
+        }
       }
     },
     "orders": {
