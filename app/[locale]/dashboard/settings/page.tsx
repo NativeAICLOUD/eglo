@@ -132,7 +132,8 @@ export default function DashboardSettingsPage() {
           setTranslating(false)
         }
       }
-      await apiService.updatePromoPopup(toSave)
+      const updatedAt = await apiService.updatePromoPopup(toSave)
+      setPopup(prev => ({ ...prev, updatedAt }))
       setPopupSaved(true)
       setTimeout(() => setPopupSaved(false), 2500)
     } catch (err) {

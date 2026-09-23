@@ -41,6 +41,8 @@ export interface PromoPopupSettings {
   imageUrl?: string | null;
   ctaLink?: string | null;
   translations: Record<PromoPopupLocale, PromoPopupContent>;
+  /** Server version of the loaded settings; sent back on save to detect edits from another window. */
+  updatedAt?: string | null;
 }
 
 export interface BackendProduct {
@@ -410,14 +412,18 @@ class ApiService {
       imageUrl: data.imageUrl ?? null,
       ctaLink: data.ctaLink ?? null,
       translations,
+      updatedAt: data.updatedAt ?? null,
     };
   }
 
-  async updatePromoPopup(settings: PromoPopupSettings): Promise<void> {
-    await this.request<unknown>("/promo-popup", {
+  /** Returns the new server version. Rejects (409) if the settings changed since `settings.updatedAt`. */
+  async updatePromoPopup(settings: PromoPopupSettings): Promise<string | null> {
+    const { updatedAt, ...rest } = settings;
+    const res = await this.request<{ updatedAt?: string }>("/promo-popup", {
       method: "PUT",
-      body: JSON.stringify(settings),
+      body: JSON.stringify({ ...rest, expectedUpdatedAt: updatedAt ?? null }),
     });
+    return res?.updatedAt ?? null;
   }
 
   /** Machine-translates popup copy from `from` into the other popup locales (not saved). */
