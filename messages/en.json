@@ -488,8 +488,27 @@
       "categories": "Categories"
     }
   },
+  "trustStrip": {
+    "freeDelivery": "Free delivery",
+    "warranty": "2-year warranty"
+  },
   "cart": {
-    "addedToCart": "was added to cart"
+    "addedToCart": "was added to cart",
+    "title": "Cart",
+    "emptyTitle": "Your cart is empty",
+    "emptyText": "Browse our products and add something to your cart.",
+    "browseProducts": "Browse products",
+    "product": "Product",
+    "price": "Price",
+    "quantity": "Quantity",
+    "total": "Total",
+    "remove": "Remove",
+    "continueShopping": "← Continue shopping",
+    "subtotal": "Products total",
+    "delivery": "Delivery",
+    "deliveryAtCheckout": "Calculated at checkout",
+    "freeDeliveryHint": "Add <strong>{amount}</strong> more for free delivery.",
+    "proceedToCheckout": "Proceed to checkout"
   },
   "checkout": {
     "title": "Checkout",

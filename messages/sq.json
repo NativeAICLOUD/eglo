@@ -464,8 +464,27 @@
       "logout": "Dil"
     }
   },
+  "trustStrip": {
+    "freeDelivery": "Dërgesë falas",
+    "warranty": "2 vjet garanci"
+  },
   "cart": {
-    "addedToCart": "është shtuar në shportë"
+    "addedToCart": "është shtuar në shportë",
+    "title": "Shporta",
+    "emptyTitle": "Shporta është bosh",
+    "emptyText": "Shfletoni produktet tona dhe shtoni diçka në shportë.",
+    "browseProducts": "Shfleto produktet",
+    "product": "Produkti",
+    "price": "Çmimi",
+    "quantity": "Sasia",
+    "total": "Totali",
+    "remove": "Hiq",
+    "continueShopping": "← Vazhdo blerjen",
+    "subtotal": "Totali i produkteve",
+    "delivery": "Dërgesa",
+    "deliveryAtCheckout": "Llogaritet në pagesë",
+    "freeDeliveryHint": "Shtoni edhe <strong>{amount}</strong> për dërgesë falas.",
+    "proceedToCheckout": "Vazhdo te pagesa"
   },
   "checkout": {
     "title": "Pagesa",

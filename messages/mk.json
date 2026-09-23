@@ -455,8 +455,27 @@
       "categories": "Категории"
     }
   },
+  "trustStrip": {
+    "freeDelivery": "Бесплатна достава",
+    "warranty": "2 години гаранција"
+  },
   "cart": {
-    "addedToCart": "е додадено во количката"
+    "addedToCart": "е додадено во количката",
+    "title": "Кошничка",
+    "emptyTitle": "Кошничката е празна",
+    "emptyText": "Разгледајте ги нашите производи и додајте нешто во кошничката.",
+    "browseProducts": "Разгледај производи",
+    "product": "Производ",
+    "price": "Цена",
+    "quantity": "Количина",
+    "total": "Вкупно",
+    "remove": "Отстрани",
+    "continueShopping": "← Продолжи со купување",
+    "subtotal": "Вкупно производи",
+    "delivery": "Достава",
+    "deliveryAtCheckout": "Пресметана при наплата",
+    "freeDeliveryHint": "Додај уште <strong>{amount}</strong> за бесплатна достава.",
+    "proceedToCheckout": "Продолжи кон плаќање"
   },
   "checkout": {
     "title": "Плаќање",

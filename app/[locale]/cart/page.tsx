@@ -4,6 +4,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { Minus, Plus, Trash2, ShoppingBag } from "lucide-react"
 import { useParams, useRouter } from "next/navigation"
+import { useTranslations } from "next-intl"
 import { useCart } from "../context/CartContext"
 import { formatMKD } from "../../../lib/api"
 import { parseMKD } from "../context/CartContext"
@@ -11,6 +12,8 @@ import { parseMKD } from "../context/CartContext"
 export default function CartPage() {
   const { locale } = useParams() as { locale: string }
   const router = useRouter()
+  const t = useTranslations("cart")
+  const tc = useTranslations("checkout")
   const { items, removeFromCart, updateQuantity, getTotal } = useCart()
 
   const subtotal = getTotal()
@@ -21,13 +24,13 @@ export default function CartPage() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
         <div className="text-center max-w-sm">
           <ShoppingBag className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">Кошничката е празна</h2>
-          <p className="text-gray-500 mb-6">Разгледајте ги нашите производи и додајте нешто во кошничката.</p>
+          <h2 className="text-xl font-semibold text-gray-900 mb-2">{t("emptyTitle")}</h2>
+          <p className="text-gray-500 mb-6">{t("emptyText")}</p>
           <Link
             href={`/${locale}`}
             className="inline-flex items-center gap-2 px-6 py-3 bg-teal-600 hover:bg-teal-700 text-white text-sm font-medium rounded-lg transition-colors"
           >
-            Разгледај производи
+            {t("browseProducts")}
           </Link>
         </div>
       </div>
@@ -39,11 +42,11 @@ export default function CartPage() {
       <div className="max-w-5xl mx-auto">
         {/* Breadcrumb / title */}
         <div className="mb-6">
-          <h1 className="text-2xl font-bold text-gray-900">Кошничка</h1>
+          <h1 className="text-2xl font-bold text-gray-900">{t("title")}</h1>
           <div className="flex items-center gap-1 text-sm text-gray-500 mt-1">
-            <Link href={`/${locale}`} className="hover:text-teal-600 transition-colors">Почетна</Link>
+            <Link href={`/${locale}`} className="hover:text-teal-600 transition-colors">{tc("breadcrumb.home")}</Link>
             <span>/</span>
-            <span className="text-gray-700">Кошничка</span>
+            <span className="text-gray-700">{t("title")}</span>
           </div>
         </div>
 
@@ -56,10 +59,10 @@ export default function CartPage() {
             <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
               {/* Header */}
               <div className="hidden sm:grid grid-cols-12 gap-4 px-6 py-3 bg-gray-50 border-b border-gray-100 text-xs font-semibold uppercase tracking-wide text-gray-500">
-                <div className="col-span-6">Производ</div>
-                <div className="col-span-2 text-center">Цена</div>
-                <div className="col-span-2 text-center">Количина</div>
-                <div className="col-span-2 text-right">Вкупно</div>
+                <div className="col-span-6">{t("product")}</div>
+                <div className="col-span-2 text-center">{t("price")}</div>
+                <div className="col-span-2 text-center">{t("quantity")}</div>
+                <div className="col-span-2 text-right">{t("total")}</div>
               </div>
 
               {/* Items */}
@@ -86,7 +89,7 @@ export default function CartPage() {
                           onClick={() => removeFromCart(item.id)}
                           className="flex items-center gap-1 mt-1 text-xs text-red-500 hover:text-red-700 transition-colors"
                         >
-                          <Trash2 className="w-3 h-3" /> Отстрани
+                          <Trash2 className="w-3 h-3" /> {t("remove")}
                         </button>
                       </div>
                     </div>
@@ -127,7 +130,7 @@ export default function CartPage() {
                 href={`/${locale}`}
                 className="text-sm text-teal-600 hover:text-teal-700 font-medium transition-colors"
               >
-                ← Продолжи со купување
+                {t("continueShopping")}
               </Link>
             </div>
           </div>
@@ -135,27 +138,30 @@ export default function CartPage() {
           {/* Order summary */}
           <div className="lg:col-span-1">
             <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 sticky top-24">
-              <h2 className="text-base font-semibold text-gray-900 mb-4">Резиме на нарачката</h2>
+              <h2 className="text-base font-semibold text-gray-900 mb-4">{tc("summary.title")}</h2>
 
               <div className="space-y-3 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Вкупно производи</span>
+                  <span className="text-gray-600">{t("subtotal")}</span>
                   <span className="font-medium">{formatMKD(subtotal)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Достава</span>
-                  <span className="text-gray-500">Пресметана при наплата</span>
+                  <span className="text-gray-600">{t("delivery")}</span>
+                  <span className="text-gray-500">{t("deliveryAtCheckout")}</span>
                 </div>
               </div>
 
               {subtotal < FREE_DELIVERY_THRESHOLD && (
                 <p className="mt-3 text-xs text-teal-700 bg-teal-50 rounded-lg px-3 py-2">
-                  Додај уште <strong>{formatMKD(FREE_DELIVERY_THRESHOLD - subtotal)}</strong> за бесплатна достава.
+                  {t.rich("freeDeliveryHint", {
+                    amount: formatMKD(FREE_DELIVERY_THRESHOLD - subtotal),
+                    strong: chunks => <strong>{chunks}</strong>,
+                  })}
                 </p>
               )}
 
               <div className="border-t border-gray-100 mt-4 pt-4 flex justify-between font-semibold text-base">
-                <span>Вкупно</span>
+                <span>{tc("summary.total")}</span>
                 <span>{formatMKD(subtotal)}</span>
               </div>
 
@@ -163,7 +169,7 @@ export default function CartPage() {
                 onClick={() => router.push(`/${locale}/checkout`)}
                 className="mt-5 w-full py-3 bg-teal-600 hover:bg-teal-700 text-white text-sm font-semibold rounded-lg transition-colors"
               >
-                Продолжи кон плаќање
+                {t("proceedToCheckout")}
               </button>
             </div>
           </div>
@@ -174,11 +180,12 @@ export default function CartPage() {
 }
 
 function StepIndicator({ currentStep, locale }: { currentStep: number; locale: string }) {
+  const t = useTranslations("checkout.steps")
   const steps = [
-    { num: 1, label: "Кошничка", href: `/${locale}/cart` },
-    { num: 2, label: "Достава", href: null },
-    { num: 3, label: "Адреса", href: null },
-    { num: 4, label: "Преглед", href: null },
+    { num: 1, label: t("cart"), href: `/${locale}/cart` },
+    { num: 2, label: t("delivery"), href: null },
+    { num: 3, label: t("address"), href: null },
+    { num: 4, label: t("review"), href: null },
   ]
 
   return (
