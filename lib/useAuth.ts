@@ -63,7 +63,8 @@ export function useAuth() {
     }
 
     const decoded = decodeJWT(token);
-    if (!decoded) {
+    const expired = typeof decoded?.exp === "number" && decoded.exp * 1000 <= Date.now();
+    if (!decoded || expired) {
       apiService.removeToken();
       apiService.removeUserEmail();
       setAuth((s) => ({ ...s, isAuthenticated: false, isLoading: false, initialized: true }));

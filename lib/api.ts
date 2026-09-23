@@ -268,6 +268,7 @@ class ApiService {
     const res = await fetch(url, { ...options, headers });
 
     if (!res.ok) {
+      if (res.status === 401 && token && !endpoint.startsWith("/auth/")) this.handleUnauthorized();
       let body: unknown = {};
       try {
         body = await res.json();
@@ -394,6 +395,7 @@ class ApiService {
     });
 
     if (!res.ok) {
+      if (res.status === 401 && token) this.handleUnauthorized();
       const body = await res.json().catch(() => ({}));
       throw new Error((body as { message?: string }).message ?? "Image upload failed");
     }
@@ -459,6 +461,7 @@ class ApiService {
     });
 
     if (!res.ok) {
+      if (res.status === 401 && token) this.handleUnauthorized();
       const body = await res.json().catch(() => ({}));
       throw new Error((body as { message?: string }).message ?? "Image upload failed");
     }
@@ -504,6 +507,15 @@ class ApiService {
   }
 
   // --------------------------- Token helpers ---------------------------------
+  /** The stored login was rejected (expired) — clear it and send the user to log in again. */
+  private handleUnauthorized(): void {
+    if (typeof window === "undefined") return;
+    this.removeToken();
+    this.removeUserEmail();
+    const locale = window.location.pathname.split("/")[1] || "mk";
+    window.location.href = `/${locale}/login`;
+  }
+
   setToken(token: string): void {
     if (typeof window !== "undefined") {
       localStorage.setItem("auth_token", token);
