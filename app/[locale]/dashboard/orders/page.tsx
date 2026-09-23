@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { ShoppingCart, ChevronDown, ChevronUp, Truck, Store, RefreshCw } from "lucide-react"
+import { ShoppingCart, ChevronDown, ChevronUp, Truck, Store, RefreshCw, Trash2 } from "lucide-react"
 import { useTranslations } from "next-intl"
 
 interface OrderItem {
@@ -52,6 +52,9 @@ export default function DashboardOrdersPage() {
   const [expanded, setExpanded] = useState<string | null>(null)
   const [updatingId, setUpdatingId] = useState<string | null>(null)
   const [statusError, setStatusError] = useState<string | null>(null)
+  const [selected, setSelected] = useState<Set<string>>(new Set())
+  const [confirmDelete, setConfirmDelete] = useState<string[] | null>(null)
+  const [deleting, setDeleting] = useState(false)
 
   const fetchOrders = async () => {
     setLoading(true)
@@ -96,6 +99,45 @@ export default function DashboardOrdersPage() {
       setStatusError(e instanceof Error ? e.message : t("statusUpdateError"))
     } finally {
       setUpdatingId(null)
+    }
+  }
+
+  const toggleSelected = (id: string) =>
+    setSelected(prev => {
+      const next = new Set(prev)
+      if (next.has(id)) next.delete(id)
+      else next.add(id)
+      return next
+    })
+
+  const allSelected = orders.length > 0 && orders.every(o => selected.has(o.id))
+  const toggleAll = () => setSelected(allSelected ? new Set() : new Set(orders.map(o => o.id)))
+  const selectCancelled = () => setSelected(new Set(orders.filter(o => o.status === "Cancelled").map(o => o.id)))
+
+  const deleteOrders = async (ids: string[]) => {
+    setDeleting(true)
+    setStatusError(null)
+    try {
+      const token = typeof window !== "undefined" ? localStorage.getItem("auth_token") : null
+      const res = await fetch("/api/orders/delete", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({ ids }),
+      })
+      if (res.status === 401) throw new Error(t("sessionExpired"))
+      if (res.status === 403) throw new Error(t("delete.forbidden"))
+      if (!res.ok) throw new Error(t("errorStatus", { status: res.status }))
+      setOrders(prev => prev.filter(o => !ids.includes(o.id)))
+      setSelected(prev => new Set([...prev].filter(id => !ids.includes(id))))
+      if (expanded && ids.includes(expanded)) setExpanded(null)
+    } catch (e) {
+      setStatusError(e instanceof Error ? e.message : t("delete.error"))
+    } finally {
+      setDeleting(false)
+      setConfirmDelete(null)
     }
   }
 
@@ -158,6 +200,30 @@ export default function DashboardOrdersPage() {
         </div>
       ) : (
         <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+          {/* Selection toolbar */}
+          <div className="flex flex-wrap items-center gap-3 px-6 py-3 border-b border-gray-100">
+            <label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
+              <input type="checkbox" checked={allSelected} onChange={toggleAll} className="w-4 h-4 accent-teal-600" />
+              {t("delete.selectAll")}
+            </label>
+            <button
+              onClick={selectCancelled}
+              className="text-sm text-teal-600 hover:text-teal-700 font-medium"
+            >
+              {t("delete.selectCancelled")}
+            </button>
+            {selected.size > 0 && (
+              <button
+                onClick={() => setConfirmDelete([...selected])}
+                disabled={deleting}
+                className="ml-auto flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-lg transition-colors disabled:opacity-60"
+              >
+                <Trash2 className="w-4 h-4" />
+                {t("delete.deleteSelected", { count: selected.size })}
+              </button>
+            )}
+          </div>
+
           {/* Table header */}
           <div className="hidden md:grid grid-cols-12 gap-4 px-6 py-3 bg-gray-50 border-b border-gray-100 text-xs font-semibold uppercase tracking-wide text-gray-500">
             <div className="col-span-3">{t("table.customer")}</div>
@@ -179,12 +245,22 @@ export default function DashboardOrdersPage() {
                 className="w-full text-left grid grid-cols-12 gap-4 px-6 py-4 hover:bg-gray-50 transition-colors items-center cursor-pointer"
               >
                 {/* Customer */}
-                <div className="col-span-10 md:col-span-3">
-                  <p className="text-sm font-medium text-gray-900 truncate">
-                    {order.customerName || order.customerEmail}
-                  </p>
-                  <p className="text-xs text-gray-400 truncate">{order.customerEmail}</p>
-                  <p className="text-xs text-gray-400 font-mono md:hidden">{order.id.slice(0, 8)}…</p>
+                <div className="col-span-10 md:col-span-3 flex items-start gap-3 min-w-0">
+                  <input
+                    type="checkbox"
+                    checked={selected.has(order.id)}
+                    onChange={() => toggleSelected(order.id)}
+                    onClick={e => e.stopPropagation()}
+                    className="mt-0.5 w-4 h-4 accent-teal-600 flex-shrink-0"
+                    aria-label={t("delete.select")}
+                  />
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium text-gray-900 truncate">
+                      {order.customerName || order.customerEmail}
+                    </p>
+                    <p className="text-xs text-gray-400 truncate">{order.customerEmail}</p>
+                    <p className="text-xs text-gray-400 font-mono md:hidden">{order.id.slice(0, 8)}…</p>
+                  </div>
                 </div>
 
                 {/* Date */}
@@ -253,6 +329,14 @@ export default function DashboardOrdersPage() {
                           </select>
                         </p>
                       </div>
+                      <button
+                        onClick={() => setConfirmDelete([order.id])}
+                        disabled={deleting}
+                        className="mt-4 flex items-center gap-1.5 text-sm font-medium text-red-600 hover:text-red-700 disabled:opacity-60"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                        {t("delete.deleteOrder")}
+                      </button>
                     </div>
 
                     {/* Items */}
@@ -280,6 +364,36 @@ export default function DashboardOrdersPage() {
               )}
             </div>
           ))}
+        </div>
+      )}
+
+      {confirmDelete && (
+        <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4" onClick={() => !deleting && setConfirmDelete(null)}>
+          <div className="bg-white rounded-xl shadow-xl w-full max-w-sm p-6" onClick={e => e.stopPropagation()}>
+            <div className="w-11 h-11 rounded-full bg-red-50 flex items-center justify-center mb-4">
+              <Trash2 className="w-5 h-5 text-red-600" />
+            </div>
+            <h2 className="text-base font-semibold text-gray-900">
+              {t("delete.confirmTitle", { count: confirmDelete.length })}
+            </h2>
+            <p className="text-sm text-gray-500 mt-1">{t("delete.confirmText")}</p>
+            <div className="flex justify-end gap-2 mt-6">
+              <button
+                onClick={() => setConfirmDelete(null)}
+                disabled={deleting}
+                className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-800"
+              >
+                {t("delete.cancel")}
+              </button>
+              <button
+                onClick={() => deleteOrders(confirmDelete)}
+                disabled={deleting}
+                className="px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-lg disabled:opacity-60"
+              >
+                {deleting ? t("delete.deleting") : t("delete.confirm")}
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

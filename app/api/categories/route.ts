@@ -1,3 +1,5 @@
+import { forwardToApi } from "../../../lib/proxy"
+
 const INTERNAL_API_URL =
   process.env.INTERNAL_API_URL ??
   "https://nativeapi-h8e7h4cgc6gpgbea.northeurope-01.azurewebsites.net/api"
@@ -13,4 +15,8 @@ export async function GET() {
       { status: 500 }
     )
   }
+}
+
+export async function POST(request: Request) {
+  return forwardToApi(request, "/categories", "POST")
 }
