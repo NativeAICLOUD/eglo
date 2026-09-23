@@ -99,7 +99,7 @@ export function Header({ noPadding = false }: HeaderProps) {
       {/* Top Bar */}
       <div className={`bg-white px-4 overflow-hidden transition-all duration-300 ${scrolled ? 'max-h-0 py-0' : 'max-h-16 py-2'}`}>
         <div className="max-w-7xl mx-auto flex items-center justify-between text-[13px] font-normal text-slate-600">
-          {/* Left — store & support links */}
+          {/* Left — store link */}
           <div className="flex items-center gap-3">
             <a
               href="https://www.google.com/maps?gs_lcrp=EgZjaHJvbWUqCAgBEAAYFhgeMgYIABBFGDkyCAgBEAAYFhgeMg0IAhAAGIsDGIAEGKIEMg0IAxAAGIsDGIAEGKIEMgoIBBAAGIsDGO8FMgoIBRAAGIsDGO8FMgoIBhAAGIsDGO8F0gEINjE3NWoxajeoAgCwAgA&um=1&ie=UTF-8&fb=1&gl=mk&sa=X&geocode=Ke9lSzamFVQTMWF7CnsiBhyj&daddr=Ul.+Mesta+br.16,+Skopje+1000"
@@ -109,10 +109,6 @@ export function Header({ noPadding = false }: HeaderProps) {
             >
               <MapPin className="w-3.5 h-3.5 flex-shrink-0" />
               <span>{t("topBar.findStore")}</span>
-            </a>
-            <span className="text-slate-300 hidden md:inline">|</span>
-            <a href="mailto:info-macedonia@eglo.com" className="hidden md:inline hover:text-teal-600 transition-colors">
-              {t("topBar.customerSupport")}
             </a>
           </div>
 

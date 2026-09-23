@@ -27,13 +27,20 @@ export interface BackendProductImage {
   order?: number;
 }
 
-export interface PromoPopupSettings {
-  enabled: boolean;
+export const PROMO_POPUP_LOCALES = ["mk", "en", "sq"] as const;
+export type PromoPopupLocale = typeof PROMO_POPUP_LOCALES[number];
+
+export interface PromoPopupContent {
   title: string;
   text: string;
-  imageUrl?: string | null;
   ctaText?: string | null;
+}
+
+export interface PromoPopupSettings {
+  enabled: boolean;
+  imageUrl?: string | null;
   ctaLink?: string | null;
+  translations: Record<PromoPopupLocale, PromoPopupContent>;
 }
 
 export interface BackendProduct {
@@ -392,13 +399,35 @@ class ApiService {
   }
 
   async getPromoPopup(): Promise<PromoPopupSettings> {
-    return this.request<PromoPopupSettings>("/promo-popup");
+    const data = await this.request<Partial<PromoPopupSettings>>("/promo-popup");
+    const translations = {} as Record<PromoPopupLocale, PromoPopupContent>;
+    for (const locale of PROMO_POPUP_LOCALES) {
+      const c = data.translations?.[locale];
+      translations[locale] = { title: c?.title ?? "", text: c?.text ?? "", ctaText: c?.ctaText ?? null };
+    }
+    return {
+      enabled: data.enabled ?? false,
+      imageUrl: data.imageUrl ?? null,
+      ctaLink: data.ctaLink ?? null,
+      translations,
+    };
   }
 
   async updatePromoPopup(settings: PromoPopupSettings): Promise<void> {
     await this.request<unknown>("/promo-popup", {
       method: "PUT",
       body: JSON.stringify(settings),
+    });
+  }
+
+  /** Machine-translates popup copy from `from` into the other popup locales (not saved). */
+  async translatePromoPopup(
+    from: PromoPopupLocale,
+    content: PromoPopupContent,
+  ): Promise<Record<PromoPopupLocale, PromoPopupContent>> {
+    return this.request<Record<PromoPopupLocale, PromoPopupContent>>("/promo-popup/translate", {
+      method: "POST",
+      body: JSON.stringify({ from, content }),
     });
   }
 

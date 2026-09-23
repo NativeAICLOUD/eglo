@@ -197,7 +197,6 @@
   "header": {
     "topBar": {
       "findStore": "Store Locator",
-      "customerSupport": "Customer Support",
       "freeShipping": "",
       "freeShippingMobile": ""
     },
@@ -1342,11 +1341,17 @@
           "uploading":          "Uploading...",
           "removeImage":        "Remove image"
         },
+        "translate":          "Translate from {language}",
+        "translating":        "Translating...",
+        "translateHint":      "Write the popup in one language — empty languages are translated automatically when you save. Check each tab and adjust if needed.",
+        "missingTranslation": "Not filled in yet",
         "save":   "Save popup",
         "saving": "Saving...",
         "errors": {
-          "uploadFailed": "Image upload failed. Please try again.",
-          "saveFailed":   "Failed to save. Please try again."
+          "uploadFailed":       "Image upload failed. Please try again.",
+          "saveFailed":         "Failed to save. Please try again.",
+          "translateFailed":    "Automatic translation failed. Please try again or translate manually.",
+          "nothingToTranslate": "Enter a title or text in this language first."
         }
       },
       "security":                "Security",

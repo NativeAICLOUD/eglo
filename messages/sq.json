@@ -197,7 +197,6 @@
   "header": {
     "topBar": {
       "findStore": "Lokacioni",
-      "customerSupport": "Mbështetje për Klientët",
       "freeShipping": "",
       "freeShippingMobile": ""
     },
@@ -1488,6 +1487,37 @@
       "notifications":           "Njoftimet",
       "emailNotifications":      "Njoftimet me email",
       "emailNotificationsDesc":  "Merrni përditësime për porositë dhe aktivitetet.",
+      "promoPopup": {
+        "title":   "Popup promovues",
+        "enabled": "Aktiv",
+        "loading": "Duke u ngarkuar...",
+        "hint":    "U shfaqet vizitorëve të dyqanit kur është aktiv — përdoreni për të njoftuar një zbritje ose promovim aktiv.",
+        "fields": {
+          "title":              "Titulli",
+          "titlePlaceholder":   "p.sh. 20% zbritje për gjithçka!",
+          "text":               "Teksti",
+          "textPlaceholder":    "p.sh. Kurseni në të gjithë koleksionin e ndriçimit vetëm këtë javë.",
+          "ctaText":            "Teksti i butonit",
+          "ctaTextPlaceholder": "p.sh. Bli tani",
+          "ctaLink":            "Linku i butonit",
+          "image":              "Imazhi",
+          "uploadImage":        "Ngarko imazh",
+          "uploading":          "Duke u ngarkuar...",
+          "removeImage":        "Hiq imazhin"
+        },
+        "translate":          "Përkthe nga {language}",
+        "translating":        "Duke përkthyer...",
+        "translateHint":      "Shkruajeni popup-in në një gjuhë — gjuhët e zbrazëta përkthehen automatikisht kur ruani. Kontrolloni çdo skedë dhe rregulloni nëse duhet.",
+        "missingTranslation": "Ende e paplotësuar",
+        "save":   "Ruaj popup-in",
+        "saving": "Duke ruajtur...",
+        "errors": {
+          "uploadFailed":       "Ngarkimi i imazhit dështoi. Provoni përsëri.",
+          "saveFailed":         "Ruajtja dështoi. Provoni përsëri.",
+          "translateFailed":    "Përkthimi automatik dështoi. Provoni përsëri ose përktheni manualisht.",
+          "nothingToTranslate": "Së pari shkruani një titull ose tekst në këtë gjuhë."
+        }
+      },
       "security":                "Siguria",
       "localization":            "Lokalizimi",
       "saveChanges":             "Ruaj ndryshimet",

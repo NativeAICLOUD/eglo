@@ -2,22 +2,40 @@
 
 import { useState, useEffect } from "react"
 import { usePathname } from "next/navigation"
+import { useLocale } from "next-intl"
 import Image from "next/image"
 import Link from "next/link"
 import { X } from "lucide-react"
-import { apiService, PromoPopupSettings } from "../lib/api"
+import { apiService, PromoPopupContent, PROMO_POPUP_LOCALES, PromoPopupLocale } from "../lib/api"
 
 const SHOW_DELAY_MS = 1200
 
+interface DisplayedPopup extends PromoPopupContent {
+  imageUrl?: string | null
+  ctaLink?: string | null
+}
+
 // Dismissal is remembered per popup *content* (not just "ever dismissed"), so
-// changing the promo in the dashboard shows it again even to returning visitors.
-function dismissalKey(popup: PromoPopupSettings): string {
-  return `promoPopupDismissed:${popup.title}|${popup.text}|${popup.ctaLink ?? ""}`
+// changing anything in the dashboard — including the image — shows it again.
+function dismissalKey(popup: DisplayedPopup): string {
+  return `promoPopupDismissed:${popup.title}|${popup.text}|${popup.ctaText ?? ""}|${popup.ctaLink ?? ""}|${popup.imageUrl ?? ""}`
+}
+
+function hasContent(c: PromoPopupContent | undefined): c is PromoPopupContent {
+  return !!c && (!!c.title.trim() || !!c.text.trim())
+}
+
+// Links are authored with a locale prefix (e.g. /mk/category/...); point them at
+// the visitor's current locale instead.
+function localizeLink(link: string | null | undefined, locale: string): string | null | undefined {
+  if (!link) return link
+  return link.replace(new RegExp(`^/(${PROMO_POPUP_LOCALES.join("|")})(?=/|$)`), `/${locale}`)
 }
 
 export function PromoPopup() {
   const pathname = usePathname()
-  const [popup, setPopup] = useState<PromoPopupSettings | null>(null)
+  const locale = useLocale()
+  const [popup, setPopup] = useState<DisplayedPopup | null>(null)
   const [visible, setVisible] = useState(false)
 
   // Never interrupt an active checkout/cart flow.
@@ -29,14 +47,22 @@ export function PromoPopup() {
     apiService.getPromoPopup()
       .then(settings => {
         if (cancelled || !settings.enabled) return
-        if (!settings.title.trim() && !settings.text.trim()) return
-        if (typeof window !== "undefined" && sessionStorage.getItem(dismissalKey(settings))) return
-        setPopup(settings)
+        // Visitor's language first, then Macedonian, then whatever has content.
+        const order = [locale as PromoPopupLocale, "mk" as const, ...PROMO_POPUP_LOCALES]
+        const content = order.map(l => settings.translations[l]).find(hasContent)
+        if (!content) return
+        const displayed: DisplayedPopup = {
+          ...content,
+          imageUrl: settings.imageUrl,
+          ctaLink: localizeLink(settings.ctaLink, locale),
+        }
+        if (typeof window !== "undefined" && sessionStorage.getItem(dismissalKey(displayed))) return
+        setPopup(displayed)
         setTimeout(() => { if (!cancelled) setVisible(true) }, SHOW_DELAY_MS)
       })
       .catch(() => {})
     return () => { cancelled = true }
-  }, [suppressed])
+  }, [suppressed, locale])
 
   const dismiss = () => {
     if (popup) sessionStorage.setItem(dismissalKey(popup), "1")

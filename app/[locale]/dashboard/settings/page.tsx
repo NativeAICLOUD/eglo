@@ -3,9 +3,15 @@
 import { useState, useEffect, useRef } from "react"
 import { useTranslations } from "next-intl"
 import Image from "next/image"
-import { Bell, Shield, Globe, Check, Megaphone, Upload, ImageOff, X } from "lucide-react"
+import { Bell, Shield, Globe, Check, Megaphone, Upload, ImageOff, X, Languages } from "lucide-react"
 import { useDashboardLocale } from "../../../../components/providers/DashboardLocaleProvider"
-import { apiService, PromoPopupSettings } from "../../../../lib/api"
+import {
+  apiService,
+  PromoPopupSettings,
+  PromoPopupContent,
+  PromoPopupLocale,
+  PROMO_POPUP_LOCALES,
+} from "../../../../lib/api"
 import { Input } from "../../../../components/Input"
 
 const LOCALES = [
@@ -14,13 +20,23 @@ const LOCALES = [
   { code: "sq", label: "Shqip" },
 ] as const
 
+const POPUP_LOCALE_LABELS: Record<PromoPopupLocale, string> = {
+  mk: "Македонски",
+  en: "English",
+  sq: "Shqip",
+}
+
+const EMPTY_CONTENT: PromoPopupContent = { title: "", text: "", ctaText: null }
+
 const EMPTY_POPUP: PromoPopupSettings = {
   enabled: false,
-  title: "",
-  text: "",
   imageUrl: null,
-  ctaText: null,
   ctaLink: null,
+  translations: { mk: EMPTY_CONTENT, en: EMPTY_CONTENT, sq: EMPTY_CONTENT },
+}
+
+function isContentEmpty(c: PromoPopupContent): boolean {
+  return !c.title.trim() && !c.text.trim() && !(c.ctaText ?? "").trim()
 }
 
 export default function DashboardSettingsPage() {
@@ -35,6 +51,8 @@ export default function DashboardSettingsPage() {
   const [popupSaved, setPopupSaved] = useState(false)
   const [popupError, setPopupError] = useState<string | null>(null)
   const [uploadingImage, setUploadingImage] = useState(false)
+  const [popupLang, setPopupLang] = useState<PromoPopupLocale>("mk")
+  const [translating, setTranslating] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -64,12 +82,57 @@ export default function DashboardSettingsPage() {
     }
   }
 
+  const content = popup.translations[popupLang]
+
+  const setContent = (patch: Partial<PromoPopupContent>) =>
+    setPopup(prev => ({
+      ...prev,
+      translations: { ...prev.translations, [popupLang]: { ...prev.translations[popupLang], ...patch } },
+    }))
+
+  /** Translates the active language into the others, overwriting them. */
+  const handleTranslate = async () => {
+    if (isContentEmpty(content)) {
+      setPopupError(t("settings.promoPopup.errors.nothingToTranslate"))
+      return
+    }
+    setTranslating(true)
+    setPopupError(null)
+    try {
+      const translated = await apiService.translatePromoPopup(popupLang, content)
+      setPopup(prev => ({ ...prev, translations: { ...prev.translations, ...translated, [popupLang]: content } }))
+    } catch (err) {
+      setPopupError(err instanceof Error ? err.message : t("settings.promoPopup.errors.translateFailed"))
+    } finally {
+      setTranslating(false)
+    }
+  }
+
   const handleSavePopup = async () => {
     setPopupSaving(true)
     setPopupError(null)
     setPopupSaved(false)
     try {
-      await apiService.updatePromoPopup(popup)
+      // Languages left empty are filled by machine translation from the one being edited
+      // (or, if that one is empty too, the first language that has content).
+      let toSave = popup
+      const emptyLocales = PROMO_POPUP_LOCALES.filter(l => isContentEmpty(popup.translations[l]))
+      const source = !isContentEmpty(popup.translations[popupLang])
+        ? popupLang
+        : PROMO_POPUP_LOCALES.find(l => !isContentEmpty(popup.translations[l]))
+      if (source && emptyLocales.length > 0) {
+        setTranslating(true)
+        try {
+          const translated = await apiService.translatePromoPopup(source, popup.translations[source])
+          const translations = { ...popup.translations }
+          for (const l of emptyLocales) translations[l] = translated[l]
+          toSave = { ...popup, translations }
+          setPopup(toSave)
+        } finally {
+          setTranslating(false)
+        }
+      }
+      await apiService.updatePromoPopup(toSave)
       setPopupSaved(true)
       setTimeout(() => setPopupSaved(false), 2500)
     } catch (err) {
@@ -141,11 +204,47 @@ export default function DashboardSettingsPage() {
           <div className="px-6 py-4 space-y-4">
             <p className="text-xs text-gray-400 -mt-1">{t("settings.promoPopup.hint")}</p>
 
+            <div className="space-y-2">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div className="flex gap-1 bg-gray-100 rounded-lg p-1">
+                  {PROMO_POPUP_LOCALES.map(l => (
+                    <button
+                      key={l}
+                      type="button"
+                      onClick={() => setPopupLang(l)}
+                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-colors
+                        ${popupLang === l ? "bg-white text-teal-700 shadow-sm" : "text-gray-500 hover:text-gray-700"}`}
+                    >
+                      {POPUP_LOCALE_LABELS[l]}
+                      {isContentEmpty(popup.translations[l]) && (
+                        <span className="w-1.5 h-1.5 rounded-full bg-amber-400" title={t("settings.promoPopup.missingTranslation")} />
+                      )}
+                    </button>
+                  ))}
+                </div>
+                <button
+                  type="button"
+                  onClick={handleTranslate}
+                  disabled={translating || popupSaving}
+                  className="inline-flex items-center gap-2 px-3 py-1.5 border border-gray-300 rounded-lg text-xs font-medium text-gray-600 hover:border-teal-400 hover:text-teal-600 transition-colors disabled:opacity-60"
+                >
+                  {translating
+                    ? <span className="w-3.5 h-3.5 border-2 border-teal-500 border-t-transparent rounded-full animate-spin" />
+                    : <Languages className="w-3.5 h-3.5" />
+                  }
+                  {translating
+                    ? t("settings.promoPopup.translating")
+                    : t("settings.promoPopup.translate", { language: POPUP_LOCALE_LABELS[popupLang] })}
+                </button>
+              </div>
+              <p className="text-xs text-gray-400">{t("settings.promoPopup.translateHint")}</p>
+            </div>
+
             <div className="space-y-1">
               <label className="text-sm font-medium text-gray-700">{t("settings.promoPopup.fields.title")}</label>
               <Input
-                value={popup.title}
-                onChange={e => setPopup(prev => ({ ...prev, title: e.target.value }))}
+                value={content.title}
+                onChange={e => setContent({ title: e.target.value })}
                 placeholder={t("settings.promoPopup.fields.titlePlaceholder")}
               />
             </div>
@@ -153,8 +252,8 @@ export default function DashboardSettingsPage() {
             <div className="space-y-1">
               <label className="text-sm font-medium text-gray-700">{t("settings.promoPopup.fields.text")}</label>
               <textarea
-                value={popup.text}
-                onChange={e => setPopup(prev => ({ ...prev, text: e.target.value }))}
+                value={content.text}
+                onChange={e => setContent({ text: e.target.value })}
                 rows={3}
                 placeholder={t("settings.promoPopup.fields.textPlaceholder")}
                 className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
@@ -165,8 +264,8 @@ export default function DashboardSettingsPage() {
               <div className="space-y-1">
                 <label className="text-sm font-medium text-gray-700">{t("settings.promoPopup.fields.ctaText")}</label>
                 <Input
-                  value={popup.ctaText ?? ""}
-                  onChange={e => setPopup(prev => ({ ...prev, ctaText: e.target.value }))}
+                  value={content.ctaText ?? ""}
+                  onChange={e => setContent({ ctaText: e.target.value })}
                   placeholder={t("settings.promoPopup.fields.ctaTextPlaceholder")}
                 />
               </div>
@@ -227,10 +326,10 @@ export default function DashboardSettingsPage() {
             <div className="flex items-center gap-3 pt-1">
               <button
                 onClick={handleSavePopup}
-                disabled={popupSaving}
+                disabled={popupSaving || translating}
                 className="px-5 py-2 bg-teal-600 hover:bg-teal-700 disabled:opacity-60 text-white text-sm font-medium rounded-lg transition-colors"
               >
-                {popupSaving ? t("settings.promoPopup.saving") : t("settings.promoPopup.save")}
+                {translating && popupSaving ? t("settings.promoPopup.translating") : popupSaving ? t("settings.promoPopup.saving") : t("settings.promoPopup.save")}
               </button>
               {popupSaved && (
                 <span className="flex items-center gap-1.5 text-sm text-teal-700">
