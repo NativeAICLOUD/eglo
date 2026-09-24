@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react"
 import Link from "next/link"
 import { useParams } from "next/navigation"
 import { useTranslations } from "next-intl"
-import { Plus, Search, Pencil, Trash2, X, ChevronLeft, ChevronRight, Tag, Eye } from "lucide-react"
+import { Plus, Search, Pencil, Trash2, X, ChevronLeft, ChevronRight, Tag, Eye, FileSpreadsheet } from "lucide-react"
 import { Button } from "../../../../components/Button"
 import { Input } from "../../../../components/Input"
 import { apiService, BackendCategory, BackendProduct, parseProductName, formatMKD, getDiscountedPrice } from "../../../../lib/api"
@@ -279,12 +279,20 @@ export default function DashboardProductsPage() {
           </div>
           <p className="text-gray-500 mt-1 text-sm">{t("products.subtitle")}</p>
         </div>
-        <Link href={`/${locale}/add-product`}>
-          <Button variant="primary" className="flex items-center gap-2">
-            <Plus className="w-4 h-4" />
-            {t("products.addProduct")}
-          </Button>
-        </Link>
+        <div className="flex items-center gap-2">
+          <Link href={`/${locale}/dashboard/products/import`}>
+            <Button variant="outline" className="flex items-center gap-2">
+              <FileSpreadsheet className="w-4 h-4" />
+              {t("products.import.button")}
+            </Button>
+          </Link>
+          <Link href={`/${locale}/add-product`}>
+            <Button variant="primary" className="flex items-center gap-2">
+              <Plus className="w-4 h-4" />
+              {t("products.addProduct")}
+            </Button>
+          </Link>
+        </div>
       </div>
 
       {/* Filters */}

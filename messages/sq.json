@@ -1367,6 +1367,58 @@
       "search":         "Kërko produkte...",
       "filterCategory": "Të gjitha kategoritë",
       "filterSubcategory": "Të gjitha nënkategoritë",
+      "import": {
+        "button": "Importo Excel",
+        "back": "Kthehu te produktet",
+        "title": "Importo listën e çmimeve",
+        "subtitle": "Ngarkoni një katalog të ri EGLO (.xlsx) për të përditësuar çmimet dhe për të shtuar produkte të reja. Do të shihni një parapamje para se të ndryshojë diçka.",
+        "dropHere": "Tërhiqeni skedarin Excel këtu ose klikoni për ta zgjedhur",
+        "formatHint": ".xlsx me kolonat ШИФРА, СПЕЦИФИКАЦИЈА dhe ЦЕНА (lista e plotë ose lista e produkteve të reja)",
+        "check": "Kontrollo skedarin",
+        "checking": "Duke kontrolluar...",
+        "clear": "Hiq skedarin",
+        "summary": {
+          "rowsRead": "Rreshta të lexuar",
+          "created": "Produkte të reja",
+          "priceChanged": "Ndryshime çmimesh",
+          "nameChanged": "Ndryshime emrash",
+          "unchanged": "Të pandryshuara",
+          "skipped": "Rreshta të anashkaluar"
+        },
+        "tabs": {
+          "priceChanges": "Ndryshime çmimesh",
+          "newProducts": "Produkte të reja",
+          "skipped": "Rreshta të anashkaluar"
+        },
+        "cols": {
+          "sku": "Kodi",
+          "name": "Emri",
+          "price": "Çmimi",
+          "oldPrice": "Çmimi i vjetër",
+          "newPrice": "Çmimi i ri",
+          "change": "Ndryshimi",
+          "row": "Rreshti",
+          "reason": "Arsyeja"
+        },
+        "empty": {
+          "priceChanges": "Nuk ka ndryshime çmimesh.",
+          "newProducts": "Nuk ka produkte të reja.",
+          "skipped": "Nuk ka rreshta të anashkaluar."
+        },
+        "more": "…dhe {count} të tjera",
+        "applyWarning": "Asgjë nuk është ruajtur ende. Zbatimi përditëson çmimet dhe emrat sipas kodit, shton produktet e reja (të publikuara) dhe ruan kategoritë dhe zbritjet ekzistuese.",
+        "nothingToApply": "Skedari përputhet me katalogun aktual — nuk ka asgjë për të ndryshuar.",
+        "apply": "Zbato importin",
+        "applying": "Duke importuar...",
+        "doneTitle": "Importi përfundoi",
+        "goToProducts": "Te produktet",
+        "importAnother": "Importo një skedar tjetër",
+        "errors": {
+          "notXlsx": "Zgjidhni një skedar Excel .xlsx.",
+          "checkFailed": "Skedari nuk mund të kontrollohej. Provoni përsëri.",
+          "applyFailed": "Importi dështoi. Asgjë nuk ndryshoi — provoni përsëri."
+        }
+      },
       "actions": { "view": "Shiko në faqe", "edit": "Ndrysho", "delete": "Fshi" },
       "filterStatus":   "Të gjitha statuset",
       "noResults":      "Nuk ka produkte.",

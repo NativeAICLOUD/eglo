@@ -1179,6 +1179,58 @@
       "search":         "Search products...",
       "filterCategory": "All categories",
       "filterSubcategory": "All subcategories",
+      "import": {
+        "button": "Import Excel",
+        "back": "Back to products",
+        "title": "Import price list",
+        "subtitle": "Upload a new EGLO catalogue (.xlsx) to update prices and add new products. You'll see a preview before anything changes.",
+        "dropHere": "Drop the Excel file here or click to choose",
+        "formatHint": ".xlsx with the columns ШИФРА, СПЕЦИФИКАЦИЈА and ЦЕНА (full price list or new-products list)",
+        "check": "Check file",
+        "checking": "Checking...",
+        "clear": "Remove file",
+        "summary": {
+          "rowsRead": "Rows read",
+          "created": "New products",
+          "priceChanged": "Price changes",
+          "nameChanged": "Name changes",
+          "unchanged": "Unchanged",
+          "skipped": "Skipped rows"
+        },
+        "tabs": {
+          "priceChanges": "Price changes",
+          "newProducts": "New products",
+          "skipped": "Skipped rows"
+        },
+        "cols": {
+          "sku": "Code",
+          "name": "Name",
+          "price": "Price",
+          "oldPrice": "Old price",
+          "newPrice": "New price",
+          "change": "Change",
+          "row": "Row",
+          "reason": "Reason"
+        },
+        "empty": {
+          "priceChanges": "No price changes.",
+          "newProducts": "No new products.",
+          "skipped": "No skipped rows."
+        },
+        "more": "…and {count} more",
+        "applyWarning": "Nothing has been saved yet. Applying updates prices and names by product code, adds the new products (published), and keeps existing categories and discounts.",
+        "nothingToApply": "This file matches the current catalogue — there is nothing to change.",
+        "apply": "Apply import",
+        "applying": "Importing...",
+        "doneTitle": "Import completed",
+        "goToProducts": "Go to products",
+        "importAnother": "Import another file",
+        "errors": {
+          "notXlsx": "Please choose an .xlsx Excel file.",
+          "checkFailed": "Could not check the file. Please try again.",
+          "applyFailed": "The import failed. Nothing was changed — please try again."
+        }
+      },
       "actions": { "view": "View on site", "edit": "Edit", "delete": "Delete" },
       "filterStatus":   "All statuses",
       "noResults":      "No products.",

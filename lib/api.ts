@@ -45,6 +45,19 @@ export interface PromoPopupSettings {
   updatedAt?: string | null;
 }
 
+export interface PriceListImportResult {
+  dryRun: boolean;
+  rowsRead: number;
+  created: number;
+  priceChanged: number;
+  nameChanged: number;
+  unchanged: number;
+  skipped: number;
+  newProducts: { sku: string; name: string; price: number }[];
+  priceChanges: { sku: string; name: string; oldPrice: number; newPrice: number }[];
+  skippedRows: { row: number; reason: string; sku?: string | null; name?: string | null }[];
+}
+
 export interface BackendProduct {
   id: string;
   /** Full EGLO spec string e.g. "LED-DL SCHWARZ/WEISS 'PALMARES'" — returned as "name" by detail endpoint */
@@ -321,6 +334,26 @@ class ApiService {
 
   async getBestSellers(take: number = 8): Promise<BackendProduct[]> {
     return this.request<BackendProduct[]>(`/products/best-sellers?take=${take}`);
+  }
+
+  /** Uploads an EGLO price list. With dryRun, nothing is saved — the result is a preview. */
+  async importPriceList(file: File, dryRun: boolean): Promise<PriceListImportResult> {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const token = this.getToken();
+    const res = await fetch(this.url(`/products/import?dryRun=${dryRun}`), {
+      method: "POST",
+      headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+      body: formData,
+    });
+
+    if (!res.ok) {
+      if (res.status === 401 && token) this.handleUnauthorized();
+      const body = await res.json().catch(() => ({}));
+      throw new ApiError((body as { message?: string }).message ?? `Import failed (${res.status})`, res.status, body);
+    }
+    return res.json() as Promise<PriceListImportResult>;
   }
 
   async getProductCategoryStats(): Promise<{ uncategorized: number }> {
