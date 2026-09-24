@@ -1178,6 +1178,8 @@
       "addProduct":     "Add product",
       "search":         "Search products...",
       "filterCategory": "All categories",
+      "filterSubcategory": "All subcategories",
+      "actions": { "view": "View on site", "edit": "Edit", "delete": "Delete" },
       "filterStatus":   "All statuses",
       "noResults":      "No products.",
       "table": {

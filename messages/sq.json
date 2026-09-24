@@ -1366,6 +1366,8 @@
       "addProduct":     "Shto produkt",
       "search":         "Kërko produkte...",
       "filterCategory": "Të gjitha kategoritë",
+      "filterSubcategory": "Të gjitha nënkategoritë",
+      "actions": { "view": "Shiko në faqe", "edit": "Ndrysho", "delete": "Fshi" },
       "filterStatus":   "Të gjitha statuset",
       "noResults":      "Nuk ka produkte.",
       "table": {

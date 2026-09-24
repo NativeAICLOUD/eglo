@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react"
 import Link from "next/link"
 import { useParams } from "next/navigation"
 import { useTranslations } from "next-intl"
-import { Plus, Search, Pencil, Trash2, X, ChevronLeft, ChevronRight, Tag } from "lucide-react"
+import { Plus, Search, Pencil, Trash2, X, ChevronLeft, ChevronRight, Tag, Eye } from "lucide-react"
 import { Button } from "../../../../components/Button"
 import { Input } from "../../../../components/Input"
 import { apiService, BackendCategory, BackendProduct, parseProductName, formatMKD, getDiscountedPrice } from "../../../../lib/api"
@@ -147,6 +147,7 @@ export default function DashboardProductsPage() {
   const [search,          setSearch]          = useState("")
   const [debouncedSearch, setDebouncedSearch] = useState("")
   const [filterCat,       setFilterCat]       = useState("")
+  const [filterSubcat,    setFilterSubcat]    = useState("")
   const [onlyUncat,       setOnlyUncat]       = useState(false)
   const [page,            setPage]            = useState(1)
 
@@ -168,7 +169,7 @@ export default function DashboardProductsPage() {
   }, [search])
 
   // ── Reset page on filter change ──────────────────────────────────────────
-  useEffect(() => { setPage(1); setSelectedIds(new Set()) }, [filterCat, onlyUncat])
+  useEffect(() => { setPage(1); setSelectedIds(new Set()) }, [filterCat, filterSubcat, onlyUncat])
 
   // ── Load categories + stats ──────────────────────────────────────────────
   useEffect(() => {
@@ -186,13 +187,13 @@ export default function DashboardProductsPage() {
       page,
       pageSize: PAGE_SIZE,
       ...(debouncedSearch  ? { search: debouncedSearch }    : {}),
-      ...(filterCat && !onlyUncat ? { categoryId: filterCat } : {}),
+      ...(filterCat && !onlyUncat ? { categoryId: filterSubcat || filterCat } : {}),
       ...(onlyUncat        ? { uncategorized: true }         : {}),
     })
       .then(data => { setProducts(data.items); setTotalCount(data.totalCount) })
       .catch(() => { setProducts([]); setTotalCount(0) })
       .finally(() => setLoading(false))
-  }, [page, debouncedSearch, filterCat, onlyUncat])
+  }, [page, debouncedSearch, filterCat, filterSubcat, onlyUncat])
 
   useEffect(() => { fetchProducts() }, [fetchProducts])
 
@@ -254,6 +255,7 @@ export default function DashboardProductsPage() {
   }
 
   const flatCategories = flattenCategories(categories)
+  const subcategoryOptions = categories.find(c => c.id === filterCat)?.subcategories ?? []
   const selectionCount = selectedIds.size
 
   // ── Render ────────────────────────────────────────────────────────────────
@@ -266,7 +268,7 @@ export default function DashboardProductsPage() {
             <h1 className="text-2xl font-bold text-gray-900">{t("products.title")}</h1>
             {uncategorized !== null && uncategorized > 0 && (
               <button
-                onClick={() => { setOnlyUncat(true); setFilterCat("") }}
+                onClick={() => { setOnlyUncat(true); setFilterCat(""); setFilterSubcat("") }}
                 className="flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-amber-100 text-amber-700 hover:bg-amber-200 transition-colors"
                 title={t("products.bulkAssign.uncategorizedHint")}
               >
@@ -298,7 +300,7 @@ export default function DashboardProductsPage() {
         </div>
         <select
           value={filterCat}
-          onChange={e => { setFilterCat(e.target.value); setOnlyUncat(false) }}
+          onChange={e => { setFilterCat(e.target.value); setFilterSubcat(""); setOnlyUncat(false) }}
           className="h-9 px-3 text-sm border border-input rounded-md bg-background text-foreground focus:outline-none focus:ring-1 focus:ring-teal-500"
         >
           <option value="">{t("products.filterCategory")}</option>
@@ -306,8 +308,20 @@ export default function DashboardProductsPage() {
             <option key={c.id} value={c.id}>{c.name}</option>
           ))}
         </select>
+        {subcategoryOptions.length > 0 && (
+          <select
+            value={filterSubcat}
+            onChange={e => setFilterSubcat(e.target.value)}
+            className="h-9 px-3 text-sm border border-input rounded-md bg-background text-foreground focus:outline-none focus:ring-1 focus:ring-teal-500"
+          >
+            <option value="">{t("products.filterSubcategory")}</option>
+            {subcategoryOptions.map(s => (
+              <option key={s.id} value={s.id}>{s.name}</option>
+            ))}
+          </select>
+        )}
         <button
-          onClick={() => { setOnlyUncat(v => !v); setFilterCat("") }}
+          onClick={() => { setOnlyUncat(v => !v); setFilterCat(""); setFilterSubcat("") }}
           className={`h-9 px-3 text-sm rounded-md border transition-colors font-medium
             ${onlyUncat
               ? "bg-amber-100 border-amber-300 text-amber-800"
@@ -322,7 +336,7 @@ export default function DashboardProductsPage() {
         </button>
         {(filterCat || onlyUncat || search) && (
           <button
-            onClick={() => { setSearch(""); setFilterCat(""); setOnlyUncat(false) }}
+            onClick={() => { setSearch(""); setFilterCat(""); setFilterSubcat(""); setOnlyUncat(false) }}
             className="h-9 px-3 text-sm text-gray-500 hover:text-gray-700 flex items-center gap-1"
           >
             <X className="w-3 h-3" /> {t("products.clearFilters")}
@@ -450,9 +464,27 @@ export default function DashboardProductsPage() {
                         formatMKD(product.price)
                       )}
                     </td>
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-3 text-xs">
                       {catName
-                        ? <span className="text-gray-700 text-xs">{catName}</span>
+                        ? <span className="flex flex-wrap items-center gap-1 text-gray-700">
+                            {product.categoryName && product.categoryId && (
+                              <button
+                                onClick={() => { setOnlyUncat(false); setFilterCat(product.categoryId!); setFilterSubcat("") }}
+                                className="hover:text-teal-600 hover:underline"
+                              >
+                                {product.categoryName}
+                              </button>
+                            )}
+                            {product.categoryName && product.subcategoryName && <span className="text-gray-300">›</span>}
+                            {product.subcategoryName && product.subcategoryId && product.categoryId && (
+                              <button
+                                onClick={() => { setOnlyUncat(false); setFilterCat(product.categoryId!); setFilterSubcat(product.subcategoryId!) }}
+                                className="font-medium hover:text-teal-600 hover:underline"
+                              >
+                                {product.subcategoryName}
+                              </button>
+                            )}
+                          </span>
                         : <span className="text-xs text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full">
                             {t("products.unassigned")}
                           </span>
@@ -460,15 +492,30 @@ export default function DashboardProductsPage() {
                     </td>
                     <td className="px-4 py-3 text-gray-500">{product.createdDate.slice(0, 10)}</td>
                     <td className="px-4 py-3">
-                      <div className="flex items-center gap-2">
-                        <Link href={`/${locale}/dashboard/products/${product.id}/edit`}>
-                          <Button variant="ghost" size="icon" className="w-8 h-8 text-gray-500 hover:text-teal-600">
-                            <Pencil className="w-4 h-4" />
-                          </Button>
+                      <div className="flex items-center gap-1">
+                        <a
+                          href={`/${locale}/product/${product.id}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          title={t("products.actions.view")}
+                          aria-label={t("products.actions.view")}
+                          className="w-8 h-8 inline-flex items-center justify-center rounded-md text-gray-500 hover:text-teal-600 hover:bg-gray-100 transition-colors"
+                        >
+                          <Eye className="w-4 h-4" />
+                        </a>
+                        <Link
+                          href={`/${locale}/dashboard/products/${product.id}/edit`}
+                          title={t("products.actions.edit")}
+                          aria-label={t("products.actions.edit")}
+                          className="w-8 h-8 inline-flex items-center justify-center rounded-md text-gray-500 hover:text-teal-600 hover:bg-gray-100 transition-colors"
+                        >
+                          <Pencil className="w-4 h-4" />
                         </Link>
                         <Button
                           variant="ghost" size="icon"
                           className="w-8 h-8 text-gray-500 hover:text-red-600"
+                          title={t("products.actions.delete")}
+                          aria-label={t("products.actions.delete")}
                           onClick={() => setDeleteTarget(product)}
                         >
                           <Trash2 className="w-4 h-4" />

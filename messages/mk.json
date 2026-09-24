@@ -1359,6 +1359,8 @@
       "addProduct":     "Додај производ",
       "search":         "Пребарај производи...",
       "filterCategory": "Сите категории",
+      "filterSubcategory": "Сите поткатегории",
+      "actions": { "view": "Види на сајтот", "edit": "Уреди", "delete": "Избриши" },
       "filterStatus":   "Сите статуси",
       "noResults":      "Нема производи.",
       "table": {
