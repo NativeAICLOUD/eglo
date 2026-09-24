@@ -368,6 +368,7 @@ export default function SubcategoryPage({ params }: SubcategoryPageProps) {
                       productDesc={product.sku}
                       price={product.price}
                       discountPercentage={product.discountPercentage}
+                      isNew={product.isNew}
                       imageUrl={product.imageUrl}
                       productSlug={product.id}
                     />

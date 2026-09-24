@@ -16,6 +16,7 @@ interface ProductCardProps {
   imageUrl?: string | null
   productSlug?: string
   discountPercentage?: number | null
+  isNew?: boolean
 }
 
 export default function ProductCard({
@@ -24,7 +25,8 @@ export default function ProductCard({
   price,
   imageUrl,
   productSlug,
-  discountPercentage
+  discountPercentage,
+  isNew
 }: ProductCardProps) {
   const t = useTranslations('productCard')
   const params = useParams()
@@ -62,6 +64,11 @@ export default function ProductCard({
           onError={(e) => { (e.currentTarget as HTMLImageElement).src = PLACEHOLDER }}
         />
         <div className="absolute top-2 left-2 flex flex-col items-start gap-1">
+          {isNew && (
+            <span className="bg-blue-500 text-white text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 sm:py-1 rounded font-semibold">
+              {t('new')}
+            </span>
+          )}
           {hasDiscount && (
             <span className="bg-red-500 text-white text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 sm:py-1 rounded font-semibold">
               -{Math.round(discountPercentage!)}%

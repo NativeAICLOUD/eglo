@@ -24,6 +24,7 @@ export default function AddProductPage() {
   const [sku,         setSku]         = useState("")
   const [price,       setPrice]       = useState("")
   const [discount,    setDiscount]    = useState("")
+  const [isNew,       setIsNew]       = useState(true)
   const [categoryId,    setCategoryId]    = useState("")
   const [subcategoryId, setSubcategoryId] = useState("")
   const [specsText,   setSpecsText]   = useState("")
@@ -135,6 +136,15 @@ export default function AddProductPage() {
         return
       }
 
+      if (isNew) {
+        try {
+          await apiService.setProductsNew([productId], true)
+        } catch {
+          setSaveError(t("products.newBadge.error"))
+          return
+        }
+      }
+
       router.push(`/${locale}/dashboard/products`)
     } catch {
       setSaveError(t("addProductPage.errors.createFailed"))
@@ -207,6 +217,19 @@ export default function AddProductPage() {
             />
             <p className="text-xs text-gray-400">{t("editProduct.fields.discountHint")}</p>
           </div>
+
+          <label className="flex items-start gap-3 cursor-pointer select-none">
+            <input
+              type="checkbox"
+              checked={isNew}
+              onChange={e => setIsNew(e.target.checked)}
+              className="mt-0.5 w-4 h-4 accent-blue-600"
+            />
+            <span>
+              <span className="text-sm font-medium text-gray-700">{t("editProduct.fields.isNew")}</span>
+              <span className="block text-xs text-gray-400">{t("editProduct.fields.isNewHint")}</span>
+            </span>
+          </label>
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1">

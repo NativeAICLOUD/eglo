@@ -67,6 +67,8 @@ export default function EditProductPage({ params }: EditPageProps) {
   const [description, setDescription] = useState("")
   const [price,       setPrice]       = useState("")
   const [discount,    setDiscount]    = useState("")
+  const [isNew,       setIsNew]       = useState(false)
+  const [initialIsNew, setInitialIsNew] = useState(false)
   const [categoryId,  setCategoryId]  = useState<string>("")
   const [flatCats,    setFlatCats]    = useState<FlatCategory[]>([])
   const [categoriesTree, setCategoriesTree] = useState<BackendCategory[]>([])
@@ -126,6 +128,8 @@ export default function EditProductPage({ params }: EditPageProps) {
         setDescription(p.sku ?? "")
         setPrice(String(p.price))
         setDiscount(p.discountPercentage ? String(p.discountPercentage) : "")
+        setIsNew(!!p.isNew)
+        setInitialIsNew(!!p.isNew)
         setCategoryId(p.categoryId ?? "")
         // Merge all legacy spec sections into one ordered list of "Key: Value" lines —
         // nothing existing gets lost, it just all lives in one field going forward.
@@ -201,6 +205,15 @@ export default function EditProductPage({ params }: EditPageProps) {
             setSaveError(t("editProduct.errors.categorySaveFailed"))
             return
           }
+        }
+      }
+
+      if (isNew !== initialIsNew) {
+        try {
+          await apiService.setProductsNew([id], isNew)
+        } catch {
+          setSaveError(t("editProduct.errors.saveFailed"))
+          return
         }
       }
 
@@ -297,6 +310,19 @@ export default function EditProductPage({ params }: EditPageProps) {
             />
             <p className="text-xs text-gray-400">{t("editProduct.fields.discountHint")}</p>
           </div>
+
+          <label className="flex items-start gap-3 cursor-pointer select-none">
+            <input
+              type="checkbox"
+              checked={isNew}
+              onChange={e => setIsNew(e.target.checked)}
+              className="mt-0.5 w-4 h-4 accent-blue-600"
+            />
+            <span>
+              <span className="text-sm font-medium text-gray-700">{t("editProduct.fields.isNew")}</span>
+              <span className="block text-xs text-gray-400">{t("editProduct.fields.isNewHint")}</span>
+            </span>
+          </label>
 
           <div className="space-y-1">
             <label className="text-sm font-medium text-gray-700">{t("editProduct.fields.category")}</label>

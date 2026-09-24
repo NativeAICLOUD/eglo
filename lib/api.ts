@@ -70,6 +70,8 @@ export interface BackendProduct {
   price: number;
   /** Percentage off price (0-100), null/undefined means no active discount */
   discountPercentage?: number | null;
+  /** Admin-controlled flag that shows the NEW badge */
+  isNew?: boolean;
   imageUrl: string | null;
   createdDate: string;
   // Fields present on paginated list + single-product responses
@@ -103,6 +105,7 @@ export interface ProductQueryParams {
   search?: string;
   categorySlug?: string;
   uncategorized?: boolean;
+  isNew?: boolean;
 }
 
 /** Extract the quoted model name from a German EGLO spec string.
@@ -329,7 +332,16 @@ class ApiService {
     qs.set("page",     String(params?.page     ?? 1));
     qs.set("pageSize", String(params?.pageSize ?? 20));
     if (params?.uncategorized)     qs.set("uncategorized", "true");
+    if (params?.isNew != null)     qs.set("isNew",         String(params.isNew));
     return this.request<PaginatedProducts>(`/products?${qs.toString()}`);
+  }
+
+  /** Shows or hides the NEW badge on the given products. */
+  async setProductsNew(productIds: string[], isNew: boolean): Promise<void> {
+    await this.request<unknown>("/products/new", {
+      method: "POST",
+      body: JSON.stringify({ productIds, isNew }),
+    });
   }
 
   async getBestSellers(take: number = 8): Promise<BackendProduct[]> {

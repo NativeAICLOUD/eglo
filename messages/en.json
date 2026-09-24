@@ -638,6 +638,7 @@
     "getConsultation": "Get a consultation"
   },
   "productCard": {
+    "new": "New",
     "addToCart": "Add to cart"
   },
   "roomShowcaseSection": {
@@ -912,6 +913,7 @@
       "home": "Home",
       "products": "Products"
     },
+    "new": "New",
     "addToCart": "Add to cart",
     "quantity": "Quantity",
     "articleNumber": "Article no.",
@@ -1178,6 +1180,13 @@
       "addProduct":     "Add product",
       "search":         "Search products...",
       "filterCategory": "All categories",
+      "newBadge": {
+        "label": "NEW",
+        "filter": "Only NEW",
+        "markNew": "Mark as NEW",
+        "removeNew": "Remove NEW",
+        "error": "Could not update the NEW badge. Please try again."
+      },
       "filterSubcategory": "All subcategories",
       "import": {
         "button": "Import Excel",
@@ -1289,6 +1298,8 @@
         "price":          "Price",
         "discount":               "Discount",
         "discountPlaceholder":    "e.g. 20",
+        "isNew": "Show NEW badge",
+        "isNewHint": "Adds a \"New\" label to this product in the shop.",
         "discountHint":           "Leave empty for no discount. Shown as a sale badge on the storefront.",
         "category":       "Category",
         "categoryNone":   "— No category —"

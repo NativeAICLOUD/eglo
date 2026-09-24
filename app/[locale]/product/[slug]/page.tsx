@@ -428,6 +428,11 @@ export default function ProductPage({ params }: ProductPageProps) {
                   )}
                 </p>
               )}
+              {product.isNew && (
+                <span className="inline-block mb-2 bg-blue-500 text-white text-xs font-semibold px-2 py-1 rounded">
+                  {t('new')}
+                </span>
+              )}
               <div className="flex items-baseline gap-3 flex-wrap">
                 <p className="text-3xl md:text-4xl font-bold text-gray-900">
                   {formatMKD(finalPrice ?? 0)}

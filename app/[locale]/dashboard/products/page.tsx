@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react"
 import Link from "next/link"
 import { useParams } from "next/navigation"
 import { useTranslations } from "next-intl"
-import { Plus, Search, Pencil, Trash2, X, ChevronLeft, ChevronRight, Tag, Eye, FileSpreadsheet } from "lucide-react"
+import { Plus, Search, Pencil, Trash2, X, ChevronLeft, ChevronRight, Tag, Eye, FileSpreadsheet, Sparkles } from "lucide-react"
 import { Button } from "../../../../components/Button"
 import { Input } from "../../../../components/Input"
 import { apiService, BackendCategory, BackendProduct, parseProductName, formatMKD, getDiscountedPrice } from "../../../../lib/api"
@@ -149,6 +149,7 @@ export default function DashboardProductsPage() {
   const [filterCat,       setFilterCat]       = useState("")
   const [filterSubcat,    setFilterSubcat]    = useState("")
   const [onlyUncat,       setOnlyUncat]       = useState(false)
+  const [onlyNew,         setOnlyNew]         = useState(false)
   const [page,            setPage]            = useState(1)
 
   // Selection
@@ -169,7 +170,7 @@ export default function DashboardProductsPage() {
   }, [search])
 
   // ── Reset page on filter change ──────────────────────────────────────────
-  useEffect(() => { setPage(1); setSelectedIds(new Set()) }, [filterCat, filterSubcat, onlyUncat])
+  useEffect(() => { setPage(1); setSelectedIds(new Set()) }, [filterCat, filterSubcat, onlyUncat, onlyNew])
 
   // ── Load categories + stats ──────────────────────────────────────────────
   useEffect(() => {
@@ -189,11 +190,12 @@ export default function DashboardProductsPage() {
       ...(debouncedSearch  ? { search: debouncedSearch }    : {}),
       ...(filterCat && !onlyUncat ? { categoryId: filterSubcat || filterCat } : {}),
       ...(onlyUncat        ? { uncategorized: true }         : {}),
+      ...(onlyNew          ? { isNew: true }                 : {}),
     })
       .then(data => { setProducts(data.items); setTotalCount(data.totalCount) })
       .catch(() => { setProducts([]); setTotalCount(0) })
       .finally(() => setLoading(false))
-  }, [page, debouncedSearch, filterCat, filterSubcat, onlyUncat])
+  }, [page, debouncedSearch, filterCat, filterSubcat, onlyUncat, onlyNew])
 
   useEffect(() => { fetchProducts() }, [fetchProducts])
 
@@ -252,6 +254,20 @@ export default function DashboardProductsPage() {
     // Refresh stats and current page
     apiService.getProductCategoryStats().then(s => setUncategorized(s.uncategorized)).catch(() => {})
     fetchProducts()
+  }
+
+  // ── NEW badge ─────────────────────────────────────────────────────────────
+  const [newError, setNewError] = useState<string | null>(null)
+  const setNew = async (ids: string[], value: boolean) => {
+    setNewError(null)
+    try {
+      await apiService.setProductsNew(ids, value)
+      if (onlyNew && !value) fetchProducts()
+      else setProducts(prev => prev.map(p => ids.includes(p.id) ? { ...p, isNew: value } : p))
+      setSelectedIds(new Set())
+    } catch (e) {
+      setNewError(e instanceof Error ? e.message : t("products.newBadge.error"))
+    }
   }
 
   const flatCategories = flattenCategories(categories)
@@ -342,9 +358,19 @@ export default function DashboardProductsPage() {
             </span>
           )}
         </button>
-        {(filterCat || onlyUncat || search) && (
+        <button
+          onClick={() => setOnlyNew(v => !v)}
+          className={`h-9 px-3 text-sm rounded-md border transition-colors font-medium inline-flex items-center gap-1.5
+            ${onlyNew
+              ? "bg-blue-100 border-blue-300 text-blue-800"
+              : "bg-white border-gray-200 text-gray-600 hover:border-gray-300"}`}
+        >
+          <Sparkles className="w-3.5 h-3.5" />
+          {t("products.newBadge.filter")}
+        </button>
+        {(filterCat || onlyUncat || onlyNew || search) && (
           <button
-            onClick={() => { setSearch(""); setFilterCat(""); setFilterSubcat(""); setOnlyUncat(false) }}
+            onClick={() => { setSearch(""); setFilterCat(""); setFilterSubcat(""); setOnlyUncat(false); setOnlyNew(false) }}
             className="h-9 px-3 text-sm text-gray-500 hover:text-gray-700 flex items-center gap-1"
           >
             <X className="w-3 h-3" /> {t("products.clearFilters")}
@@ -368,6 +394,23 @@ export default function DashboardProductsPage() {
               <Tag className="w-3.5 h-3.5" />
               {t("products.bulkAssign.button")}
             </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              className="flex items-center gap-1.5 border-blue-300 text-blue-700 hover:bg-blue-50"
+              onClick={() => setNew([...selectedIds], true)}
+            >
+              <Sparkles className="w-3.5 h-3.5" />
+              {t("products.newBadge.markNew")}
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              className="flex items-center gap-1.5 border-gray-300 text-gray-600 hover:bg-gray-50"
+              onClick={() => setNew([...selectedIds], false)}
+            >
+              {t("products.newBadge.removeNew")}
+            </Button>
             <button
               onClick={() => setSelectedIds(new Set())}
               className="text-teal-600 hover:text-teal-800 p-1"
@@ -375,6 +418,13 @@ export default function DashboardProductsPage() {
               <X className="w-4 h-4" />
             </button>
           </div>
+        </div>
+      )}
+
+      {newError && (
+        <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-sm text-red-700 flex items-center justify-between">
+          <span>{newError}</span>
+          <button onClick={() => setNewError(null)} className="text-red-400 hover:text-red-600"><X className="w-4 h-4" /></button>
         </div>
       )}
 
@@ -457,6 +507,11 @@ export default function DashboardProductsPage() {
                       >
                         {displayName}
                       </Link>
+                      {product.isNew && (
+                        <span className="inline-block mt-0.5 text-[10px] font-semibold text-white bg-blue-500 px-1.5 py-0.5 rounded">
+                          {t("products.newBadge.label")}
+                        </span>
+                      )}
                     </td>
                     <td className="px-4 py-3 text-gray-500 text-xs font-mono">{product.sku || "—"}</td>
                     <td className="px-4 py-3 text-gray-600">
@@ -501,6 +556,16 @@ export default function DashboardProductsPage() {
                     <td className="px-4 py-3 text-gray-500">{product.createdDate.slice(0, 10)}</td>
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-1">
+                        <button
+                          onClick={() => setNew([product.id], !product.isNew)}
+                          title={product.isNew ? t("products.newBadge.removeNew") : t("products.newBadge.markNew")}
+                          aria-label={product.isNew ? t("products.newBadge.removeNew") : t("products.newBadge.markNew")}
+                          aria-pressed={!!product.isNew}
+                          className={`w-8 h-8 inline-flex items-center justify-center rounded-md transition-colors
+                            ${product.isNew ? "text-blue-600 bg-blue-50 hover:bg-blue-100" : "text-gray-400 hover:text-blue-600 hover:bg-gray-100"}`}
+                        >
+                          <Sparkles className="w-4 h-4" />
+                        </button>
                         <a
                           href={`/${locale}/product/${product.id}`}
                           target="_blank"

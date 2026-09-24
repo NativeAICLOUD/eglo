@@ -614,6 +614,7 @@
     "getConsultation": "Merr Konsultim"
   },
   "productCard": {
+    "new": "E re",
     "addToCart": "Shto në Shportë"
   },
   "roomShowcaseSection": {
@@ -1078,6 +1079,7 @@
       "home": "Kryesore",
       "products": "Produktet"
     },
+    "new": "E re",
     "addToCart": "Shto në shportë",
     "quantity": "Sasia",
     "articleNumber": "Nr. artikulli",
@@ -1366,6 +1368,13 @@
       "addProduct":     "Shto produkt",
       "search":         "Kërko produkte...",
       "filterCategory": "Të gjitha kategoritë",
+      "newBadge": {
+        "label": "E RE",
+        "filter": "Vetëm të REJAT",
+        "markNew": "Shëno si E RE",
+        "removeNew": "Hiq E RE",
+        "error": "Etiketa E RE nuk mund të ndryshohej. Provoni përsëri."
+      },
       "filterSubcategory": "Të gjitha nënkategoritë",
       "import": {
         "button": "Importo Excel",
@@ -1477,6 +1486,8 @@
         "price":          "Çmimi",
         "discount":               "Zbritja",
         "discountPlaceholder":    "p.sh. 20",
+        "isNew": "Shfaq etiketën E RE",
+        "isNewHint": "Shton etiketën \"E re\" te ky produkt në dyqan.",
         "discountHint":           "Lëreni bosh për pa zbritje. Shfaqet si etiketë zbritjeje në faqen e dyqanit.",
         "category":       "Kategoria",
         "categoryNone":   "— Pa kategori —"
