@@ -13,6 +13,7 @@ const PLACEHOLDER = "/placeholder.svg"
 
 export function FeaturedProducts() {
   const t = useTranslations('newArrivals')
+  const tCard = useTranslations('productCard')
   const params = useParams()
   const locale = params.locale as string
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -24,9 +25,10 @@ export function FeaturedProducts() {
   const GAP = 24
 
   useEffect(() => {
-    // Backend already sorts photographed products first, so this surfaces
-    // real catalog items with real photos rather than placeholders.
-    apiService.getProducts({ page: 1, pageSize: 10 })
+    // Products the admin marked NEW; the backend sorts photographed ones first.
+    // Falls back to the general listing if nothing is marked yet.
+    apiService.getProducts({ page: 1, pageSize: 12, isNew: true })
+      .then(res => res.items.length > 0 ? res : apiService.getProducts({ page: 1, pageSize: 10 }))
       .then(res => setProducts(res.items))
       .catch(() => setProducts([]))
   }, [])
@@ -104,6 +106,11 @@ export function FeaturedProducts() {
                     fill
                     className="object-contain p-4 bg-white"
                   />
+                  {product.isNew && (
+                    <span className="absolute top-3 left-3 bg-blue-500 text-white text-xs font-semibold px-2 py-1 rounded">
+                      {tCard('new')}
+                    </span>
+                  )}
                 </div>
                 <CardContent className="p-4">
                   <h3 className="text-base font-medium text-gray-900 mb-2 group-hover:text-teal-600 transition-colors line-clamp-1">
