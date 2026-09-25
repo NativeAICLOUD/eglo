@@ -133,7 +133,7 @@ const R2_IMAGE_HOST = 'pub-166082e4b3d54bb296c0e624eb1a1f50.r2.dev'
 
 // Bump whenever catalog photos are replaced in R2 under the same file names, so
 // browsers and the CDN fetch the new files instead of serving cached copies.
-const IMAGE_VERSION = '2'
+const IMAGE_VERSION = '3'
 
 function isR2Image(url: string): boolean {
   try {
