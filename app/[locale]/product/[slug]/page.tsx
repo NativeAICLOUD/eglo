@@ -557,17 +557,24 @@ export default function ProductPage({ params }: ProductPageProps) {
             </button>
           )}
 
-          {/* Image — wrapper has no fixed box size, it just centers whatever
-              size the (now intrinsically-sized) image ends up rendering at */}
-          <div className="w-full h-full flex items-center justify-center px-4 sm:px-20" onClick={e => e.stopPropagation()}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={trimmedImageSrc(images[lightboxIndex])}
-              alt={`${displayName} ${lightboxIndex + 1}`}
-              className="w-auto h-auto max-w-full max-h-[85vh] sm:max-h-[90vh] object-contain rounded-lg select-none"
-              draggable={false}
-              onError={(e) => { (e.currentTarget as HTMLImageElement).src = PLACEHOLDER }}
-            />
+          {/* Image — the white panel shrink-wraps the image, so its shape follows
+              each photo's own aspect ratio (tall, wide or square) up to 900px wide
+              and 90vh tall. Limits are viewport-based rather than percentages so
+              the shrink-wrapped panel sizes deterministically. The original
+              upload is shown (not the trimmed proxy) so the zoom view is the
+              exact full-resolution source with no re-encode. */}
+          <div className="w-full h-full flex items-center justify-center px-4 sm:px-20">
+            <div className="bg-white rounded-lg p-4 sm:p-6 shadow-2xl" onClick={e => e.stopPropagation()}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                key={images[lightboxIndex]}
+                src={images[lightboxIndex]}
+                alt={`${displayName} ${lightboxIndex + 1}`}
+                className="block w-auto h-auto object-contain select-none max-w-[calc(100vw-4rem)] max-h-[calc(90vh-2rem)] sm:max-w-[min(calc(900px-3rem),calc(100vw-13rem))] sm:max-h-[min(85vh,calc(90vh-3rem))]"
+                draggable={false}
+                onError={(e) => { (e.currentTarget as HTMLImageElement).src = PLACEHOLDER }}
+              />
+            </div>
           </div>
 
           {/* Next — hidden on mobile, swipe is the primary gesture there */}
