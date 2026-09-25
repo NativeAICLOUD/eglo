@@ -55,8 +55,8 @@ export default function ProductCard({
   }
 
   const cardContent = (
-    <div className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer">
-      <div className="relative h-32 sm:h-48 bg-white">
+    <div className="h-full flex flex-col bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer">
+      <div className="relative h-32 sm:h-48 flex-shrink-0 bg-white">
         <img
           src={trimmedImageSrc(resolvedImage)}
           alt={productName}
@@ -76,30 +76,28 @@ export default function ProductCard({
           )}
         </div>
       </div>
-      <div className="p-2 sm:p-4">
+      <div className="p-2 sm:p-4 flex flex-col flex-1">
         <h3 className="text-sm sm:text-lg font-semibold text-gray-900 mb-1 sm:mb-2 line-clamp-1">{productName}</h3>
         <p className="text-gray-600 text-xs sm:text-sm mb-2 sm:mb-3 line-clamp-1">{productDesc}</p>
-        <div className="flex items-center justify-between gap-2">
-          <span className="flex items-baseline gap-1.5 flex-wrap">
-            <span className="text-sm sm:text-lg font-bold text-gray-900">{formatMKD(finalPrice)}</span>
-            {hasDiscount && (
-              <span className="text-xs sm:text-sm text-gray-400 line-through">{formatMKD(price)}</span>
-            )}
-          </span>
-          <button
-            className="btn-silver-glass font-medium text-xs sm:text-base px-2 py-1 sm:px-4 sm:py-2 rounded whitespace-nowrap"
-            onClick={handleAddToCart}
-          >
-            {t('addToCart')}
-          </button>
+        <div className="flex items-baseline gap-x-1.5 flex-wrap mb-2 sm:mb-3">
+          <span className="text-sm sm:text-lg font-bold text-gray-900">{formatMKD(finalPrice)}</span>
+          {hasDiscount && (
+            <span className="text-xs sm:text-sm text-gray-400 line-through">{formatMKD(price)}</span>
+          )}
         </div>
+        <button
+          className="btn-silver-glass mt-auto w-full h-9 sm:h-10 rounded-md text-xs sm:text-sm font-semibold whitespace-nowrap"
+          onClick={handleAddToCart}
+        >
+          {t('addToCart')}
+        </button>
       </div>
     </div>
   )
 
   if (productSlug) {
     return (
-      <Link href={`/${locale}/product/${productSlug}`} className="block">
+      <Link href={`/${locale}/product/${productSlug}`} className="block h-full">
         {cardContent}
       </Link>
     )
