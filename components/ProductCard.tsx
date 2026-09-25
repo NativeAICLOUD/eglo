@@ -45,7 +45,7 @@ export default function ProductCard({
         <img
           src={trimmedImageSrc(resolvedImage)}
           alt={productName}
-          className="block w-full h-full object-contain object-center p-2 sm:p-3 bg-white transition-opacity duration-300"
+          className="block w-full h-full object-contain object-center p-2 sm:p-3 bg-white"
           onError={(e) => { (e.currentTarget as HTMLImageElement).src = PLACEHOLDER }}
         />
         {productSlug && (

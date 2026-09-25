@@ -102,7 +102,7 @@ export function FeaturedProducts() {
                     src={product.imageUrl || PLACEHOLDER}
                     alt={parseProductName(product.title)}
                     fill
-                    className="object-contain p-4 bg-white transition-transform duration-700 group-hover:scale-105"
+                    className="object-contain p-4 bg-white"
                   />
                 </div>
                 <CardContent className="p-4">
