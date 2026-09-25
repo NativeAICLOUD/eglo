@@ -489,7 +489,7 @@ export default function ProductPage({ params }: ProductPageProps) {
                     <Plus className="w-4 h-4" />
                   </button>
                 </div>
-                <Button variant="primary" className="flex-1 py-3 px-6 bg-gray-900 hover:bg-black text-white" onClick={handleAddToCart}>
+                <Button variant="primary" className="flex-1 py-3 px-6 btn-silver-glass font-semibold" onClick={handleAddToCart}>
                   {t('addToCart')}
                 </Button>
               </div>

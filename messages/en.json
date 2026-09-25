@@ -619,6 +619,98 @@
     "sale": "Sale"
   },
   "filterGrid": {
+    "groups": {
+      "price": "Price",
+      "room": "Room",
+      "product-type": "Product type",
+      "functions": "Functions",
+      "design": "Design",
+      "technology": "Technology",
+      "material": "Material",
+      "color": "Color",
+      "flames": "Number of lights",
+      "throat": "Socket",
+      "bulbs-included": "Bulbs included",
+      "energy-class": "Energy class",
+      "light-color": "Light color",
+      "wattage": "Wattage",
+      "lumen": "Lumen"
+    },
+    "options": {
+      "room": {
+        "living-room": "Living room",
+        "bedroom": "Bedroom",
+        "kitchen": "Kitchen",
+        "bathroom": "Bathroom",
+        "office": "Office",
+        "outdoor": "Outdoor",
+        "hallway": "Hallway",
+        "childrens-room": "Children's room"
+      },
+      "product-type": {
+        "ceiling": "Ceiling lights",
+        "pendant": "Pendant lights",
+        "wall": "Wall lights",
+        "floor": "Floor lamps",
+        "table": "Table lamps",
+        "spotlights": "Spotlights",
+        "chandeliers": "Chandeliers"
+      },
+      "functions": {
+        "dimmable": "Dimmable",
+        "remote-control": "Remote control",
+        "motion-sensor": "Motion sensor",
+        "touch": "Touch",
+        "smart-app": "Smart / app-controlled",
+        "color-changing": "Color-changing"
+      },
+      "design": {
+        "modern": "Modern",
+        "classic": "Classic",
+        "industrial": "Industrial",
+        "rustic": "Rustic",
+        "minimalist": "Minimalist",
+        "vintage": "Vintage",
+        "scandinavian": "Scandinavian"
+      },
+      "technology": {
+        "halogen": "Halogen",
+        "fluorescent": "Fluorescent",
+        "incandescent": "Incandescent",
+        "smart": "Smart (Zigbee/WiFi)"
+      },
+      "material": {
+        "metal": "Metal",
+        "glass": "Glass",
+        "plastic": "Plastic",
+        "wood": "Wood",
+        "fabric": "Fabric",
+        "crystal": "Crystal",
+        "concrete": "Concrete"
+      },
+      "color": {
+        "black": "Black",
+        "white": "White",
+        "chrome": "Chrome",
+        "brass": "Brass",
+        "nickel": "Nickel",
+        "gold": "Gold",
+        "copper": "Copper",
+        "wood-tone": "Wood tone"
+      },
+      "throat": {
+        "led-integrated": "Integrated LED"
+      },
+      "bulbs-included": {
+        "yes": "Yes",
+        "no": "No"
+      },
+      "light-color": {
+        "warm-2700k": "Warm white (2700K)",
+        "neutral-4000k": "Neutral white (4000K)",
+        "cool-6500k": "Cool white (6500K)"
+      }
+    },
     "filters": "Filters",
     "apply": "Apply",
     "resetAllFilters": "Reset all filters"

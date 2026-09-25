@@ -32,7 +32,7 @@ interface FilterGridProps {
 }
 
 export function FilterGrid({
-  filters,
+  filters: sourceFilters,
   onFilterChange,
   onResetFilters,
   className = "",
@@ -43,6 +43,16 @@ export function FilterGrid({
   onSelectedFiltersChange,
 }: FilterGridProps) {
   const t = useTranslations('filterGrid')
+  // Labels in the filter config are English; show the locale's wording where one
+  // exists (codes like "E27" or "1–10 W" have none and keep the config label).
+  const filters = sourceFilters.map(filter => ({
+    ...filter,
+    label: t.has(`groups.${filter.key}`) ? t(`groups.${filter.key}`) : filter.label,
+    options: filter.options.map(option => {
+      const key = `options.${filter.key}.${option.value}`
+      return t.has(key) ? { ...option, label: t(key) } : option
+    }),
+  }))
   const [openDropdown, setOpenDropdown] = useState<string | null>(null)
   const [internalFilters, setInternalFilters] = useState<Record<string, string[]>>({})
   const [internalPanelOpen, setInternalPanelOpen] = useState(false)

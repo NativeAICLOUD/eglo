@@ -586,6 +586,98 @@
     "sale": "Попуст"
   },
   "filterGrid": {
+    "groups": {
+      "price": "Цена",
+      "room": "Просторија",
+      "product-type": "Тип на производ",
+      "functions": "Функции",
+      "design": "Дизајн",
+      "technology": "Технологија",
+      "material": "Материјал",
+      "color": "Боја",
+      "flames": "Број на светилки",
+      "throat": "Грло",
+      "bulbs-included": "Вклучени сијалици",
+      "energy-class": "Енергетска класа",
+      "light-color": "Боја на светлина",
+      "wattage": "Моќност",
+      "lumen": "Лумени"
+    },
+    "options": {
+      "room": {
+        "living-room": "Дневна соба",
+        "bedroom": "Спална соба",
+        "kitchen": "Кујна",
+        "bathroom": "Бања",
+        "office": "Канцеларија",
+        "outdoor": "Надворешно",
+        "hallway": "Ходник",
+        "childrens-room": "Детска соба"
+      },
+      "product-type": {
+        "ceiling": "Плафоњери",
+        "pendant": "Висилки",
+        "wall": "Ѕидни",
+        "floor": "Подни ламби",
+        "table": "Стони ламби",
+        "spotlights": "Спотови",
+        "chandeliers": "Лустери"
+      },
+      "functions": {
+        "dimmable": "Со затемнување",
+        "remote-control": "Далечински управувач",
+        "motion-sensor": "Сензор за движење",
+        "touch": "На допир",
+        "smart-app": "Паметно / преку апликација",
+        "color-changing": "Менување боја"
+      },
+      "design": {
+        "modern": "Модерен",
+        "classic": "Класичен",
+        "industrial": "Индустриски",
+        "rustic": "Рустичен",
+        "minimalist": "Минималистички",
+        "vintage": "Винтиџ",
+        "scandinavian": "Скандинавски"
+      },
+      "technology": {
+        "halogen": "Халоген",
+        "fluorescent": "Флуоресцентен",
+        "incandescent": "Вжарено влакно",
+        "smart": "Паметно (Zigbee/WiFi)"
+      },
+      "material": {
+        "metal": "Метал",
+        "glass": "Стакло",
+        "plastic": "Пластика",
+        "wood": "Дрво",
+        "fabric": "Текстил",
+        "crystal": "Кристал",
+        "concrete": "Бетон"
+      },
+      "color": {
+        "black": "Црна",
+        "white": "Бела",
+        "chrome": "Хром",
+        "brass": "Месинг",
+        "nickel": "Никел",
+        "gold": "Злато",
+        "copper": "Бакар",
+        "wood-tone": "Боја на дрво"
+      },
+      "throat": {
+        "led-integrated": "Интегрирана LED"
+      },
+      "bulbs-included": {
+        "yes": "Да",
+        "no": "Не"
+      },
+      "light-color": {
+        "warm-2700k": "Топла бела (2700K)",
+        "neutral-4000k": "Неутрална бела (4000K)",
+        "cool-6500k": "Ладна бела (6500K)"
+      }
+    },
     "filters": "Филтри",
     "apply": "Примени",
     "resetAllFilters": "Ресетирај ги сите филтри"

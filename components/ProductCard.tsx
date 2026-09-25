@@ -87,7 +87,7 @@ export default function ProductCard({
             )}
           </span>
           <button
-            className="bg-gray-900 text-white text-xs sm:text-base px-2 py-1 sm:px-4 sm:py-2 rounded hover:bg-black transition-colors whitespace-nowrap"
+            className="btn-silver-glass font-medium text-xs sm:text-base px-2 py-1 sm:px-4 sm:py-2 rounded whitespace-nowrap"
             onClick={handleAddToCart}
           >
             {t('addToCart')}

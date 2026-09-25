@@ -595,6 +595,98 @@
     "sale": "Në Zbritje"
   },
   "filterGrid": {
+    "groups": {
+      "price": "Çmimi",
+      "room": "Dhoma",
+      "product-type": "Lloji i produktit",
+      "functions": "Funksionet",
+      "design": "Dizajni",
+      "technology": "Teknologjia",
+      "material": "Materiali",
+      "color": "Ngjyra",
+      "flames": "Numri i dritave",
+      "throat": "Grykë (fole)",
+      "bulbs-included": "Llamba të përfshira",
+      "energy-class": "Klasa e energjisë",
+      "light-color": "Ngjyra e dritës",
+      "wattage": "Fuqia",
+      "lumen": "Lumen"
+    },
+    "options": {
+      "room": {
+        "living-room": "Dhoma e ndenjes",
+        "bedroom": "Dhoma e gjumit",
+        "kitchen": "Kuzhina",
+        "bathroom": "Banjo",
+        "office": "Zyra",
+        "outdoor": "Jashtë",
+        "hallway": "Korridori",
+        "childrens-room": "Dhoma e fëmijëve"
+      },
+      "product-type": {
+        "ceiling": "Plafonierë",
+        "pendant": "Llamba të varura",
+        "wall": "Llamba muri",
+        "floor": "Llamba dyshemeje",
+        "table": "Llamba tavoline",
+        "spotlights": "Spote",
+        "chandeliers": "Llambadarë"
+      },
+      "functions": {
+        "dimmable": "Me rregullim ndriçimi",
+        "remote-control": "Telekomandë",
+        "motion-sensor": "Sensor lëvizjeje",
+        "touch": "Me prekje",
+        "smart-app": "Smart / me aplikacion",
+        "color-changing": "Ndryshim ngjyre"
+      },
+      "design": {
+        "modern": "Modern",
+        "classic": "Klasik",
+        "industrial": "Industrial",
+        "rustic": "Rustik",
+        "minimalist": "Minimalist",
+        "vintage": "Vintage",
+        "scandinavian": "Skandinav"
+      },
+      "technology": {
+        "halogen": "Halogjen",
+        "fluorescent": "Fluoreshent",
+        "incandescent": "Inkandeshent",
+        "smart": "Smart (Zigbee/WiFi)"
+      },
+      "material": {
+        "metal": "Metal",
+        "glass": "Xham",
+        "plastic": "Plastikë",
+        "wood": "Dru",
+        "fabric": "Tekstil",
+        "crystal": "Kristal",
+        "concrete": "Beton"
+      },
+      "color": {
+        "black": "E zezë",
+        "white": "E bardhë",
+        "chrome": "Krom",
+        "brass": "Tunxh",
+        "nickel": "Nikel",
+        "gold": "Ari",
+        "copper": "Bakër",
+        "wood-tone": "Ngjyrë druri"
+      },
+      "throat": {
+        "led-integrated": "LED e integruar"
+      },
+      "bulbs-included": {
+        "yes": "Po",
+        "no": "Jo"
+      },
+      "light-color": {
+        "warm-2700k": "E bardhë e ngrohtë (2700K)",
+        "neutral-4000k": "E bardhë neutrale (4000K)",
+        "cool-6500k": "E bardhë e ftohtë (6500K)"
+      }
+    },
     "filters": "Filtrat",
     "apply": "Apliko",
     "resetAllFilters": "Rivendos të gjitha filtrat"
