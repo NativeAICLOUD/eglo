@@ -590,6 +590,13 @@
     "sale": "Në Zbritje"
   },
   "newArrivals": {
+    "viewAllNew": "Shiko të gjitha {count} produktet e reja",
+    "home": "Kreu",
+    "showing": "Po shfaqen {shown} nga {total}",
+    "loadMore": "Ngarko më shumë",
+    "loading": "Duke u ngarkuar...",
+    "empty": "Aktualisht nuk ka produkte të reja.",
+    "loadError": "Produktet nuk u ngarkuan. Provoni përsëri.",
     "title": "Të Rejat",
     "subtitle": "Shtesat më të fundit në koleksionin tonë",
     "viewAllProducts": "Shiko Të Gjitha Produktet",

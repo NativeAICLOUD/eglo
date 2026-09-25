@@ -208,7 +208,7 @@ export function Footer({}: FooterProps) {
                   alt="NativeCloud"
                   width={82}
                   height={41}
-                  className="h-5 w-auto opacity-90 group-hover:opacity-100 transition-opacity"
+                  className="h-9 md:h-10 w-auto opacity-90 group-hover:opacity-100 transition-opacity"
                 />
               </Link>
             </div>

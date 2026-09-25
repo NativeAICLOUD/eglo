@@ -10,6 +10,7 @@ import { useRef, useState, useEffect } from "react"
 import { apiService, BackendProduct, parseProductName, formatMKD } from "../lib/api"
 
 const PLACEHOLDER = "/placeholder.svg"
+const SLIDER_PAGE_SIZE = 12
 
 export function FeaturedProducts() {
   const t = useTranslations('newArrivals')
@@ -20,6 +21,10 @@ export function FeaturedProducts() {
   const [canScrollLeft, setCanScrollLeft] = useState(false)
   const [canScrollRight, setCanScrollRight] = useState(true)
   const [products, setProducts] = useState<BackendProduct[]>([])
+  const [showingNew, setShowingNew] = useState(false)
+  const [page, setPage] = useState(1)
+  const [total, setTotal] = useState(0)
+  const loadingMore = useRef(false)
 
   const CARD_WIDTH = 300
   const GAP = 24
@@ -27,17 +32,41 @@ export function FeaturedProducts() {
   useEffect(() => {
     // Products the admin marked NEW; the backend sorts photographed ones first.
     // Falls back to the general listing if nothing is marked yet.
-    apiService.getProducts({ page: 1, pageSize: 12, isNew: true })
-      .then(res => res.items.length > 0 ? res : apiService.getProducts({ page: 1, pageSize: 10 }))
-      .then(res => setProducts(res.items))
+    apiService.getProducts({ page: 1, pageSize: SLIDER_PAGE_SIZE, isNew: true })
+      .then(async res => {
+        if (res.items.length > 0) {
+          setShowingNew(true)
+          setTotal(res.totalCount)
+          setProducts(res.items)
+          return
+        }
+        const fallback = await apiService.getProducts({ page: 1, pageSize: 10 })
+        setProducts(fallback.items)
+      })
       .catch(() => setProducts([]))
   }, [])
+
+  const loadMore = () => {
+    if (!showingNew || loadingMore.current || products.length >= total) return
+    loadingMore.current = true
+    const next = page + 1
+    apiService.getProducts({ page: next, pageSize: SLIDER_PAGE_SIZE, isNew: true })
+      .then(res => {
+        setProducts(prev => [...prev, ...res.items.filter(i => !prev.some(p => p.id === i.id))])
+        setPage(next)
+      })
+      .catch(() => {})
+      .finally(() => { loadingMore.current = false })
+  }
 
   const checkScroll = () => {
     const el = scrollRef.current
     if (!el) return
     setCanScrollLeft(el.scrollLeft > 0)
-    setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 1)
+    const remaining = el.scrollWidth - (el.scrollLeft + el.clientWidth)
+    setCanScrollRight(remaining > 1 || (showingNew && products.length < total))
+    // Fetch the next batch while there are still a couple of cards left to scroll.
+    if (remaining < (CARD_WIDTH + GAP) * 2) loadMore()
   }
 
   useEffect(() => {
@@ -46,7 +75,7 @@ export function FeaturedProducts() {
     checkScroll()
     el.addEventListener("scroll", checkScroll, { passive: true })
     return () => el.removeEventListener("scroll", checkScroll)
-  }, [products])
+  }, [products, showingNew, total, page])
 
   const scroll = (dir: "left" | "right") => {
     const el = scrollRef.current
@@ -64,6 +93,14 @@ export function FeaturedProducts() {
           <div>
             <h2 className="text-3xl md:text-4xl font-medium tracking-tight text-gray-900 mb-2">{t('title')}</h2>
             <p className="text-gray-500 font-light text-base">{t('subtitle')}</p>
+            {showingNew && (
+              <Link
+                href={`/${locale}/new-products`}
+                className="inline-block mt-2 text-sm font-medium text-teal-600 hover:text-teal-700 transition-colors"
+              >
+                {t('viewAllNew', { count: total })} →
+              </Link>
+            )}
           </div>
 
           {/* Arrow buttons */}
