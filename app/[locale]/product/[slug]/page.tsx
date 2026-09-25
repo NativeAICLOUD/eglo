@@ -12,7 +12,7 @@ import { useCart } from "../../context/CartContext"
 import { useAuth } from "../../../../lib/useAuth"
 import { useTranslations } from 'next-intl'
 import { useParams } from 'next/navigation'
-import { apiService, BackendProduct, parseProductName, formatMKD, getDiscountedPrice, stripTrailingColon, humanizeSpecLabel, trimmedImageSrc } from "../../../../lib/api"
+import { apiService, BackendProduct, parseProductName, formatMKD, getDiscountedPrice, stripTrailingColon, humanizeSpecLabel, trimmedImageSrc, versionedImageSrc } from "../../../../lib/api"
 import productImagesMap from "../../../../data/productImages.json"
 import productSpecsData from "../../../../data/productSpecs.json"
 
@@ -568,7 +568,7 @@ export default function ProductPage({ params }: ProductPageProps) {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 key={images[lightboxIndex]}
-                src={images[lightboxIndex]}
+                src={versionedImageSrc(images[lightboxIndex])}
                 alt={`${displayName} ${lightboxIndex + 1}`}
                 className="block w-auto h-auto object-contain select-none max-w-[calc(100vw-4rem)] max-h-[calc(90vh-2rem)] sm:max-w-[min(calc(900px-3rem),calc(100vw-13rem))] sm:max-h-[min(85vh,calc(90vh-3rem))]"
                 draggable={false}

@@ -131,17 +131,32 @@ export function getDiscountedPrice(price: number, discountPercentage?: number | 
 
 const R2_IMAGE_HOST = 'pub-166082e4b3d54bb296c0e624eb1a1f50.r2.dev'
 
+// Bump whenever catalog photos are replaced in R2 under the same file names, so
+// browsers and the CDN fetch the new files instead of serving cached copies.
+const IMAGE_VERSION = '2'
+
+function isR2Image(url: string): boolean {
+  try {
+    return new URL(url).hostname === R2_IMAGE_HOST
+  } catch {
+    return false
+  }
+}
+
+/** Direct (untrimmed) catalog image URL with the cache-busting version applied. */
+export function versionedImageSrc(url: string | null | undefined): string {
+  if (!url) return url ?? ''
+  if (!isR2Image(url)) return url
+  return `${url}${url.includes('?') ? '&' : '?'}v=${IMAGE_VERSION}`
+}
+
 /** Route a product photo through the whitespace-trim proxy so source images with
  *  large embedded padding (common for tall/narrow fixtures) display larger without
  *  stretching or cropping the product. Non-catalog URLs pass through untouched. */
 export function trimmedImageSrc(url: string | null | undefined): string {
   if (!url) return url ?? ''
-  try {
-    if (new URL(url).hostname !== R2_IMAGE_HOST) return url
-  } catch {
-    return url
-  }
-  return `/api/image-trim?url=${encodeURIComponent(url)}`
+  if (!isR2Image(url)) return url
+  return `/api/image-trim?url=${encodeURIComponent(url)}&v=${IMAGE_VERSION}`
 }
 
 /** Strip a trailing colon some admin-entered spec labels carry, e.g. "Material:" → "Material" */
