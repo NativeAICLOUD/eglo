@@ -323,7 +323,7 @@ export default function ProductPage({ params }: ProductPageProps) {
           {/* Product Images */}
           <div className="space-y-4">
             <div
-              className="relative bg-gray-100 rounded-lg overflow-hidden group cursor-zoom-in w-full"
+              className="relative bg-white rounded-lg overflow-hidden group cursor-zoom-in w-full"
               style={{ aspectRatio: mainImageAspect, maxHeight: '70vh' }}
               onClick={() => images.length > 0 && openLightbox(selectedImage)}
             >
@@ -392,8 +392,8 @@ export default function ProductPage({ params }: ProductPageProps) {
                   <button
                     key={idx}
                     onClick={() => setSelectedImage(idx)}
-                    className={`relative aspect-square bg-gray-100 rounded-lg overflow-hidden border-2 transition-colors ${
-                      selectedImage === idx ? 'border-teal-600' : 'border-transparent'
+                    className={`relative aspect-square bg-white rounded-lg overflow-hidden border-2 transition-colors ${
+                      selectedImage === idx ? 'border-teal-600' : 'border-gray-200 hover:border-gray-300'
                     }`}
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
