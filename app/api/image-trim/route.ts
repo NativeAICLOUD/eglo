@@ -2,7 +2,7 @@
 // (common for tall/narrow fixtures like pendant lights) so the gallery and
 // lightbox can show the product larger without stretching or cropping it.
 // Pure display-layer proxy — never touches the original image, DB, or API.
-import type { FormatEnum } from "sharp"
+import type { Sharp } from "sharp"
 
 export const runtime = "nodejs"
 
@@ -83,10 +83,16 @@ export async function GET(request: Request) {
       ? { r: 0, g: 0, b: 0, alpha: 0 }
       : { r: 255, g: 255, b: 255, alpha: 1 }
 
-    const finalBuffer = await sharp(trimmedData)
-      .extend({ top: pad, bottom: pad, left: pad, right: pad, background })
-      .toFormat((meta.format ?? "jpeg") as keyof FormatEnum)
-      .toBuffer()
+    // Nothing to trim and no backdrop to whiten — serve the original bytes
+    // rather than paying for a lossy re-encode.
+    if (!whitened && trimmedInfo.width === meta.width && trimmedInfo.height === meta.height) {
+      return originalResponse(inputBuffer, contentTypeFor(meta.format))
+    }
+
+    const finalBuffer = await encodeHighQuality(
+      sharp(trimmedData).extend({ top: pad, bottom: pad, left: pad, right: pad, background }),
+      meta.format
+    )
 
     return originalResponse(finalBuffer, contentTypeFor(meta.format))
   } catch (err) {
@@ -98,6 +104,18 @@ export async function GET(request: Request) {
     }
     // Any processing failure falls back to the untouched original — never breaks the page.
     return originalResponse(inputBuffer, upstreamContentType)
+  }
+}
+
+// sharp's defaults (JPEG q80 with 4:2:0 chroma subsampling) visibly smudge the
+// already-compressed source photos — blocky halos on edges, blurred gold/chrome
+// details. Re-encode close to lossless so the trimmed image matches the original.
+function encodeHighQuality(image: Sharp, format: string | undefined): Promise<Buffer> {
+  switch (format) {
+    case "png": return image.png().toBuffer()
+    case "webp": return image.webp({ quality: 95, smartSubsample: true }).toBuffer()
+    case "avif": return image.avif({ quality: 80, chromaSubsampling: "4:4:4" }).toBuffer()
+    default: return image.jpeg({ quality: 95, chromaSubsampling: "4:4:4", mozjpeg: true }).toBuffer()
   }
 }
 
@@ -145,7 +163,8 @@ async function whitenStudioBackground(
     for (let k = 0; k < 3; k++) data[i + k] = Math.round(data[i + k] + (255 - data[i + k]) * t)
   }
 
+  // Lossless intermediate — the only lossy encode happens once, at the end.
   return sharp(data, { raw: { width: w, height: h, channels: c } })
-    .jpeg({ quality: 92 })
+    .png({ compressionLevel: 1 })
     .toBuffer()
 }
