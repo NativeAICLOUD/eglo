@@ -7,6 +7,7 @@ import { useState, use, useEffect, useCallback, useRef } from "react"
 import { Button } from "../../../../components/Button"
 import { Input } from "../../../../components/Input"
 import { CartPopup } from "../../../../components/CartPopup"
+import { FavoriteButton } from "../../../../components/FavoriteButton"
 import { useCart } from "../../context/CartContext"
 import { useAuth } from "../../../../lib/useAuth"
 import { useTranslations } from 'next-intl'
@@ -489,9 +490,20 @@ export default function ProductPage({ params }: ProductPageProps) {
                     <Plus className="w-4 h-4" />
                   </button>
                 </div>
-                <Button variant="primary" className="flex-1 py-3 px-6 btn-silver-glass font-semibold" onClick={handleAddToCart}>
+                <Button variant="primary" className="flex-1 py-3 px-6" onClick={handleAddToCart}>
                   {t('addToCart')}
                 </Button>
+                <FavoriteButton
+                  variant="outline"
+                  product={{
+                    id: product.id,
+                    name: displayName,
+                    sku: product.sku ?? product.description ?? "",
+                    price: product.price,
+                    discountPercentage: product.discountPercentage,
+                    imageUrl: images[0] ?? null,
+                  }}
+                />
               </div>
               <Link
                 href={`/${locale}/warranty`}

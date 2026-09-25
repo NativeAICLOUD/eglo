@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import { MapPin, User, ShoppingCart, LogOut, Menu, LayoutDashboard, Settings, Package } from "lucide-react";
+import { MapPin, User, ShoppingCart, LogOut, Menu, LayoutDashboard, Settings, Package, Heart } from "lucide-react";
 import { Button } from "./Button";
 import LocaleSwitcher from "./LanguageSwitcher";
 import { Badge } from "./Badge";
@@ -9,6 +9,7 @@ import { Navigation } from "./Navigation";
 import { SearchBar } from "./SearchBar";
 import { useState, useRef, useEffect } from "react";
 import { useCart } from "../app/[locale]/context/CartContext";
+import { useFavorites } from "../app/[locale]/context/FavoritesContext";
 import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
 import { useAuth } from "../lib/useAuth";
@@ -28,6 +29,7 @@ export function Header({ noPadding = false }: HeaderProps) {
   const userMenuRef = useRef<HTMLDivElement>(null);
   const { getTotalItems } = useCart();
   const cartItemCount = getTotalItems();
+  const { items: favoriteItems } = useFavorites();
   const params = useParams();
   const locale = params.locale as string;
   const t = useTranslations("header");
@@ -236,6 +238,25 @@ export function Header({ noPadding = false }: HeaderProps) {
                   </Button>
                 </Link>
               )}
+
+              <Link href={`/${locale}/favorites`} aria-label={t("actions.favorites")} title={t("actions.favorites")}>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="flex items-center gap-1 md:gap-2 p-2 md:p-3 relative"
+                >
+                  <Heart className="w-5 h-5" />
+                  <span className="hidden lg:inline">{t("actions.favorites")}</span>
+                  {favoriteItems.length > 0 && (
+                    <Badge
+                      variant="secondary"
+                      className="absolute -top-1 -right-1 md:static md:ml-1 bg-rose-500 text-white"
+                    >
+                      {favoriteItems.length}
+                    </Badge>
+                  )}
+                </Button>
+              </Link>
 
               <Link href={`/${locale}/cart`}>
                 <Button

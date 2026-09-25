@@ -206,6 +206,7 @@
       "skuLabel": "Art.nr."
     },
     "actions": {
+      "favorites": "Të preferuarat",
       "login": "Hyni",
       "logout": "Dilni",
       "cart": "Shporta",
@@ -704,6 +705,16 @@
     "subtitle": "Zbuloni mundësi të pafundme me koleksionin tonë të kuruar të dizajneve të ndriçimit që transformojnë hapësirat në përvoja të jashtëzakonshme",
     "exploreIdeas": "Eksploro Idetë",
     "getConsultation": "Merr Konsultim"
+  },
+  "favorites": {
+    "title": "Të preferuarat",
+    "home": "Kreu",
+    "add": "Shto te të preferuarat",
+    "remove": "Hiq nga të preferuarat",
+    "emptyTitle": "Ende nuk keni të preferuara",
+    "emptyText": "Klikoni zemrën te çdo produkt për ta ruajtur këtu.",
+    "browse": "Shfleto produktet",
+    "count": "{count, plural, one {# produkt i ruajtur} other {# produkte të ruajtura}}"
   },
   "productCard": {
     "new": "E re",

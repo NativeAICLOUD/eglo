@@ -206,6 +206,7 @@
       "skuLabel": "Art. no."
     },
     "actions": {
+      "favorites": "Favorites",
       "login": "Sign in",
       "logout": "Sign out",
       "cart": "Cart",
@@ -728,6 +729,16 @@
     "subtitle": "Explore our exclusive collection of lighting designs, created to turn your spaces into places with special charm and atmosphere",
     "exploreIdeas": "Explore ideas",
     "getConsultation": "Get a consultation"
+  },
+  "favorites": {
+    "title": "Favorites",
+    "home": "Home",
+    "add": "Add to favorites",
+    "remove": "Remove from favorites",
+    "emptyTitle": "No favorites yet",
+    "emptyText": "Tap the heart on any product to save it here.",
+    "browse": "Browse products",
+    "count": "{count, plural, one {# saved product} other {# saved products}}"
   },
   "productCard": {
     "new": "New",

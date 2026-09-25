@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import '../../styles/globals.css';
 import { ConditionalLayout } from '../../components/ConditionalLayout';
 import { CartProvider } from './context/CartContext';
+import { FavoritesProvider } from './context/FavoritesContext';
 import { locales } from '../../i18n';
 import LocaleLayoutProvider from '../../components/providers/LocaleLayoutProvider';
 import { notFound } from 'next/navigation';
@@ -48,7 +49,9 @@ export default async function Layout({
   return (
     <LocaleLayoutProvider locale={locale} messages={messages}>
       <CartProvider>
-        <ConditionalLayout>{children}</ConditionalLayout>
+        <FavoritesProvider>
+          <ConditionalLayout>{children}</ConditionalLayout>
+        </FavoritesProvider>
       </CartProvider>
     </LocaleLayoutProvider>
   );
