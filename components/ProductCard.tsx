@@ -56,11 +56,11 @@ export default function ProductCard({
 
   const cardContent = (
     <div className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer">
-      <div className="relative h-32 sm:h-48 bg-gray-100">
+      <div className="relative h-32 sm:h-48 bg-white">
         <img
           src={trimmedImageSrc(resolvedImage)}
           alt={productName}
-          className="block object-contain object-top w-full h-full transition-opacity duration-300"
+          className="block w-full h-full object-contain object-center p-2 sm:p-3 bg-white transition-opacity duration-300"
           onError={(e) => { (e.currentTarget as HTMLImageElement).src = PLACEHOLDER }}
         />
         <div className="absolute top-2 left-2 flex flex-col items-start gap-1">
@@ -87,7 +87,7 @@ export default function ProductCard({
             )}
           </span>
           <button
-            className="bg-teal-600 text-white text-xs sm:text-base px-2 py-1 sm:px-4 sm:py-2 rounded hover:bg-teal-700 transition-colors whitespace-nowrap"
+            className="bg-gray-900 text-white text-xs sm:text-base px-2 py-1 sm:px-4 sm:py-2 rounded hover:bg-black transition-colors whitespace-nowrap"
             onClick={handleAddToCart}
           >
             {t('addToCart')}

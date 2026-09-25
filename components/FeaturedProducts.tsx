@@ -97,12 +97,12 @@ export function FeaturedProducts() {
                 className="group cursor-pointer border border-gray-200 rounded-xl bg-white hover:border-gray-300 hover:shadow-lg transition-all duration-300"
                 style={{ width: CARD_WIDTH }}
               >
-                <div className="relative h-64 overflow-hidden rounded-t-xl bg-gray-50">
+                <div className="relative h-64 overflow-hidden rounded-t-xl bg-white">
                   <Image
                     src={product.imageUrl || PLACEHOLDER}
                     alt={parseProductName(product.title)}
                     fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                    className="object-contain p-4 bg-white transition-transform duration-700 group-hover:scale-105"
                   />
                 </div>
                 <CardContent className="p-4">
