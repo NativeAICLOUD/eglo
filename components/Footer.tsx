@@ -183,15 +183,8 @@ export function Footer({}: FooterProps) {
 
           {/* Bottom Bar */}
           <div className="border-t border-gray-800 mt-6 md:mt-8 pt-6 md:pt-8">
-            <div className="flex flex-col md:flex-row justify-between items-center text-gray-400 text-xs md:text-sm">
-              <div className="mb-2 md:mb-0">
-                <p>{t('bottom.copyright')}</p>
-              </div>
-              <div className="text-center mb-2 md:mb-0 max-w-2xl">
-                <p>
-                  {t('bottom.legalText')}
-                </p>
-              </div>
+            <div className="flex justify-center items-center text-gray-400 text-xs md:text-sm">
+              <p>{t('bottom.copyright')}</p>
             </div>
 
             {/* Credit */}
