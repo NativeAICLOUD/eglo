@@ -38,10 +38,7 @@ export function StyleGrid() {
     <section className="py-20 px-4 bg-white">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-medium tracking-tight text-gray-900 mb-4">{t('title')}</h2>
-          <p className="text-lg text-gray-500 font-light max-w-2xl mx-auto leading-relaxed">
-            {t('subtitle')}
-          </p>
+          <h2 className="text-3xl md:text-4xl font-medium tracking-tight text-gray-900">{t('title')}</h2>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 items-stretch">
