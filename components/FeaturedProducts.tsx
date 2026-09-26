@@ -89,21 +89,21 @@ export function FeaturedProducts() {
     <section className="py-16 px-4 bg-white">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="flex items-center justify-between mb-10">
-          <div>
-            <h2 className="text-3xl md:text-4xl font-medium tracking-tight text-gray-900 mb-2">{t('title')}</h2>
-            <p className="text-gray-500 font-light text-base">{t('subtitle')}</p>
-            {showingNew && (
-              <Link
-                href={`/${locale}/new-products`}
-                className="inline-block mt-2 text-sm font-medium text-teal-600 hover:text-teal-700 transition-colors"
-              >
-                {t('viewAllNew', { count: total })} →
-              </Link>
-            )}
-          </div>
+        <div className="text-center mb-8">
+          <h2 className="pt-2 mb-5 text-[1.75rem] sm:text-4xl lg:text-5xl leading-tight font-extrabold uppercase tracking-wide text-[#5b6b7d] break-words">{t('title')}</h2>
+          <p className="text-lg text-gray-500 font-light max-w-2xl mx-auto leading-relaxed">{t('subtitle')}</p>
+          {showingNew && (
+            <Link
+              href={`/${locale}/new-products`}
+              className="inline-block mt-3 text-sm font-medium text-teal-600 hover:text-teal-700 transition-colors"
+            >
+              {t('viewAllNew', { count: total })} →
+            </Link>
+          )}
+        </div>
 
-          {/* Arrow buttons */}
+        {/* Arrow buttons */}
+        <div className="flex justify-end mb-4">
           <div className="flex items-center gap-2">
             <button
               onClick={() => scroll("left")}

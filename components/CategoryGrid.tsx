@@ -38,10 +38,7 @@ export function CategoryGrid() {
     <section className="py-16 px-4">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
-          <h2 className="pt-2 mb-5 text-[1.75rem] sm:text-4xl lg:text-5xl leading-tight font-extrabold uppercase tracking-wide text-[#5b6b7d] break-words">{t('title')}</h2>
-          <p className="text-lg text-gray-500 font-light max-w-2xl mx-auto leading-relaxed">
-            {t('subtitle')}
-          </p>
+          <h2 className="pt-2 text-[1.75rem] sm:text-4xl lg:text-5xl leading-tight font-extrabold uppercase tracking-wide text-[#5b6b7d] break-words">{t('title')}</h2>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">

@@ -24,7 +24,15 @@ export function BestSellersSection() {
   const GAP = 24
 
   useEffect(() => {
+    // Best sellers are ranked by units sold. Until there are orders the list is
+    // empty, so fill the section with catalog products that have a photo —
+    // skipping NEW ones, which already have their own section below.
     apiService.getBestSellers(10)
+      .then(async sold => {
+        if (sold.length > 0) return sold
+        const page = await apiService.getProducts({ page: 1, pageSize: 40 })
+        return page.items.filter(p => p.imageUrl && !p.isNew).slice(0, 10)
+      })
       .then(setProducts)
       .catch(() => setProducts([]))
   }, [])
@@ -56,13 +64,13 @@ export function BestSellersSection() {
     <section className="py-16 px-4 bg-gray-50">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="flex items-center justify-between mb-10">
-          <div>
-            <h2 className="text-3xl md:text-4xl font-medium tracking-tight text-gray-900 mb-2">{t('title')}</h2>
-            <p className="text-gray-500 font-light text-base">{t('subtitle')}</p>
-          </div>
+        <div className="text-center mb-8">
+          <h2 className="pt-2 mb-5 text-[1.75rem] sm:text-4xl lg:text-5xl leading-tight font-extrabold uppercase tracking-wide text-[#5b6b7d] break-words">{t('title')}</h2>
+          <p className="text-lg text-gray-500 font-light max-w-2xl mx-auto leading-relaxed">{t('subtitle')}</p>
+        </div>
 
-          {/* Arrow buttons */}
+        {/* Arrow buttons */}
+        <div className="flex justify-end mb-4">
           <div className="flex items-center gap-2">
             <button
               onClick={() => scroll("left")}
