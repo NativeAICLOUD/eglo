@@ -11,6 +11,7 @@ import { FilterGrid } from "../../../../components/FilterGrid"
 import { Pagination } from "../../../../components/Pagination"
 import { apiService, BackendCategory, BackendProduct, parseProductName } from "../../../../lib/api"
 import { PageSpinner } from "../../../../components/Spinner"
+import { CategoryArticle } from "../../../../components/CategoryArticle"
 
 interface SubcategoryPageProps {
   params: Promise<{
@@ -385,6 +386,8 @@ export default function SubcategoryPage({ params }: SubcategoryPageProps) {
             )}
           </div>
         </div>
+
+        <CategoryArticle slug={resolvedParams.slug} locale={locale} />
       </div>
     </div>
   )
