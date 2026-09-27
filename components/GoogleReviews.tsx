@@ -64,22 +64,22 @@ export function GoogleReviews() {
   const totalReviews = 127
 
   return (
-    <section className="py-16 md:py-20 bg-gray-50">
+    <section className="py-10 md:py-12 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-6">
           <div>
-            <div className="flex items-center gap-2 mb-2">
+            <div className="flex items-center gap-2 mb-1">
               <GoogleLogo />
               <span className="text-sm font-semibold text-gray-500 uppercase tracking-wide">
                 Google Reviews
               </span>
             </div>
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
+            <h2 className="text-lg md:text-xl font-semibold text-gray-900">
               Нашите клиенти зборуваат
             </h2>
-            <div className="flex items-center gap-2 mt-2">
-              <span className="text-3xl font-bold text-gray-900">{overallRating}</span>
+            <div className="flex items-center gap-2 mt-1">
+              <span className="text-xl font-bold text-gray-900">{overallRating}</span>
               <Stars count={5} />
               <span className="text-sm text-gray-500">({totalReviews} рецензии)</span>
             </div>
@@ -100,7 +100,7 @@ export function GoogleReviews() {
           {REVIEWS.map((review, i) => (
             <div
               key={i}
-              className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 flex flex-col gap-3 hover:shadow-md transition-shadow"
+              className="bg-white rounded-xl border border-gray-100 p-4 flex flex-col gap-2"
             >
               {/* Top row */}
               <div className="flex items-center gap-3">
@@ -115,7 +115,7 @@ export function GoogleReviews() {
 
               <Stars count={review.rating} />
 
-              <p className="text-sm text-gray-600 leading-relaxed flex-1">{review.text}</p>
+              <p className="text-[13px] text-gray-600 leading-relaxed flex-1 line-clamp-4">{review.text}</p>
 
               {/* Google badge */}
               <div className="flex items-center gap-1.5 mt-auto pt-2 border-t border-gray-50">
@@ -127,7 +127,7 @@ export function GoogleReviews() {
         </div>
 
         {/* Bottom CTA */}
-        <div className="mt-8 text-center">
+        <div className="mt-6 text-center">
           <a
             href={GOOGLE_REVIEWS_URL}
             target="_blank"

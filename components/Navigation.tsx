@@ -147,7 +147,7 @@ export function Navigation({ isMobileMenuOpen, setIsMobileMenuOpen }: Navigation
     >
       {/* ── Desktop nav bar ─────────────────────────────────────────── */}
       <div className="max-w-7xl mx-auto px-4">
-        <div className="hidden md:flex items-center justify-center gap-8 py-4" role="menubar">
+        <div className="hidden md:flex items-center justify-center gap-9 py-3" role="menubar">
           {categoriesLoading && (
             // Skeleton placeholders keep the nav bar's width/order stable so
             // "Inspiration" doesn't flash in alone before categories arrive.
@@ -167,10 +167,10 @@ export function Navigation({ isMobileMenuOpen, setIsMobileMenuOpen }: Navigation
             >
               <Link
                 href={`/${locale}/category/${cat.slug}`}
-                className={`text-[15px] font-medium tracking-[-0.01em] transition-colors pb-0.5 border-b-2 ${
+                className={`text-[14px] font-normal tracking-[0.01em] transition-colors pb-1 border-b ${
                   pathname.startsWith(`/${locale}/category/${cat.slug}`) || hoveredCategory === cat.id
-                    ? 'text-teal-600 border-teal-600'
-                    : 'text-gray-500 hover:text-teal-600 border-transparent hover:border-teal-600'
+                    ? 'text-teal-700 border-teal-600'
+                    : 'text-gray-600 hover:text-teal-700 border-transparent hover:border-teal-600'
                 }`}
                 onClick={closeMegaMenu}
               >
@@ -186,10 +186,10 @@ export function Navigation({ isMobileMenuOpen, setIsMobileMenuOpen }: Navigation
           <div role="menuitem" onMouseEnter={() => { clearClose(); setHoveredCategory(null) }}>
             <Link
               href={`/${locale}/inspiration`}
-              className={`text-[15px] font-medium tracking-[-0.01em] transition-colors pb-0.5 border-b-2 ${
+              className={`text-[14px] font-normal tracking-[0.01em] transition-colors pb-1 border-b ${
                 pathname.startsWith(`/${locale}/inspiration`)
-                  ? 'text-teal-600 border-teal-600'
-                  : 'text-gray-500 hover:text-teal-600 border-transparent hover:border-teal-600'
+                  ? 'text-teal-700 border-teal-600'
+                  : 'text-gray-600 hover:text-teal-700 border-transparent hover:border-teal-600'
               }`}
             >
               {t('inspiration')}

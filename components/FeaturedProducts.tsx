@@ -8,6 +8,7 @@ import { useTranslations } from 'next-intl'
 import { useParams } from "next/navigation"
 import { useRef, useState, useEffect } from "react"
 import { apiService, BackendProduct, parseProductName, formatMKD } from "../lib/api"
+import { SectionHeading } from "./SectionHeading"
 
 const PLACEHOLDER = "/placeholder.svg"
 const SLIDER_PAGE_SIZE = 12
@@ -89,9 +90,7 @@ export function FeaturedProducts() {
     <section className="py-16 px-4 bg-white">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h2 className="pt-2 mb-5 text-[1.75rem] sm:text-4xl lg:text-5xl leading-tight font-extrabold uppercase tracking-wide text-[#5b6b7d] break-words">{t('title')}</h2>
-          <p className="text-lg text-gray-500 font-light max-w-2xl mx-auto leading-relaxed">{t('subtitle')}</p>
+        <SectionHeading title={t('title')} subtitle={t('subtitle')}>
           {showingNew && (
             <Link
               href={`/${locale}/new-products`}
@@ -100,7 +99,7 @@ export function FeaturedProducts() {
               {t('viewAllNew', { count: total })} →
             </Link>
           )}
-        </div>
+        </SectionHeading>
 
         {/* Arrow buttons */}
         <div className="flex justify-end mb-4">

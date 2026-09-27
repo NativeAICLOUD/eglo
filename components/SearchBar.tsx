@@ -117,7 +117,7 @@ export function SearchBar({ mobile = false }: SearchBarProps) {
   const showDropdown = isOpen && (loading || results.length > 0)
 
   return (
-    <div ref={containerRef} className={`relative ${mobile ? "w-full" : "hidden sm:block flex-1 max-w-lg mx-8"}`}>
+    <div ref={containerRef} className={`relative ${mobile ? "w-full" : "hidden sm:block flex-1 max-w-xl mx-6 lg:mx-12"}`}>
       <form onSubmit={handleSubmit} role="search" noValidate>
         <div
           className={`flex items-center gap-2 px-4 py-2.5 rounded-full border transition-all duration-200 bg-gray-50 ${

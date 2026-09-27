@@ -125,7 +125,7 @@ export function Header({ noPadding = false }: HeaderProps) {
       <div className={`border-t border-gray-100 transition-all duration-300 ${scrolled ? 'hidden' : ''}`} />
 
       {/* Main Header */}
-      <div className={`transition-all duration-300 ${scrolled ? "py-2" : "py-4"} ${noPadding ? "px-0" : "px-4"}`}>
+      <div className={`transition-all duration-300 ${scrolled ? "py-2" : "py-3"} ${noPadding ? "px-0" : "px-4"}`}>
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center justify-between">
             {/* Mobile Menu Button */}
@@ -151,7 +151,7 @@ export function Header({ noPadding = false }: HeaderProps) {
             <SearchBar />
 
             {/* User Actions */}
-            <div className="flex items-center gap-2 md:gap-4">
+            <div className="flex items-center gap-1 md:gap-2 -mr-2 md:-mr-3">
               {isAuthenticated ? (
                 // Authenticated — dropdown menu
                 <div className="relative" ref={userMenuRef}>
@@ -231,7 +231,7 @@ export function Header({ noPadding = false }: HeaderProps) {
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="flex items-center gap-1 md:gap-2 p-2 md:p-3 hover:text-teal-600 transition-colors"
+                    className="flex items-center gap-1.5 md:gap-2 p-2 md:px-3 text-gray-700 hover:text-teal-600 transition-colors"
                   >
                     <User className="w-5 h-5" />
                     <span className="hidden lg:inline">{t("actions.login")}</span>
@@ -243,7 +243,7 @@ export function Header({ noPadding = false }: HeaderProps) {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="flex items-center gap-1 md:gap-2 p-2 md:p-3 relative"
+                  className="flex items-center gap-1.5 md:gap-2 p-2 md:px-3 relative text-gray-700 hover:text-teal-600 transition-colors"
                 >
                   <Heart className="w-5 h-5" />
                   <span className="hidden lg:inline">{t("actions.favorites")}</span>
@@ -262,7 +262,7 @@ export function Header({ noPadding = false }: HeaderProps) {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="flex items-center gap-1 md:gap-2 p-2 md:p-3 relative"
+                  className="flex items-center gap-1.5 md:gap-2 p-2 md:px-3 relative text-gray-700 hover:text-teal-600 transition-colors"
                 >
                   <ShoppingCart className="w-5 h-5" />
                   <span className="hidden lg:inline">{t("actions.cart")}</span>

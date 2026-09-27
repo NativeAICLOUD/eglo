@@ -1,10 +1,9 @@
 "use client"
 
-import Image from "next/image"
-import Link from "next/link"
 import { useTranslations } from 'next-intl'
 import { useParams } from 'next/navigation'
-import { ChevronRight } from "lucide-react"
+import { SectionHeading } from "./SectionHeading"
+import { ImageLinkCard } from "./ImageLinkCard"
 
 const categories = [
   {
@@ -35,37 +34,20 @@ export function CategoryGrid() {
   const locale = params.locale as string
   
   return (
-    <section className="py-16 px-4">
+    <section className="pt-12 md:pt-16 pb-10 md:pb-12 px-4">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-12">
-          <h2 className="pt-2 text-[1.75rem] sm:text-4xl lg:text-5xl leading-tight font-extrabold uppercase tracking-wide text-[#5b6b7d] break-words">{t('title')}</h2>
-        </div>
+        <SectionHeading title={t('title')} />
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
-          {categories.map((category, index) => (
-            <Link key={index} href={`/${locale}${category.href}`} className="group block">
-              <div className="relative overflow-hidden rounded-lg bg-gray-50 aspect-[3/4]">
-                <Image
-                  src={category.image || "/placeholder.svg"}
-                  alt={t(`categories.${category.key}.title`)}
-                  width={300}
-                  height={500}
-                  className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                />
-              </div>
-              <div className="pt-5">
-                <h3 className="text-lg font-medium text-gray-900 tracking-tight group-hover:text-teal-600 transition-colors">
-                  {t(`categories.${category.key}.title`)}
-                </h3>
-                <p className="text-sm text-gray-500 font-light mt-1 leading-relaxed">
-                  {t(`categories.${category.key}.description`)}
-                </p>
-                <span className="inline-flex items-center gap-1 mt-3 text-sm font-medium text-teal-600 group-hover:gap-2 transition-all">
-                  {t('shopNow')}
-                  <ChevronRight className="w-4 h-4" />
-                </span>
-              </div>
-            </Link>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 lg:gap-x-8 gap-y-10">
+          {categories.map((category) => (
+            <ImageLinkCard
+              key={category.key}
+              href={`/${locale}${category.href}`}
+              image={category.image}
+              title={t(`categories.${category.key}.title`)}
+              description={t(`categories.${category.key}.description`)}
+              cta={t('shopNow')}
+            />
           ))}
         </div>
       </div>

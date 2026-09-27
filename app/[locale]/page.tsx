@@ -18,8 +18,8 @@ export default function HomePage() {
       <BestSellersSection />
       <FeaturedProducts />
       <TrendingIdeas />
-      <GoogleReviews />
       <CTASection />
+      <GoogleReviews />
     </div>
   )
 }
