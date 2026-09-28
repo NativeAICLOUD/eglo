@@ -2,6 +2,17 @@ const INTERNAL_API_URL =
   process.env.INTERNAL_API_URL ??
   "https://nativeapi-h8e7h4cgc6gpgbea.northeurope-01.azurewebsites.net/api"
 
+/**
+ * Cache-Control for a proxied public read: passes on what the backend allows (it marks
+ * catalog reads CDN-cacheable for a short time), but never for signed-in requests —
+ * the client tags those with auth=1 — so an admin always sees fresh data.
+ */
+export function proxiedReadCacheControl(request: Request, upstream: Response): string {
+  const signedIn = request.headers.has("authorization") || new URL(request.url).searchParams.has("auth")
+  if (signedIn || !upstream.ok) return "private, no-store"
+  return upstream.headers.get("cache-control") ?? "private, no-store"
+}
+
 /** Forwards a route-handler request to the backend API, passing through auth, body and status. */
 export async function forwardToApi(request: Request, path: string, method: string): Promise<Response> {
   try {

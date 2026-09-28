@@ -1,3 +1,5 @@
+import { proxiedReadCacheControl } from "../../../lib/proxy"
+
 const INTERNAL_API_URL =
   process.env.INTERNAL_API_URL ??
   "https://nativeapi-h8e7h4cgc6gpgbea.northeurope-01.azurewebsites.net/api"
@@ -7,7 +9,10 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url)
     const res = await fetch(`${INTERNAL_API_URL}/products?${searchParams.toString()}`)
     const data = await res.json()
-    return Response.json(data, { status: res.status })
+    return Response.json(data, {
+      status: res.status,
+      headers: { "Cache-Control": proxiedReadCacheControl(request, res) },
+    })
   } catch (error) {
     return Response.json(
       { message: error instanceof Error ? error.message : "Internal server error" },
