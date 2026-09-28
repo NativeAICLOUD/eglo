@@ -287,8 +287,31 @@ class ApiService {
     return `${this.baseURL}${endpoint.startsWith("/") ? endpoint : `/${endpoint}`}`;
   }
 
+  // Browser-only memory cache for public GETs the storefront asks for again and again
+  // (categories on every page, the same product lists while browsing). Concurrent
+  // identical requests share one fetch; any write clears it so admins see their changes.
+  private getCache = new Map<string, { at: number; promise: Promise<unknown> }>();
+
+  private cachedGet<T>(endpoint: string, ttlMs: number): Promise<T> {
+    if (typeof window === "undefined") return this.request<T>(endpoint);
+    const hit = this.getCache.get(endpoint);
+    if (hit && Date.now() - hit.at < ttlMs) return hit.promise as Promise<T>;
+    const promise = this.request<T>(endpoint).catch(err => {
+      this.getCache.delete(endpoint);
+      throw err;
+    });
+    this.getCache.set(endpoint, { at: Date.now(), promise });
+    return promise;
+  }
+
   private async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
-    const url = this.url(endpoint);
+    const isRead = !options.method || options.method.toUpperCase() === "GET";
+    if (!isRead) this.getCache.clear();
+    // The CDN may cache public reads for a minute. Signed-in reads get their own URL so
+    // an admin never gets a cached public copy right after saving a change.
+    const url = isRead && this.getToken()
+      ? `${this.url(endpoint)}${endpoint.includes("?") ? "&" : "?"}auth=1`
+      : this.url(endpoint);
 
     if (process.env.NODE_ENV !== "production") {
       console.log("🔍 API_BASE_URL:", this.baseURL);
@@ -331,7 +354,7 @@ class ApiService {
   }
 
   async getCategories(): Promise<BackendCategory[]> {
-    return this.request<BackendCategory[]>("/categories");
+    return this.cachedGet<BackendCategory[]>("/categories", 5 * 60_000);
   }
 
   async createCategory(input: { name: string; slug: string; parentId?: string | null; icon?: string | null }): Promise<string> {
@@ -343,7 +366,7 @@ class ApiService {
   }
 
   async getCategoryBySlug(slug: string): Promise<BackendCategory> {
-    return this.request<BackendCategory>(`/categories/by-slug/${slug}`);
+    return this.cachedGet<BackendCategory>(`/categories/by-slug/${slug}`, 5 * 60_000);
   }
 
   async getProducts(params?: ProductQueryParams): Promise<PaginatedProducts> {
@@ -358,7 +381,7 @@ class ApiService {
     qs.set("pageSize", String(params?.pageSize ?? 20));
     if (params?.uncategorized)     qs.set("uncategorized", "true");
     if (params?.isNew != null)     qs.set("isNew",         String(params.isNew));
-    return this.request<PaginatedProducts>(`/products?${qs.toString()}`);
+    return this.cachedGet<PaginatedProducts>(`/products?${qs.toString()}`, 60_000);
   }
 
   /** Shows or hides the NEW badge on the given products. */
@@ -370,7 +393,7 @@ class ApiService {
   }
 
   async getBestSellers(take: number = 8): Promise<BackendProduct[]> {
-    return this.request<BackendProduct[]>(`/products/best-sellers?take=${take}`);
+    return this.cachedGet<BackendProduct[]>(`/products/best-sellers?take=${take}`, 60_000);
   }
 
   /** Uploads an EGLO price list. With dryRun, nothing is saved — the result is a preview. */
@@ -379,6 +402,7 @@ class ApiService {
     formData.append("file", file);
 
     const token = this.getToken();
+    if (!dryRun) this.getCache.clear();
     const res = await fetch(this.url(`/products/import?dryRun=${dryRun}`), {
       method: "POST",
       headers: token ? { Authorization: `Bearer ${token}` } : undefined,
@@ -405,7 +429,7 @@ class ApiService {
   }
 
   async getProduct(id: string): Promise<BackendProduct> {
-    const p = await this.request<BackendProduct>(`/products/${id}`);
+    const p = await this.cachedGet<BackendProduct>(`/products/${id}`, 60_000);
     // The detail endpoint returns the spec string as `name` and the product
     // code as `description`, whereas the list endpoint returns them as `title`
     // and `sku`. Normalize so consumers can rely on `title`/`sku` either way.
@@ -458,6 +482,7 @@ class ApiService {
     files.forEach(file => formData.append("files", file));
 
     const token = this.getToken();
+    this.getCache.clear();
     const res = await fetch(this.url(`/products/${id}/images`), {
       method: "POST",
       headers: token ? { Authorization: `Bearer ${token}` } : undefined,
@@ -481,7 +506,7 @@ class ApiService {
   }
 
   async getPromoPopup(): Promise<PromoPopupSettings> {
-    const data = await this.request<Partial<PromoPopupSettings>>("/promo-popup");
+    const data = await this.cachedGet<Partial<PromoPopupSettings>>("/promo-popup", 60_000);
     const translations = {} as Record<PromoPopupLocale, PromoPopupContent>;
     for (const locale of PROMO_POPUP_LOCALES) {
       const c = data.translations?.[locale];
@@ -519,7 +544,7 @@ class ApiService {
 
   /** Mega-menu promo cards saved from the dashboard; `cards` is null until first saved. */
   async getMenuPromos(): Promise<MenuPromoSettings> {
-    const data = await this.request<Partial<MenuPromoSettings>>("/menu-promos");
+    const data = await this.cachedGet<Partial<MenuPromoSettings>>("/menu-promos", 60_000);
     return { cards: data.cards ?? null, updatedAt: data.updatedAt ?? null };
   }
 
