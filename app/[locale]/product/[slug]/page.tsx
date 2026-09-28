@@ -330,7 +330,7 @@ export default function ProductPage({ params }: ProductPageProps) {
               {images.length > 0 ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
-                  src={trimmedImageSrc(images[selectedImage])}
+                  src={trimmedImageSrc(images[selectedImage], 1200)}
                   alt={displayName}
                   className="w-full h-full object-contain"
                   onLoad={(e) => {
@@ -347,7 +347,7 @@ export default function ProductPage({ params }: ProductPageProps) {
               ) : product.imageUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
-                  src={trimmedImageSrc(product.imageUrl)}
+                  src={trimmedImageSrc(product.imageUrl, 1200)}
                   alt={displayName}
                   className="w-full h-full object-contain"
                   onLoad={(e) => {
@@ -398,7 +398,8 @@ export default function ProductPage({ params }: ProductPageProps) {
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
-                      src={trimmedImageSrc(img)}
+                      src={trimmedImageSrc(img, 200)}
+                      loading="lazy"
                       alt={`${displayName} ${idx + 1}`}
                       className="w-full h-full object-contain"
                       onError={(e) => { (e.currentTarget as HTMLImageElement).src = PLACEHOLDER }}

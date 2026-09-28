@@ -43,7 +43,9 @@ export default function ProductCard({
     <div className="h-full flex flex-col bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer">
       <div className="relative h-32 sm:h-48 flex-shrink-0 bg-white">
         <img
-          src={trimmedImageSrc(resolvedImage)}
+          src={trimmedImageSrc(resolvedImage, 600)}
+          loading="lazy"
+          decoding="async"
           alt={productName}
           className="block w-full h-full object-contain object-center p-2 sm:p-3 bg-white"
           onError={(e) => { (e.currentTarget as HTMLImageElement).src = PLACEHOLDER }}

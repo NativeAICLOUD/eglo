@@ -91,7 +91,7 @@ export function InspirationHero() {
           </div>
           <div className="h-36 rounded-lg overflow-hidden group opacity-20 hover:opacity-100 transition-opacity duration-300">
             <Image
-              src="/assets/images/office-inspiration.jpg"
+              src="/assets/images/office-inspiration.webp"
               alt=""
               width={200}
               height={144}

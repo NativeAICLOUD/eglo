@@ -7,7 +7,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react"
 import { useTranslations } from 'next-intl'
 import { useParams } from "next/navigation"
 import { useRef, useState, useEffect } from "react"
-import { apiService, BackendProduct, parseProductName, formatMKD } from "../lib/api"
+import { apiService, BackendProduct, parseProductName, formatMKD, trimmedImageSrc } from "../lib/api"
 import { SectionHeading } from "./SectionHeading"
 
 const PLACEHOLDER = "/placeholder.svg"
@@ -137,9 +137,10 @@ export function FeaturedProducts() {
               >
                 <div className="relative h-64 overflow-hidden rounded-t-xl bg-white">
                   <Image
-                    src={product.imageUrl || PLACEHOLDER}
+                    src={product.imageUrl ? trimmedImageSrc(product.imageUrl, 600) : PLACEHOLDER}
                     alt={parseProductName(product.title)}
                     fill
+                    sizes="300px"
                     className="object-contain p-4 bg-white"
                   />
                   {product.isNew && (

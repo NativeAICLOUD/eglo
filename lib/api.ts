@@ -162,10 +162,11 @@ export function versionedImageSrc(url: string | null | undefined): string {
 /** Route a product photo through the whitespace-trim proxy so source images with
  *  large embedded padding (common for tall/narrow fixtures) display larger without
  *  stretching or cropping the product. Non-catalog URLs pass through untouched. */
-export function trimmedImageSrc(url: string | null | undefined): string {
+export function trimmedImageSrc(url: string | null | undefined, width?: 200 | 400 | 600 | 800 | 1200): string {
   if (!url) return url ?? ''
   if (!isR2Image(url)) return url
-  return `/api/image-trim?url=${encodeURIComponent(url)}&v=${IMAGE_VERSION}`
+  const size = width ? `&w=${width}` : ''
+  return `/api/image-trim?url=${encodeURIComponent(url)}${size}&v=${IMAGE_VERSION}`
 }
 
 /** Strip a trailing colon some admin-entered spec labels carry, e.g. "Material:" → "Material" */

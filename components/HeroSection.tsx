@@ -15,7 +15,7 @@ export function HeroSection() {
       {/* Background image */}
       <div className="absolute inset-0">
         <Image
-          src="/assets/images/banner.png"
+          src="/assets/images/banner.webp"
           alt="Modern living room with elegant lighting"
           fill
           className="object-cover object-center"

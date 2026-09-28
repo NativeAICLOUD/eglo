@@ -23,11 +23,20 @@ function contentTypeFor(format: string | undefined): string {
   }
 }
 
-function originalResponse(buffer: Buffer, contentType: string): Response {
+// Display widths the storefront asks for (card, gallery, …). Anything else is served
+// full size, so the CDN only ever holds a handful of variants per photo.
+const ALLOWED_WIDTHS = new Set([200, 400, 600, 800, 1200])
+
+// Versioned URLs (?v=…, bumped whenever photos are replaced in R2) never change content,
+// so browsers and the CDN may keep them for a year; unversioned ones for a week.
+const CACHE_VERSIONED = "public, max-age=31536000, immutable"
+const CACHE_UNVERSIONED = "public, max-age=604800, stale-while-revalidate=2592000"
+
+function imageResponse(buffer: Buffer, contentType: string, cacheControl: string): Response {
   return new Response(new Uint8Array(buffer), {
     headers: {
       "Content-Type": contentType,
-      "Cache-Control": "public, max-age=604800, stale-while-revalidate=2592000",
+      "Cache-Control": cacheControl,
     },
   })
 }
@@ -36,6 +45,9 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
   const src = searchParams.get("url")
   const debug = searchParams.get("debug") === "1"
+  const requestedWidth = Number(searchParams.get("w"))
+  const width = ALLOWED_WIDTHS.has(requestedWidth) ? requestedWidth : null
+  const cacheControl = searchParams.has("v") ? CACHE_VERSIONED : CACHE_UNVERSIONED
   if (!src) return new Response("Missing url", { status: 400 })
 
   let parsed: URL
@@ -71,10 +83,22 @@ export async function GET(request: Request) {
       .trim({ threshold: 15 })
       .toBuffer({ resolveWithObject: true })
 
+    // A display width was requested: shrink to it and send WebP — a card-sized copy is a
+    // few tens of KB instead of the full 2500px original.
+    const sized = async (image: Sharp) =>
+      imageResponse(
+        await image
+          .resize({ width: width ?? undefined, height: width ?? undefined, fit: "inside", withoutEnlargement: true })
+          .webp({ quality: 90, smartSubsample: true })
+          .toBuffer(),
+        "image/webp",
+        cacheControl
+      )
+
     const trimmedArea = trimmedInfo.width * trimmedInfo.height
     if (!originalArea || trimmedArea / originalArea < MIN_KEPT_AREA_RATIO) {
       // Trim removed almost everything — likely a misdetection. Serve the original.
-      return originalResponse(inputBuffer, contentTypeFor(meta.format))
+      return width ? sized(sharp(inputBuffer)) : imageResponse(inputBuffer, contentTypeFor(meta.format), cacheControl)
     }
 
     const pad = Math.round(Math.max(trimmedInfo.width, trimmedInfo.height) * PADDING_RATIO)
@@ -86,15 +110,17 @@ export async function GET(request: Request) {
     // Nothing to trim and no backdrop to whiten — serve the original bytes
     // rather than paying for a lossy re-encode.
     if (!whitened && trimmedInfo.width === meta.width && trimmedInfo.height === meta.height) {
-      return originalResponse(inputBuffer, contentTypeFor(meta.format))
+      return width ? sized(sharp(inputBuffer)) : imageResponse(inputBuffer, contentTypeFor(meta.format), cacheControl)
     }
 
-    const finalBuffer = await encodeHighQuality(
-      sharp(trimmedData).extend({ top: pad, bottom: pad, left: pad, right: pad, background }),
-      meta.format
-    )
+    const extended = sharp(trimmedData).extend({ top: pad, bottom: pad, left: pad, right: pad, background })
+    if (width) {
+      // resize() must run on already-extended pixels, so materialise the extend first.
+      return sized(sharp(await extended.png({ compressionLevel: 1 }).toBuffer()))
+    }
 
-    return originalResponse(finalBuffer, contentTypeFor(meta.format))
+    const finalBuffer = await encodeHighQuality(extended, meta.format)
+    return imageResponse(finalBuffer, contentTypeFor(meta.format), cacheControl)
   } catch (err) {
     if (debug) {
       return Response.json(
@@ -103,7 +129,7 @@ export async function GET(request: Request) {
       )
     }
     // Any processing failure falls back to the untouched original — never breaks the page.
-    return originalResponse(inputBuffer, upstreamContentType)
+    return imageResponse(inputBuffer, upstreamContentType, cacheControl)
   }
 }
 

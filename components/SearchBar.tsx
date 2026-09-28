@@ -5,7 +5,7 @@ import { useRouter, useParams } from "next/navigation"
 import { useTranslations } from "next-intl"
 import Image from "next/image"
 import Link from "next/link"
-import { apiService, BackendProduct, parseProductName, formatMKD } from "../lib/api"
+import { apiService, BackendProduct, parseProductName, formatMKD, trimmedImageSrc } from "../lib/api"
 
 interface SearchBarProps {
   mobile?: boolean
@@ -188,7 +188,7 @@ export function SearchBar({ mobile = false }: SearchBarProps) {
                       <div className="w-11 h-11 rounded-xl bg-gray-100 flex-shrink-0 overflow-hidden">
                         {product.imageUrl ? (
                           <Image
-                            src={product.imageUrl}
+                            src={trimmedImageSrc(product.imageUrl, 200)}
                             alt={name}
                             width={44}
                             height={44}
