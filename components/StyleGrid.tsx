@@ -5,26 +5,28 @@ import { useParams } from 'next/navigation'
 import { SectionHeading } from "./SectionHeading"
 import { ImageLinkCard } from "./ImageLinkCard"
 
+// searchTerm is an EGLO material keyword from the product titles that fits the style —
+// the style names themselves never appear in titles, so searching them found nothing.
 const styles = [
   {
     key: "scandinavian",
     image: "/assets/images/scandinavian.jpg",
-    searchTerm: "Scandinavian",
+    searchTerm: "HOLZ",   // wood
   },
   {
     key: "natural",
     image: "/assets/images/natural.jpg",
-    searchTerm: "Natural",
+    searchTerm: "NATUR",  // natural linen, rattan and wood finishes
   },
   {
     key: "vintage",
     image: "/assets/images/vintage-retro.jpg",
-    searchTerm: "Vintage",
+    searchTerm: "ANTIK",  // antique copper / brass finishes
   },
   {
     key: "industrial",
     image: "/assets/images/industrial-2_3.jpg",
-    searchTerm: "Industrial",
+    searchTerm: "KUPFER", // black-and-copper metal pendants
   },
 ]
 
@@ -42,7 +44,7 @@ export function StyleGrid() {
           {styles.map((style) => (
             <ImageLinkCard
               key={style.key}
-              href={`/${locale}/search?q=${encodeURIComponent(style.searchTerm)}`}
+              href={`/${locale}/search?q=${encodeURIComponent(style.searchTerm)}&style=${style.key}`}
               image={style.image}
               title={t(`styles.${style.key}.title`)}
               description={t(`styles.${style.key}.description`)}

@@ -10,14 +10,21 @@ import { useTranslations } from 'next-intl'
 import { useParams } from 'next/navigation'
 import { apiService, BackendProduct, parseProductName } from "../../../lib/api"
 
+const STYLE_KEYS = ["scandinavian", "natural", "vintage", "industrial"]
+
 function SearchPageContent() {
   const searchParams = useSearchParams()
   const router = useRouter()
   const query = searchParams.get("q") || ""
-  const [searchTerm, setSearchTerm] = useState(query)
+  // Style cards on the home page link here with ?style=<key>; the query itself is an
+  // EGLO material keyword (e.g. HOLZ), so show the style's name instead of the raw term.
+  const styleParam = searchParams.get("style")
+  const style = styleParam && STYLE_KEYS.includes(styleParam) ? styleParam : null
+  const [searchTerm, setSearchTerm] = useState(style ? "" : query)
   const [filteredProducts, setFilteredProducts] = useState<BackendProduct[]>([])
   const [loading, setLoading] = useState(false)
   const t = useTranslations('search')
+  const tStyle = useTranslations('styleGrid')
   const params = useParams()
   const locale = params.locale as string
 
@@ -74,8 +81,11 @@ function SearchPageContent() {
         {/* Search Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-4">
-            {query ? t('results.title', { query }) : t('title')}
+            {style ? tStyle(`styles.${style}.title`) : query ? t('results.title', { query }) : t('title')}
           </h1>
+          {style && (
+            <p className="-mt-2 mb-4 text-gray-500">{tStyle(`styles.${style}.description`)}</p>
+          )}
           
           {/* Search Form */}
           <form onSubmit={handleSearch} className="max-w-2xl">
