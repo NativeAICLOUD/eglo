@@ -21,8 +21,8 @@ export function HeroSection() {
           className="object-cover object-center"
           priority
         />
-        {/* Stronger left-side gradient for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/35 to-transparent" />
+        {/* Warm dark-brown gradient on the left keeps the text readable and in the banner's palette */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#24150c]/75 via-[#24150c]/35 to-transparent" />
       </div>
 
       {/* Content — left-aligned */}
@@ -31,19 +31,19 @@ export function HeroSection() {
           <div className="max-w-xl">
             {/* Kicker */}
             <div className="flex items-center gap-3 mb-5">
-              <span className="h-px w-8 bg-teal-400/80" />
-              <p className="text-teal-200/90 text-xs sm:text-sm font-medium uppercase tracking-[0.28em]">
+              <span className="h-px w-8 bg-[#e3c29b]/80" />
+              <p className="text-[#e3c29b] text-xs sm:text-sm font-medium uppercase tracking-[0.28em]">
                 {t('subtitle')}
               </p>
             </div>
 
             {/* Headline */}
-            <h1 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-semibold text-white leading-[1.1] tracking-tight mb-6">
+            <h1 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-semibold text-[#fbf3e8] leading-[1.1] tracking-tight mb-6">
               {t('title')}
             </h1>
 
             {/* Sub-copy */}
-            <p className="text-white/80 text-base sm:text-lg mb-10 max-w-md leading-relaxed font-light">
+            <p className="text-[#efdcc6]/90 text-base sm:text-lg mb-10 max-w-md leading-relaxed font-light">
               {t('description')}
             </p>
 
@@ -51,14 +51,14 @@ export function HeroSection() {
             <div className="flex flex-col sm:flex-row gap-4 sm:items-center">
               <Link
                 href={`/${locale}/category/interior-lights`}
-                className="group inline-flex items-center justify-center gap-2 px-8 py-4 rounded-lg bg-white hover:bg-white/95 text-gray-900 font-semibold text-sm tracking-wide transition-all hover:-translate-y-0.5"
+                className="group inline-flex items-center justify-center gap-2 px-8 py-4 rounded-lg bg-[#fbf3e8] hover:bg-[#fffaf3] text-[#3b2416] font-semibold text-sm tracking-wide transition-all hover:-translate-y-0.5"
               >
                 {t('exploreCollection')}
                 <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
               <Link
                 href={`/${locale}/about`}
-                className="inline-flex w-fit items-center justify-center px-2 py-4 text-white/90 hover:text-white font-medium text-sm tracking-wide transition-colors border-b border-transparent hover:border-white/60"
+                className="inline-flex w-fit items-center justify-center px-2 py-4 text-[#fbf3e8]/90 hover:text-[#fbf3e8] font-medium text-sm tracking-wide transition-colors border-b border-transparent hover:border-[#fbf3e8]/60"
               >
                 {t('aboutUs')}
               </Link>

@@ -69,6 +69,14 @@ export function Navigation({ isMobileMenuOpen, setIsMobileMenuOpen }: Navigation
       .finally(() => setCategoriesLoading(false))
   }, [])
 
+  // Cards edited in the dashboard; until something is saved the built-in ones are used.
+  const [savedPromos, setSavedPromos] = useState<Record<string, PromoCard[]> | null>(null)
+  useEffect(() => {
+    apiService.getMenuPromos()
+      .then(s => setSavedPromos(s.cards))
+      .catch(() => setSavedPromos(null))
+  }, [])
+
   useEffect(() => {
     return () => { if (closeTimerRef.current) clearTimeout(closeTimerRef.current) }
   }, [])
@@ -133,11 +141,13 @@ export function Navigation({ isMobileMenuOpen, setIsMobileMenuOpen }: Navigation
 
   const activeCategory   = categories.find(c => c.id === hoveredCategory) ?? null
   const activeSub        = activeCategory?.subcategories.find(s => s.id === hoveredSubcategory) ?? null
-  const promos           = activeCategory ? (categoryPromos[activeCategory.slug] ?? null) : null
+  const promos           = activeCategory
+    ? (savedPromos?.[activeCategory.slug] ?? categoryPromos[activeCategory.slug] ?? null)
+    : null
   const panelOpen        = !!hoveredCategory
 
-  const promoText = (map: Record<string, string>) =>
-    map[locale] ?? map['mk'] ?? Object.values(map)[0] ?? ''
+  const promoText = (map: Record<string, string> | undefined) =>
+    (map?.[locale] || map?.['mk'] || Object.values(map ?? {}).find(Boolean)) ?? ''
 
   return (
     <nav

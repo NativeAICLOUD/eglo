@@ -723,9 +723,9 @@
     "resetAllFilters": "Reset all filters"
   },
   "heroSection": {
-    "title": "Light for the perfect atmosphere",
+    "title": "Lighting for every space.",
     "subtitle": "Discover now",
-    "description": "Discover the perfect lighting for your home — from classic to smart lighting.",
+    "description": "From classic design to smart lighting — discover solutions created to make every space more beautiful, warmer, and more functional.",
     "exploreCollection": "Explore the collection",
     "aboutUs": "About us"
   },
@@ -1545,6 +1545,32 @@
       "notifications":           "Notifications",
       "emailNotifications":      "Email notifications",
       "emailNotificationsDesc":  "Receive updates about orders and activity.",
+      "menuPromos": {
+        "title": "Menu images",
+        "hint": "Image cards shown on the right of the menu when hovering a category. Choose a category, then edit its cards. Texts are per language; empty languages fall back to Macedonian.",
+        "loading": "Loading menu cards…",
+        "card": "Card {number}",
+        "addCard": "Add card",
+        "removeCard": "Remove card",
+        "save": "Save menu images",
+        "saving": "Saving…",
+        "saved": "Saved",
+        "fields": {
+          "uploadImage": "Upload image",
+          "changeImage": "Change image",
+          "uploading": "Uploading…",
+          "title": "Title",
+          "description": "Description",
+          "ctaText": "Button text",
+          "link": "Link"
+        },
+        "errors": {
+          "loadFailed": "Could not load the menu cards.",
+          "uploadFailed": "Image upload failed.",
+          "saveFailed": "Saving failed.",
+          "missingImage": "Every card needs an image before saving."
+        }
+      },
       "promoPopup": {
         "title":   "Promotional popup",
         "enabled": "Enabled",

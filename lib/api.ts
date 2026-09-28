@@ -1,4 +1,5 @@
 // lib/api.ts
+import type { PromoCard } from "./megaMenuPromos";
 
 // In the browser, always use same-origin proxy routes (avoids CORS entirely).
 // On the server (SSR), call the Azure API directly via INTERNAL_API_URL.
@@ -43,6 +44,14 @@ export interface PromoPopupSettings {
   translations: Record<PromoPopupLocale, PromoPopupContent>;
   /** Server version of the loaded settings; sent back on save to detect edits from another window. */
   updatedAt?: string | null;
+}
+
+/** Mega-menu promo cards per top-level category slug (same shape as lib/megaMenuPromos). */
+export type MenuPromoCards = Record<string, PromoCard[]>;
+
+export interface MenuPromoSettings {
+  cards: MenuPromoCards | null;
+  updatedAt: string | null;
 }
 
 export interface PriceListImportResult {
@@ -507,14 +516,37 @@ class ApiService {
     });
   }
 
+  /** Mega-menu promo cards saved from the dashboard; `cards` is null until first saved. */
+  async getMenuPromos(): Promise<MenuPromoSettings> {
+    const data = await this.request<Partial<MenuPromoSettings>>("/menu-promos");
+    return { cards: data.cards ?? null, updatedAt: data.updatedAt ?? null };
+  }
+
+  /** Returns the new server version. Rejects (409) if the cards changed since `settings.updatedAt`. */
+  async updateMenuPromos(cards: MenuPromoCards, updatedAt: string | null): Promise<string | null> {
+    const res = await this.request<{ updatedAt?: string }>("/menu-promos", {
+      method: "PUT",
+      body: JSON.stringify({ cards, expectedUpdatedAt: updatedAt }),
+    });
+    return res?.updatedAt ?? null;
+  }
+
+  async uploadMenuPromoImage(file: File): Promise<string> {
+    return this.uploadImage("/menu-promos/image", file);
+  }
+
+  async uploadPromoPopupImage(file: File): Promise<string> {
+    return this.uploadImage("/promo-popup/image", file);
+  }
+
   /** Bypasses request() since FormData needs the browser to set its own
    *  multipart Content-Type/boundary. */
-  async uploadPromoPopupImage(file: File): Promise<string> {
+  private async uploadImage(path: string, file: File): Promise<string> {
     const formData = new FormData();
     formData.append("file", file);
 
     const token = this.getToken();
-    const res = await fetch(this.url("/promo-popup/image"), {
+    const res = await fetch(this.url(path), {
       method: "POST",
       headers: token ? { Authorization: `Bearer ${token}` } : undefined,
       body: formData,

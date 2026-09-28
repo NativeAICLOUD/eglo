@@ -13,6 +13,7 @@ import {
   PROMO_POPUP_LOCALES,
 } from "../../../../lib/api"
 import { Input } from "../../../../components/Input"
+import { MenuPromosEditor } from "../../../../components/dashboard/MenuPromosEditor"
 
 const LOCALES = [
   { code: "en", label: "English" },
@@ -342,6 +343,9 @@ export default function DashboardSettingsPage() {
           </div>
         )}
       </div>
+
+      {/* Mega-menu image cards */}
+      <MenuPromosEditor />
 
       {/* Security placeholder */}
       <div className="bg-white rounded-xl border border-gray-200 shadow-sm divide-y divide-gray-100">

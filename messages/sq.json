@@ -699,9 +699,9 @@
     "resetAllFilters": "Rivendos të gjitha filtrat"
   },
   "heroSection": {
-    "title": "Ndriçoni Hapësirën Tuaj",
+    "title": "Ndriçim për çdo hapësirë.",
     "subtitle": "Zbuloni tani",
-    "description": "Zbuloni ndriçimin e përsosur për shtëpinë tuaj — nga klasikja deri tek ndriçimi smart.",
+    "description": "Nga dizajni klasik te ndriçimi inteligjent — zbuloni zgjidhje të krijuara për ta bërë çdo hapësirë më të bukur, më të ngrohtë dhe më funksionale.",
     "exploreCollection": "Eksploro Koleksionin",
     "aboutUs": "Rreth nesh"
   },
@@ -1709,6 +1709,32 @@
       "notifications":           "Njoftimet",
       "emailNotifications":      "Njoftimet me email",
       "emailNotificationsDesc":  "Merrni përditësime për porositë dhe aktivitetet.",
+      "menuPromos": {
+        "title": "Imazhet e menysë",
+        "hint": "Kartat me imazh që shfaqen në të djathtë të menysë kur kaloni mbi një kategori. Zgjidhni një kategori dhe pastaj ndryshoni kartat e saj. Tekstet janë sipas gjuhës; gjuhët bosh përdorin tekstin maqedonisht.",
+        "loading": "Po ngarkohen kartat…",
+        "card": "Karta {number}",
+        "addCard": "Shto kartë",
+        "removeCard": "Hiq kartën",
+        "save": "Ruaj imazhet e menysë",
+        "saving": "Po ruhet…",
+        "saved": "U ruajt",
+        "fields": {
+          "uploadImage": "Ngarko imazh",
+          "changeImage": "Ndrysho imazhin",
+          "uploading": "Po ngarkohet…",
+          "title": "Titulli",
+          "description": "Përshkrimi",
+          "ctaText": "Teksti i butonit",
+          "link": "Linku"
+        },
+        "errors": {
+          "loadFailed": "Kartat nuk u ngarkuan.",
+          "uploadFailed": "Ngarkimi i imazhit dështoi.",
+          "saveFailed": "Ruajtja dështoi.",
+          "missingImage": "Çdo kartë duhet të ketë imazh para ruajtjes."
+        }
+      },
       "promoPopup": {
         "title":   "Popup promovues",
         "enabled": "Aktiv",
