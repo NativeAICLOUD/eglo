@@ -1,21 +1,18 @@
 "use client"
 
-import Image from "next/image"
 import Link from "next/link"
-import { Card, CardContent } from "./Card"
+import ProductCard from "./ProductCard"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { useTranslations } from 'next-intl'
 import { useParams } from "next/navigation"
 import { useRef, useState, useEffect } from "react"
-import { apiService, BackendProduct, parseProductName, formatMKD, trimmedImageSrc } from "../lib/api"
+import { apiService, BackendProduct, parseProductName } from "../lib/api"
 import { SectionHeading } from "./SectionHeading"
 
-const PLACEHOLDER = "/placeholder.svg"
 const SLIDER_PAGE_SIZE = 12
 
 export function FeaturedProducts() {
   const t = useTranslations('newArrivals')
-  const tCard = useTranslations('productCard')
   const params = useParams()
   const locale = params.locale as string
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -130,33 +127,17 @@ export function FeaturedProducts() {
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           {products.map((product) => (
-            <Link key={product.id} href={`/${locale}/product/${product.id}`} className="flex-shrink-0">
-              <Card
-                className="group cursor-pointer border border-gray-200 rounded-xl bg-white hover:border-gray-300 hover:shadow-lg transition-all duration-300"
-                style={{ width: CARD_WIDTH }}
-              >
-                <div className="relative h-64 overflow-hidden rounded-t-xl bg-white">
-                  <Image
-                    src={product.imageUrl ? trimmedImageSrc(product.imageUrl, 600) : PLACEHOLDER}
-                    alt={parseProductName(product.title)}
-                    fill
-                    sizes="300px"
-                    className="object-contain p-4 bg-white"
-                  />
-                  {product.isNew && (
-                    <span className="absolute top-3 left-3 bg-blue-500 text-white text-xs font-semibold px-2 py-1 rounded">
-                      {tCard('new')}
-                    </span>
-                  )}
-                </div>
-                <CardContent className="p-4">
-                  <h3 className="text-base font-medium text-gray-900 mb-2 group-hover:text-teal-600 transition-colors line-clamp-1">
-                    {parseProductName(product.title)}
-                  </h3>
-                  <span className="text-lg font-semibold text-gray-900">{formatMKD(product.price)}</span>
-                </CardContent>
-              </Card>
-            </Link>
+            <div key={product.id} className="flex-shrink-0" style={{ width: CARD_WIDTH }}>
+              <ProductCard
+                productName={parseProductName(product.title)}
+                productDesc={product.sku}
+                price={product.price}
+                discountPercentage={product.discountPercentage}
+                isNew={product.isNew}
+                imageUrl={product.imageUrl}
+                productSlug={product.id}
+              />
+            </div>
           ))}
         </div>
       </div>

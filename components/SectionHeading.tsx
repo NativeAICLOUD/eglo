@@ -6,11 +6,11 @@ interface SectionHeadingProps {
   children?: ReactNode
 }
 
-// Shared home-page section heading: centred, uppercase, muted blue-gray.
+// Shared home-page section heading: centred, uppercase, muted gray.
 export function SectionHeading({ title, subtitle, children }: SectionHeadingProps) {
   return (
     <div className="text-center mb-8 md:mb-10">
-      <h2 className="text-[1.625rem] sm:text-[2rem] lg:text-[2.5rem] leading-tight font-extrabold uppercase tracking-[0.03em] text-[#5b6b7d] break-words">
+      <h2 className="text-[1.625rem] sm:text-[2rem] lg:text-[2.5rem] leading-tight font-extrabold uppercase tracking-[0.03em] text-[#5f6670] break-words">
         {title}
       </h2>
       {subtitle && (
