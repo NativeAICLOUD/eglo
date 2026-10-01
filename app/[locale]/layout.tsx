@@ -9,6 +9,7 @@ import { notFound } from 'next/navigation';
 import { getMessages as getLocaleMessages } from '../../lib/getMessages';
 import type { Locale } from '../../i18n';
 import type { ReactNode } from 'react';
+import { Toaster } from '../../components/ui/sonner';
 
 export const metadata: Metadata = {
   title: 'EGLO',
@@ -51,6 +52,8 @@ export default async function Layout({
       <CartProvider>
         <FavoritesProvider>
           <ConditionalLayout>{children}</ConditionalLayout>
+          {/* Same toast setup as the NativeHome apps. */}
+          <Toaster expand={true} richColors duration={8000} />
         </FavoritesProvider>
       </CartProvider>
     </LocaleLayoutProvider>

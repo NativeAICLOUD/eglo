@@ -1018,6 +1018,17 @@
     }
   },
   "productPage": {
+    "savedToast": {
+      "created": {
+        "title": "Product added successfully",
+        "text": "It is published and visible on the site."
+      },
+      "updated": {
+        "title": "Changes saved successfully",
+        "text": "This is how customers now see the product."
+      },
+      "close": "Close"
+    },
     "breadcrumb": {
       "home": "Home",
       "products": "Products"

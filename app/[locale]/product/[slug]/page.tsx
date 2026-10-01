@@ -8,6 +8,7 @@ import { Button } from "../../../../components/Button"
 import { Input } from "../../../../components/Input"
 import { CartPopup } from "../../../../components/CartPopup"
 import { ProductImageLightbox } from "../../../../components/product-gallery/ProductImageLightbox"
+import { ProductSavedToast } from "../../../../components/ProductSavedToast"
 import { FavoriteButton } from "../../../../components/FavoriteButton"
 import { useCart } from "../../context/CartContext"
 import { useAuth } from "../../../../lib/useAuth"
@@ -515,6 +516,8 @@ export default function ProductPage({ params }: ProductPageProps) {
         isVisible={showCartPopup}
         onClose={() => setShowCartPopup(false)}
       />
+
+      <ProductSavedToast productId={product.id} />
 
       <ProductImageLightbox
         images={galleryImages}

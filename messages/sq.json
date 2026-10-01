@@ -1184,6 +1184,17 @@
     }
   },
   "productPage": {
+    "savedToast": {
+      "created": {
+        "title": "Produkti u shtua me sukses",
+        "text": "Është publikuar dhe është i dukshëm në faqe."
+      },
+      "updated": {
+        "title": "Ndryshimet u ruajtën me sukses",
+        "text": "Kështu e shohin tani klientët produktin."
+      },
+      "close": "Mbyll"
+    },
     "breadcrumb": {
       "home": "Kryesore",
       "products": "Produktet"

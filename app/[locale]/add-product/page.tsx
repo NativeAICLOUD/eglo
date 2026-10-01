@@ -9,6 +9,7 @@ import { ArrowLeft, Save, Upload, X, ImageOff, Star } from "lucide-react"
 import { Button } from "../../../components/Button"
 import { Input } from "../../../components/Input"
 import { apiService, BackendCategory, specTextToJson } from "../../../lib/api"
+import { markProductSaved } from "../../../components/ProductSavedToast"
 
 const MAX_IMAGES_PER_UPLOAD = 10
 
@@ -154,6 +155,7 @@ export default function AddProductPage() {
 
       // Show the new product as customers see it.
       apiService.clearCache()
+      markProductSaved(productId, "created")
       router.push(`/${locale}/product/${productId}`)
     } catch {
       setSaveError(t("addProductPage.errors.createFailed"))

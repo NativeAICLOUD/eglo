@@ -10,6 +10,7 @@ import { Button } from "../../../../../../components/Button"
 import { Input } from "../../../../../../components/Input"
 import { apiService, parseProductName, BackendCategory, BackendProductImage, specTextToJson, specJsonToLines } from "../../../../../../lib/api"
 import { Spinner } from "../../../../../../components/Spinner"
+import { markProductSaved } from "../../../../../../components/ProductSavedToast"
 
 const MAX_IMAGES_PER_UPLOAD = 10
 
@@ -239,6 +240,7 @@ export default function EditProductPage({ params }: EditPageProps) {
 
       // Show the saved product as customers see it.
       apiService.clearCache()
+      markProductSaved(id, "updated")
       setSaved(true)
       setTimeout(() => router.push(`/${locale}/product/${id}`), 800)
     } catch {
