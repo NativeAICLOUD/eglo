@@ -1425,6 +1425,7 @@
         "deleteFailed": "Delete failed. Please try again.",
         "primary": "Primary",
         "setPrimary": "Set as primary image",
+        "setPrimaryShort": "Set as primary",
         "setPrimaryFailed": "Could not set the primary image. Please try again.",
         "primaryHint": "The primary image is shown on product cards and first in the gallery."
       },

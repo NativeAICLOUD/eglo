@@ -1613,6 +1613,7 @@
         "deleteFailed": "Fshirja dështoi. Ju lutem provoni përsëri.",
         "primary": "Kryesore",
         "setPrimary": "Vendos si imazh kryesor",
+        "setPrimaryShort": "Bëje kryesore",
         "setPrimaryFailed": "Imazhi kryesor nuk u vendos. Provoni përsëri.",
         "primaryHint": "Imazhi kryesor shfaqet në kartat e produktit dhe i pari në galeri."
       },

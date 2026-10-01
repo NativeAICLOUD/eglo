@@ -392,12 +392,13 @@ export default function EditProductPage({ params }: EditPageProps) {
                       disabled={primaryImageId !== null}
                       title={t("editProduct.images.setPrimary")}
                       aria-label={t("editProduct.images.setPrimary")}
-                      className="absolute bottom-1.5 left-1.5 bg-white/90 hover:bg-white text-gray-600 hover:text-teal-700 border border-gray-200 rounded-full p-1.5 shadow-sm transition-colors disabled:opacity-60"
+                      className="absolute bottom-1.5 left-1.5 inline-flex items-center gap-1 bg-white/95 hover:bg-white text-gray-700 hover:text-teal-700 border border-gray-200 hover:border-teal-400 rounded-full px-2 py-1 text-[11px] font-medium shadow-sm transition-colors disabled:opacity-60"
                     >
                       {primaryImageId === img.id
                         ? <span className="block w-3.5 h-3.5 border-2 border-teal-600 border-t-transparent rounded-full animate-spin" />
                         : <Star className="w-3.5 h-3.5" />
                       }
+                      {t("editProduct.images.setPrimaryShort")}
                     </button>
                   )}
                   <button
