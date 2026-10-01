@@ -100,6 +100,15 @@ export interface BackendProduct {
   otherInfoJson?: string | null;
 }
 
+/** Admin dashboard overview numbers. Revenue (MKD) excludes cancelled orders. */
+export interface DashboardStats {
+  totalProducts: number;
+  totalCategories: number;
+  totalUsers: number;
+  totalOrders: number;
+  revenue: number;
+}
+
 export interface PaginatedProducts {
   items: BackendProduct[];
   totalCount: number;
@@ -356,8 +365,8 @@ class ApiService {
   }
 
   // ------------------------- Public endpoints --------------------------------
-  async getStats(): Promise<{ totalProducts: number; totalCategories: number; totalUsers: number }> {
-    return this.request<{ totalProducts: number; totalCategories: number; totalUsers: number }>("/stats");
+  async getStats(): Promise<DashboardStats> {
+    return this.request<DashboardStats>("/stats");
   }
 
   async getCategories(): Promise<BackendCategory[]> {

@@ -1472,7 +1472,8 @@
         "totalProducts": "Вкупно производи",
         "totalOrders":   "Вкупно нарачки",
         "totalUsers":    "Вкупно корисници",
-        "revenue":       "Приходи"
+        "revenue":       "Приходи",
+        "revenueHint": "Без откажаните нарачки"
       }
     },
     "products": {

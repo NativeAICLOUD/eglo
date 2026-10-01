@@ -1,16 +1,6 @@
-const INTERNAL_API_URL =
-  process.env.INTERNAL_API_URL ??
-  "https://nativeapi-h8e7h4cgc6gpgbea.northeurope-01.azurewebsites.net/api"
+import { forwardToApi } from "../../../lib/proxy"
 
-export async function GET() {
-  try {
-    const res = await fetch(`${INTERNAL_API_URL}/stats`)
-    const data = await res.json()
-    return Response.json(data, { status: res.status })
-  } catch (error) {
-    return Response.json(
-      { message: error instanceof Error ? error.message : "Internal server error" },
-      { status: 500 }
-    )
-  }
+// Admin-only on the backend (it includes revenue), so the caller's login is forwarded.
+export async function GET(request: Request) {
+  return forwardToApi(request, "/stats", "GET")
 }

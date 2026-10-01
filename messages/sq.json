@@ -1479,7 +1479,8 @@
         "totalProducts": "Gjithsej produkte",
         "totalOrders":   "Gjithsej porosi",
         "totalUsers":    "Gjithsej përdorues",
-        "revenue":       "Të ardhura"
+        "revenue":       "Të ardhura",
+        "revenueHint": "Pa porositë e anuluara"
       }
     },
     "products": {

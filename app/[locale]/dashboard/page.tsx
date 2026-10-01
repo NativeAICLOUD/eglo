@@ -6,7 +6,7 @@ import { useTranslations } from "next-intl"
 import { useParams } from "next/navigation"
 import { useEffect, useState } from "react"
 import { Button } from "../../../components/Button"
-import { apiService } from "../../../lib/api"
+import { apiService, formatMKD } from "../../../lib/api"
 
 export default function DashboardOverviewPage() {
   const t      = useTranslations("dashboard")
@@ -16,6 +16,8 @@ export default function DashboardOverviewPage() {
   const [totalProducts,   setTotalProducts]   = useState<number | null>(null)
   const [totalCategories, setTotalCategories] = useState<number | null>(null)
   const [totalUsers,      setTotalUsers]      = useState<number | null>(null)
+  const [totalOrders,     setTotalOrders]     = useState<number | null>(null)
+  const [revenue,         setRevenue]         = useState<number | null>(null)
 
   useEffect(() => {
     apiService.getStats()
@@ -23,6 +25,8 @@ export default function DashboardOverviewPage() {
         setTotalProducts(s.totalProducts)
         setTotalCategories(s.totalCategories)
         setTotalUsers(s.totalUsers)
+        setTotalOrders(s.totalOrders ?? 0)
+        setRevenue(s.revenue ?? 0)
       })
       .catch(() => {})
   }, [])
@@ -31,9 +35,9 @@ export default function DashboardOverviewPage() {
 
   const stats = [
     { key: "totalProducts", value: fmt(totalProducts), icon: Package,      color: "bg-teal-50  text-teal-600"  },
-    { key: "totalOrders",   value: "—",                icon: ShoppingCart, color: "bg-blue-50  text-blue-600"  },
+    { key: "totalOrders",   value: fmt(totalOrders),   icon: ShoppingCart, color: "bg-blue-50  text-blue-600"  },
     { key: "totalUsers",    value: fmt(totalUsers),    icon: Users,        color: "bg-green-50 text-green-600" },
-    { key: "revenue",       value: "—",                icon: TrendingUp,   color: "bg-amber-50 text-amber-600" },
+    { key: "revenue",       value: revenue === null ? "…" : formatMKD(revenue), icon: TrendingUp, color: "bg-amber-50 text-amber-600", hint: t("overview.stats.revenueHint") },
   ]
 
   return (
@@ -54,12 +58,13 @@ export default function DashboardOverviewPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-        {stats.map(({ key, value, icon: Icon, color }) => (
+        {stats.map(({ key, value, icon: Icon, color, hint }) => (
           <div key={key} className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-500">{t(`overview.stats.${key}`)}</p>
                 <p className="text-2xl font-bold text-gray-900 mt-1">{value}</p>
+                {hint && <p className="text-xs text-gray-400 mt-1">{hint}</p>}
               </div>
               <div className={`p-3 rounded-xl ${color}`}>
                 <Icon className="w-6 h-6" />

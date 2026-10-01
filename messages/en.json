@@ -1291,7 +1291,8 @@
         "totalProducts": "Total products",
         "totalOrders":   "Total orders",
         "totalUsers":    "Total users",
-        "revenue":       "Revenue"
+        "revenue":       "Revenue",
+        "revenueHint": "Excluding cancelled orders"
       }
     },
     "products": {
