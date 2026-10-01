@@ -1610,7 +1610,11 @@
         "delete":       "Fshi foton",
         "tooMany":      "Mund të ngarkoni maksimumi {max} foto njëherësh",
         "uploadFailed": "Ngarkimi dështoi. Ju lutem provoni përsëri.",
-        "deleteFailed": "Fshirja dështoi. Ju lutem provoni përsëri."
+        "deleteFailed": "Fshirja dështoi. Ju lutem provoni përsëri.",
+        "primary": "Kryesore",
+        "setPrimary": "Vendos si imazh kryesor",
+        "setPrimaryFailed": "Imazhi kryesor nuk u vendos. Provoni përsëri.",
+        "primaryHint": "Imazhi kryesor shfaqet në kartat e produktit dhe i pari në galeri."
       },
       "errors": {
         "nameRequired":  "Emri i produktit është i detyrueshëm",

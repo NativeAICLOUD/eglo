@@ -5,7 +5,7 @@ import { useRouter, useParams } from "next/navigation"
 import { useTranslations } from "next-intl"
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowLeft, Save, Upload, X, ImageOff } from "lucide-react"
+import { ArrowLeft, Save, Upload, X, ImageOff, Star } from "lucide-react"
 import { Button } from "../../../components/Button"
 import { Input } from "../../../components/Input"
 import { apiService, BackendCategory, specTextToJson } from "../../../lib/api"
@@ -60,7 +60,11 @@ export default function AddProductPage() {
     if (fileInputRef.current) fileInputRef.current.value = ""
   }
 
+  // Which selected photo becomes the product's main image (the first one by default).
+  const [primaryIndex, setPrimaryIndex] = useState(0)
+
   const removeFile = (idx: number) => {
+    setPrimaryIndex(p => (idx === p ? 0 : idx < p ? p - 1 : p))
     setFiles(prev => prev.filter((_, i) => i !== idx))
     setPreviews(prev => {
       URL.revokeObjectURL(prev[idx])
@@ -120,7 +124,10 @@ export default function AddProductPage() {
 
       // Step 3 — upload images (also required before the product can publish).
       try {
-        await apiService.uploadProductImages(productId, files)
+        // The chosen primary photo is uploaded first, then flagged as primary.
+        const ordered = [files[primaryIndex], ...files.filter((_, i) => i !== primaryIndex)].filter(Boolean)
+        const uploaded = await apiService.uploadProductImages(productId, ordered)
+        if (uploaded[0]) await apiService.setPrimaryProductImage(productId, uploaded[0].id)
       } catch {
         setSaveError(t("addProductPage.errors.partialImages"))
         return
@@ -269,12 +276,29 @@ export default function AddProductPage() {
             <h2 className="font-semibold text-gray-800">{t("editProduct.images.title")} *</h2>
             <span className="text-xs text-gray-400">{t("editProduct.images.count", { count: files.length })}</span>
           </div>
+          {files.length > 1 && <p className="text-xs text-gray-400 -mt-2">{t("editProduct.images.primaryHint")}</p>}
 
           {previews.length > 0 ? (
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
               {previews.map((preview, idx) => (
                 <div key={preview} className="relative group aspect-square rounded-lg overflow-hidden border border-gray-200 bg-gray-50">
                   <Image src={preview} alt="" fill className="object-cover" sizes="200px" />
+                  {idx === primaryIndex ? (
+                    <span className="absolute bottom-1.5 left-1.5 inline-flex items-center gap-1 bg-teal-600 text-white text-[11px] font-semibold px-2 py-0.5 rounded-full">
+                      <Star className="w-3 h-3 fill-white" />
+                      {t("editProduct.images.primary")}
+                    </span>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => setPrimaryIndex(idx)}
+                      title={t("editProduct.images.setPrimary")}
+                      aria-label={t("editProduct.images.setPrimary")}
+                      className="absolute bottom-1.5 left-1.5 bg-white/90 hover:bg-white text-gray-600 hover:text-teal-700 border border-gray-200 rounded-full p-1.5 shadow-sm transition-colors"
+                    >
+                      <Star className="w-3.5 h-3.5" />
+                    </button>
+                  )}
                   <button
                     type="button"
                     onClick={() => removeFile(idx)}

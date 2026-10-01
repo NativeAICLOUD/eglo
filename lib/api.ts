@@ -26,6 +26,8 @@ export interface BackendProductImage {
   id: string;
   url: string;
   order?: number;
+  /** Admin-chosen main photo. */
+  isPrimary?: boolean;
 }
 
 export const PROMO_POPUP_LOCALES = ["mk", "en", "sq"] as const;
@@ -497,6 +499,11 @@ class ApiService {
 
     const data = await res.json() as { images: BackendProductImage[] };
     return data.images;
+  }
+
+  /** Makes the image the product's main photo; the backend also moves it to the front of the gallery. */
+  async setPrimaryProductImage(productId: string, imageId: string): Promise<void> {
+    await this.request<unknown>(`/products/${productId}/images/${imageId}/primary`, { method: "PUT" });
   }
 
   async deleteProductImage(productId: string, imageId: string): Promise<void> {

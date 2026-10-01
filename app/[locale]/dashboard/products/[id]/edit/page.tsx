@@ -5,7 +5,7 @@ import { useRouter, useParams } from "next/navigation"
 import { useTranslations } from "next-intl"
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowLeft, Save, Upload, X, ImageOff } from "lucide-react"
+import { ArrowLeft, Save, Upload, X, ImageOff, Star } from "lucide-react"
 import { Button } from "../../../../../../components/Button"
 import { Input } from "../../../../../../components/Input"
 import { apiService, parseProductName, BackendCategory, BackendProductImage, specTextToJson, specJsonToLines } from "../../../../../../lib/api"
@@ -99,6 +99,26 @@ export default function EditProductPage({ params }: EditPageProps) {
     } finally {
       setUploading(false)
       if (fileInputRef.current) fileInputRef.current.value = ""
+    }
+  }
+
+  const [primaryImageId, setPrimaryImageId] = useState<string | null>(null)
+
+  const handleSetPrimary = async (imageId: string) => {
+    setPrimaryImageId(imageId)
+    setUploadError(null)
+    try {
+      await apiService.setPrimaryProductImage(id, imageId)
+      // Mirror the backend: the chosen image is primary and moves to the front.
+      setImages(prev => {
+        const chosen = prev.find(img => img.id === imageId)
+        if (!chosen) return prev
+        return [{ ...chosen, isPrimary: true }, ...prev.filter(img => img.id !== imageId).map(img => ({ ...img, isPrimary: false }))]
+      })
+    } catch (err) {
+      setUploadError(err instanceof Error ? err.message : t("editProduct.images.setPrimaryFailed"))
+    } finally {
+      setPrimaryImageId(null)
     }
   }
 
@@ -347,6 +367,7 @@ export default function EditProductPage({ params }: EditPageProps) {
             <h2 className="font-semibold text-gray-800">{t("editProduct.images.title")}</h2>
             <span className="text-xs text-gray-400">{t("editProduct.images.count", { count: images.length })}</span>
           </div>
+          {images.length > 1 && <p className="text-xs text-gray-400 -mt-2">{t("editProduct.images.primaryHint")}</p>}
 
           {images.length > 0 ? (
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
@@ -359,6 +380,26 @@ export default function EditProductPage({ params }: EditPageProps) {
                     className="object-cover"
                     sizes="200px"
                   />
+                  {img.isPrimary ? (
+                    <span className="absolute bottom-1.5 left-1.5 inline-flex items-center gap-1 bg-teal-600 text-white text-[11px] font-semibold px-2 py-0.5 rounded-full">
+                      <Star className="w-3 h-3 fill-white" />
+                      {t("editProduct.images.primary")}
+                    </span>
+                  ) : !img.id.startsWith("legacy-") && (
+                    <button
+                      type="button"
+                      onClick={() => handleSetPrimary(img.id)}
+                      disabled={primaryImageId !== null}
+                      title={t("editProduct.images.setPrimary")}
+                      aria-label={t("editProduct.images.setPrimary")}
+                      className="absolute bottom-1.5 left-1.5 bg-white/90 hover:bg-white text-gray-600 hover:text-teal-700 border border-gray-200 rounded-full p-1.5 shadow-sm transition-colors disabled:opacity-60"
+                    >
+                      {primaryImageId === img.id
+                        ? <span className="block w-3.5 h-3.5 border-2 border-teal-600 border-t-transparent rounded-full animate-spin" />
+                        : <Star className="w-3.5 h-3.5" />
+                      }
+                    </button>
+                  )}
                   <button
                     type="button"
                     onClick={() => handleDeleteImage(img.id)}
