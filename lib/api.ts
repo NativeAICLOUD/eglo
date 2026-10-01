@@ -294,6 +294,11 @@ class ApiService {
   // identical requests share one fetch; any write clears it so admins see their changes.
   private getCache = new Map<string, { at: number; promise: Promise<unknown> }>();
 
+  /** Drops cached reads — for pages that save through their own fetch calls. */
+  clearCache(): void {
+    this.getCache.clear();
+  }
+
   private cachedGet<T>(endpoint: string, ttlMs: number): Promise<T> {
     if (typeof window === "undefined") return this.request<T>(endpoint);
     const hit = this.getCache.get(endpoint);

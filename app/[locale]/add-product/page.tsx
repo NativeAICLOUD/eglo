@@ -152,7 +152,9 @@ export default function AddProductPage() {
         }
       }
 
-      router.push(`/${locale}/dashboard/products`)
+      // Show the new product as customers see it.
+      apiService.clearCache()
+      router.push(`/${locale}/product/${productId}`)
     } catch {
       setSaveError(t("addProductPage.errors.createFailed"))
     } finally {

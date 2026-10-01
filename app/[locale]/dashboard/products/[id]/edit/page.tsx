@@ -237,8 +237,10 @@ export default function EditProductPage({ params }: EditPageProps) {
         }
       }
 
+      // Show the saved product as customers see it.
+      apiService.clearCache()
       setSaved(true)
-      setTimeout(() => router.push(`/${locale}/dashboard/products`), 1000)
+      setTimeout(() => router.push(`/${locale}/product/${id}`), 800)
     } catch {
       setSaveError(t("editProduct.errors.saveFailed"))
     } finally {
