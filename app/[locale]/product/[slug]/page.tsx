@@ -2,17 +2,18 @@
 
 import { notFound } from "next/navigation"
 import Link from "next/link"
-import { ChevronRight, ChevronLeft, Plus, Minus, ChevronDown, X, ZoomIn, Pencil } from "lucide-react"
-import { useState, use, useEffect, useCallback, useRef } from "react"
+import { ChevronRight, ChevronLeft, Plus, Minus, ChevronDown, ZoomIn, Pencil } from "lucide-react"
+import { useState, use, useEffect, useCallback } from "react"
 import { Button } from "../../../../components/Button"
 import { Input } from "../../../../components/Input"
 import { CartPopup } from "../../../../components/CartPopup"
+import { ProductImageLightbox } from "../../../../components/product-gallery/ProductImageLightbox"
 import { FavoriteButton } from "../../../../components/FavoriteButton"
 import { useCart } from "../../context/CartContext"
 import { useAuth } from "../../../../lib/useAuth"
 import { useTranslations } from 'next-intl'
 import { useParams } from 'next/navigation'
-import { apiService, BackendProduct, parseProductName, formatMKD, getDiscountedPrice, stripTrailingColon, humanizeSpecLabel, trimmedImageSrc, versionedImageSrc } from "../../../../lib/api"
+import { apiService, BackendProduct, parseProductName, formatMKD, getDiscountedPrice, stripTrailingColon, humanizeSpecLabel, trimmedImageSrc } from "../../../../lib/api"
 import productImagesMap from "../../../../data/productImages.json"
 import productSpecsData from "../../../../data/productSpecs.json"
 
@@ -55,44 +56,16 @@ export default function ProductPage({ params }: ProductPageProps) {
   const { addToCart } = useCart()
   const { user } = useAuth()
   const isAdmin = !!user?.roles?.some(r => ["superadmin", "admin"].includes(r.toLowerCase()))
-  const touchStartX = useRef<number | null>(null)
-  const touchStartY = useRef<number | null>(null)
-
   const openLightbox = useCallback((idx: number) => {
     setLightboxIndex(idx)
     setLightboxOpen(true)
   }, [])
 
-  const handleLightboxTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX
-    touchStartY.current = e.touches[0].clientY
-  }
-
-  const handleLightboxTouchEnd = (e: React.TouchEvent) => {
-    if (touchStartX.current === null || touchStartY.current === null) return
-    const dx = e.changedTouches[0].clientX - touchStartX.current
-    const dy = e.changedTouches[0].clientY - touchStartY.current
-    const SWIPE_THRESHOLD = 50
-    // Ignore mostly-vertical gestures so scrolling/dismissing isn't hijacked
-    if (Math.abs(dx) > SWIPE_THRESHOLD && Math.abs(dx) > Math.abs(dy)) {
-      if (dx < 0) setLightboxIndex(i => Math.min(i + 1, images.length - 1)) // swipe left → next
-      else setLightboxIndex(i => Math.max(i - 1, 0)) // swipe right → prev
-    }
-    touchStartX.current = null
-    touchStartY.current = null
-  }
-
-  useEffect(() => {
-    if (!lightboxOpen) return
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setLightboxOpen(false)
-      if (e.key === "ArrowRight") setLightboxIndex(i => Math.min(i + 1, images.length - 1))
-      if (e.key === "ArrowLeft") setLightboxIndex(i => Math.max(i - 1, 0))
-    }
-    window.addEventListener("keydown", onKey)
-    return () => window.removeEventListener("keydown", onKey)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lightboxOpen])
+  // Paging in the viewer also moves the page gallery, so closing lands on the last image viewed.
+  const handleLightboxIndexChange = useCallback((idx: number) => {
+    setLightboxIndex(idx)
+    setSelectedImage(idx)
+  }, [])
 
   useEffect(() => {
     let cancelled = false
@@ -202,6 +175,8 @@ export default function ProductPage({ params }: ProductPageProps) {
   // fallback data from before per-product image uploads existed, and must never
   // shadow newly uploaded images for a product that already has an old entry there.
   const images: string[] = apiImages.length > 0 ? apiImages : r2Images
+  // What the full-screen viewer pages through: the gallery, or the single main photo.
+  const galleryImages: string[] = images.length > 0 ? images : product.imageUrl ? [product.imageUrl] : []
   const productImageForCart = images[0] ?? product.imageUrl ?? PLACEHOLDER
 
   const sku = productCode
@@ -323,9 +298,18 @@ export default function ProductPage({ params }: ProductPageProps) {
           {/* Product Images */}
           <div className="space-y-4">
             <div
-              className="relative bg-white rounded-lg overflow-hidden group cursor-zoom-in w-full"
+              className="relative bg-white rounded-lg overflow-hidden group cursor-zoom-in w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500/40"
               style={{ aspectRatio: mainImageAspect, maxHeight: '70vh' }}
-              onClick={() => images.length > 0 && openLightbox(selectedImage)}
+              role={galleryImages.length > 0 ? "button" : undefined}
+              tabIndex={galleryImages.length > 0 ? 0 : undefined}
+              aria-label={galleryImages.length > 0 ? `Open image gallery: ${displayName}` : undefined}
+              onClick={() => galleryImages.length > 0 && openLightbox(images.length > 0 ? selectedImage : 0)}
+              onKeyDown={(e) => {
+                if (galleryImages.length > 0 && (e.key === "Enter" || e.key === " ")) {
+                  e.preventDefault()
+                  openLightbox(images.length > 0 ? selectedImage : 0)
+                }
+              }}
             >
               {images.length > 0 ? (
                 // eslint-disable-next-line @next/next/no-img-element
@@ -532,76 +516,14 @@ export default function ProductPage({ params }: ProductPageProps) {
         onClose={() => setShowCartPopup(false)}
       />
 
-      {/* Lightbox */}
-      {lightboxOpen && images.length > 0 && (
-        <div
-          className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center touch-pan-y"
-          onClick={() => setLightboxOpen(false)}
-          onTouchStart={handleLightboxTouchStart}
-          onTouchEnd={handleLightboxTouchEnd}
-        >
-          {/* Close */}
-          <button
-            className="absolute top-4 right-4 text-white/80 hover:text-white bg-white/10 hover:bg-white/20 rounded-full p-2 transition-colors"
-            onClick={() => setLightboxOpen(false)}
-          >
-            <X className="w-6 h-6" />
-          </button>
-
-          {/* Prev — hidden on mobile, swipe is the primary gesture there */}
-          {lightboxIndex > 0 && (
-            <button
-              className="hidden sm:block absolute left-4 text-white/80 hover:text-white bg-white/10 hover:bg-white/20 rounded-full p-3 transition-colors"
-              onClick={(e) => { e.stopPropagation(); setLightboxIndex(i => i - 1) }}
-            >
-              <ChevronLeft className="w-7 h-7" />
-            </button>
-          )}
-
-          {/* Image — the white panel shrink-wraps the image, so its shape follows
-              each photo's own aspect ratio (tall, wide or square) up to 900px wide
-              and 90vh tall. Limits are viewport-based rather than percentages so
-              the shrink-wrapped panel sizes deterministically. The original
-              upload is shown (not the trimmed proxy) so the zoom view is the
-              exact full-resolution source with no re-encode. */}
-          <div className="w-full h-full flex items-center justify-center px-4 sm:px-20">
-            <div className="bg-white rounded-lg p-4 sm:p-6 shadow-2xl" onClick={e => e.stopPropagation()}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                key={images[lightboxIndex]}
-                src={versionedImageSrc(images[lightboxIndex])}
-                alt={`${displayName} ${lightboxIndex + 1}`}
-                className="block w-auto h-auto object-contain select-none max-w-[calc(100vw-4rem)] max-h-[calc(90vh-2rem)] sm:max-w-[min(calc(900px-3rem),calc(100vw-13rem))] sm:max-h-[min(85vh,calc(90vh-3rem))]"
-                draggable={false}
-                onError={(e) => { (e.currentTarget as HTMLImageElement).src = PLACEHOLDER }}
-              />
-            </div>
-          </div>
-
-          {/* Next — hidden on mobile, swipe is the primary gesture there */}
-          {lightboxIndex < images.length - 1 && (
-            <button
-              className="hidden sm:block absolute right-4 text-white/80 hover:text-white bg-white/10 hover:bg-white/20 rounded-full p-3 transition-colors"
-              onClick={(e) => { e.stopPropagation(); setLightboxIndex(i => i + 1) }}
-            >
-              <ChevronRight className="w-7 h-7" />
-            </button>
-          )}
-
-          {/* Dots */}
-          {images.length > 1 && (
-            <div className="absolute bottom-6 flex gap-2">
-              {images.map((_, idx) => (
-                <button
-                  key={idx}
-                  onClick={(e) => { e.stopPropagation(); setLightboxIndex(idx) }}
-                  className={`w-2 h-2 rounded-full transition-colors ${idx === lightboxIndex ? 'bg-white' : 'bg-white/40'}`}
-                />
-              ))}
-            </div>
-          )}
-        </div>
-      )}
+      <ProductImageLightbox
+        images={galleryImages}
+        alt={displayName}
+        open={lightboxOpen}
+        activeIndex={lightboxIndex}
+        onActiveIndexChange={handleLightboxIndexChange}
+        onClose={() => setLightboxOpen(false)}
+      />
     </div>
   )
 }
