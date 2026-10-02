@@ -1555,7 +1555,19 @@
     "users": {
       "subtitle":    "Manage user accounts",
       "noUsers":     "No users",
-      "noUsersDesc": "Registered users will appear here."
+      "noUsersDesc": "Registered users will appear here.",
+      "count": "{count} registered users",
+      "search": "Search by email or name",
+      "loadFailed": "Could not load users. Please try again.",
+      "locked": "Locked",
+      "noMatches": "No users match your search.",
+      "columns": {
+        "user": "User",
+        "role": "Role",
+        "orders": "Orders",
+        "spent": "Spent",
+        "lastOrder": "Last order"
+      }
     },
     "settings": {
       "subtitle":                "Manage admin panel settings",

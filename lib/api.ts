@@ -109,6 +109,21 @@ export interface DashboardStats {
   revenue: number;
 }
 
+/** A registered account as listed in the admin dashboard. */
+export interface DashboardUser {
+  id: string;
+  email: string | null;
+  /** From the user's latest order — accounts themselves only store an email. */
+  name: string | null;
+  roles: string[];
+  emailConfirmed: boolean;
+  locked: boolean;
+  orderCount: number;
+  /** MKD, excluding cancelled orders. */
+  totalSpent: number;
+  lastOrderAt: string | null;
+}
+
 export interface PaginatedProducts {
   items: BackendProduct[];
   totalCount: number;
@@ -365,6 +380,12 @@ class ApiService {
   }
 
   // ------------------------- Public endpoints --------------------------------
+  /** Admin only. */
+  async getUsers(): Promise<DashboardUser[]> {
+    const res = await this.request<{ users?: DashboardUser[] }>("/auth/users");
+    return res.users ?? [];
+  }
+
   async getStats(): Promise<DashboardStats> {
     return this.request<DashboardStats>("/stats");
   }

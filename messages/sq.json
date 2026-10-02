@@ -1719,7 +1719,19 @@
     "users": {
       "subtitle":    "Menaxho llogaritë e përdoruesve",
       "noUsers":     "Nuk ka përdorues",
-      "noUsersDesc": "Përdoruesit e regjistruar do të shfaqen këtu."
+      "noUsersDesc": "Përdoruesit e regjistruar do të shfaqen këtu.",
+      "count": "{count} përdorues të regjistruar",
+      "search": "Kërko sipas emailit ose emrit",
+      "loadFailed": "Përdoruesit nuk u ngarkuan. Provoni përsëri.",
+      "locked": "I bllokuar",
+      "noMatches": "Asnjë përdorues nuk përputhet me kërkimin.",
+      "columns": {
+        "user": "Përdoruesi",
+        "role": "Roli",
+        "orders": "Porositë",
+        "spent": "Shpenzuar",
+        "lastOrder": "Porosia e fundit"
+      }
     },
     "settings": {
       "subtitle":                "Menaxho cilësimet e panelit të administratorit",
