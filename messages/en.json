@@ -1018,6 +1018,10 @@
     }
   },
   "productPage": {
+    "similarProducts": {
+      "title": "Similar products",
+      "subtitle": "More from {category}"
+    },
     "savedToast": {
       "created": {
         "title": "Product added successfully",

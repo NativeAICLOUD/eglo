@@ -10,6 +10,7 @@ import { CartPopup } from "../../../../components/CartPopup"
 import { ProductImageLightbox } from "../../../../components/product-gallery/ProductImageLightbox"
 import { ProductSavedToast } from "../../../../components/ProductSavedToast"
 import { FavoriteButton } from "../../../../components/FavoriteButton"
+import { SimilarProducts } from "../../../../components/SimilarProducts"
 import { useCart } from "../../context/CartContext"
 import { useAuth } from "../../../../lib/useAuth"
 import { useTranslations } from 'next-intl'
@@ -510,6 +511,13 @@ export default function ProductPage({ params }: ProductPageProps) {
           </div>
         </div>
       </div>
+
+      <SimilarProducts
+        productId={product.id}
+        categoryId={product.categoryId}
+        subcategoryId={product.subcategoryId}
+        categoryName={product.subcategoryName ?? product.categoryName ?? product.category}
+      />
 
       <CartPopup
         productName={displayName}

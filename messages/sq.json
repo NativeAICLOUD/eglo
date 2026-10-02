@@ -1184,6 +1184,10 @@
     }
   },
   "productPage": {
+    "similarProducts": {
+      "title": "Produkte të ngjashme",
+      "subtitle": "Më shumë nga {category}"
+    },
     "savedToast": {
       "created": {
         "title": "Produkti u shtua me sukses",
