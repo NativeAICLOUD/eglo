@@ -19,6 +19,7 @@ interface AddressForm {
   phone: string
   street: string
   city: string
+  postalCode: string
 }
 
 const COURIER_COST = 180
@@ -41,6 +42,7 @@ export default function CheckoutPage() {
     phone: "",
     street: "",
     city: "",
+    postalCode: "",
   })
   const [errors, setErrors] = useState<Partial<AddressForm>>({})
   const [placing, setPlacing] = useState(false)
@@ -98,6 +100,8 @@ export default function CheckoutPage() {
         customerEmail: address.email,
         customerName: `${address.firstName} ${address.lastName}`.trim(),
         deliveryMethod: deliveryMethod === "courier" ? "Courier" : "Pickup",
+        // No online payment: courier orders are paid to the courier, pickups at the store
+        paymentMethod: deliveryMethod === "courier" ? "CashOnDelivery" : "PayInStore",
         shippingAddress: {
           firstName: address.firstName,
           lastName: address.lastName,
@@ -105,6 +109,7 @@ export default function CheckoutPage() {
           phone: address.phone,
           address: address.street,
           city: address.city,
+          postalCode: address.postalCode.trim() || undefined,
         },
         items: items.map(item => ({
           productId: item.id,
@@ -393,6 +398,7 @@ function AddressStep({
           <>
             <Field label={t("address.fields.street")} value={form.street} error={errors.street} onChange={v => onChange("street", v)} className="sm:col-span-2" />
             <Field label={t("address.fields.city")} value={form.city} error={errors.city} onChange={v => onChange("city", v)} />
+            <Field label={t("address.fields.postalCode")} value={form.postalCode} error={errors.postalCode} onChange={v => onChange("postalCode", v)} />
           </>
         )}
 
@@ -513,7 +519,7 @@ function ReviewStep({
           <p>{address.firstName} {address.lastName}</p>
           <p>{address.email}</p>
           {address.phone && <p>{address.phone}</p>}
-          {deliveryMethod === "courier" && <p>{address.street}, {address.city}</p>}
+          {deliveryMethod === "courier" && <p>{address.street}, {[address.postalCode, address.city].filter(Boolean).join(" ")}</p>}
           {deliveryMethod === "pickup" && <p className="text-gray-500">{STORE_ADDRESS}</p>}
         </div>
       </div>

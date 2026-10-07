@@ -513,7 +513,8 @@
         "email": "Е-пошта",
         "phone": "Телефон",
         "street": "Адреса (улица и број)",
-        "city": "Град"
+        "city": "Град",
+        "postalCode": "Поштенски број"
       },
       "pickupNotice": "Подигнете ја нарачката на:"
     },
@@ -1710,7 +1711,30 @@
         "delivery":     "Достава:",
         "status":       "Статус:",
         "products":     "Производи ({count})",
-        "total":        "Вкупно"
+        "total":        "Вкупно",
+        "customer": "Купувач",
+        "name": "Име:",
+        "email": "Е-пошта:",
+        "phone": "Телефон:",
+        "address": "Адреса:",
+        "city": "Град:",
+        "postalCode": "Поштенски број:",
+        "payment": "Плаќање:",
+        "subtotal": "Вкупно производи",
+        "deliveryCost": "Достава",
+        "notProvided": "—",
+        "product": "Производ",
+        "sku": "Шифра / Арт. бр.",
+        "qty": "Кол.",
+        "unitPrice": "Единечна цена",
+        "lineTotal": "Вкупно",
+        "variant": "Варијанта:",
+        "viewProduct": "Види производ",
+        "productRemoved": "Производот повеќе не е во каталогот",
+        "paymentMethods": {
+          "CashOnDelivery": "Плаќање при достава",
+          "PayInStore": "Плаќање во продавница"
+        }
       }
     },
     "users": {

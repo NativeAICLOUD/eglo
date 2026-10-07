@@ -1,26 +1,50 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { ShoppingCart, ChevronDown, ChevronUp, Truck, Store, RefreshCw, Trash2 } from "lucide-react"
+import { useParams } from "next/navigation"
+import { ShoppingCart, ChevronDown, ChevronUp, Truck, Store, RefreshCw, Trash2, Eye, ImageOff } from "lucide-react"
 import { useTranslations } from "next-intl"
 
 interface OrderItem {
   productId: string
   productName: string
+  sku?: string | null
+  articleNumber?: string | null
+  imageUrl?: string | null
+  variant?: string | null
   quantity: number
   unitPrice: number
   lineTotal: number
+  productExists?: boolean
 }
 
 interface Order {
   id: string
   customerEmail: string
   customerName: string
+  phone?: string | null
+  address?: string | null
+  city?: string | null
+  postalCode?: string | null
   deliveryMethod: string
+  paymentMethod?: string | null
   status: string
+  subtotal?: number
+  deliveryCost?: number
   totalAmount: number
   createdAt: string
   items: OrderItem[]
+}
+
+function ItemImage({ src, alt }: { src?: string | null; alt: string }) {
+  const [failed, setFailed] = useState(false)
+  return (
+    <div className="w-14 h-14 rounded-lg bg-white border border-gray-200 overflow-hidden flex items-center justify-center flex-shrink-0">
+      {src && !failed
+        ? <img src={src} alt={alt} className="w-full h-full object-contain" onError={() => setFailed(true)} />
+        : <ImageOff className="w-5 h-5 text-gray-300" />}
+    </div>
+  )
 }
 
 const STATUS_STYLES: Record<string, string> = {
@@ -46,6 +70,7 @@ function formatDate(iso: string) {
 
 export default function DashboardOrdersPage() {
   const t = useTranslations("dashboard.orders")
+  const { locale } = useParams() as { locale: string }
   const [orders, setOrders]   = useState<Order[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError]     = useState<string | null>(null)
@@ -311,10 +336,15 @@ export default function DashboardOrdersPage() {
                     <div>
                       <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">{t("detail.orderDetails")}</p>
                       <div className="space-y-1 text-sm text-gray-700">
-                        <p><span className="text-gray-400">{t("detail.id")} </span><span className="font-mono text-xs">{order.id}</span></p>
+                        <p><span className="text-gray-400">{t("detail.id")} </span><span className="font-mono text-xs break-all">{order.id}</span></p>
                         <p><span className="text-gray-400">{t("detail.date")} </span>{formatDate(order.createdAt)}</p>
                         <p><span className="text-gray-400">{t("detail.delivery")} </span>
                           {order.deliveryMethod === "Courier" ? t("delivery.courierFull") : t("delivery.pickupFull")}
+                        </p>
+                        <p><span className="text-gray-400">{t("detail.payment")} </span>
+                          {order.paymentMethod === "CashOnDelivery" || order.paymentMethod === "PayInStore"
+                            ? t(`detail.paymentMethods.${order.paymentMethod}`)
+                            : order.paymentMethod || t("detail.notProvided")}
                         </p>
                         <p className="flex items-center gap-2"><span className="text-gray-400">{t("detail.status")} </span>
                           <select
@@ -339,21 +369,95 @@ export default function DashboardOrdersPage() {
                       </button>
                     </div>
 
-                    {/* Items */}
+                    {/* Customer */}
                     <div>
-                      <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">{t("detail.products", { count: order.items.length })}</p>
-                      <div className="space-y-1.5">
-                        {order.items.map((item, i) => (
-                          <div key={i} className="flex justify-between text-sm">
-                            <span className="text-gray-700 truncate max-w-[200px]">
-                              {item.productName} <span className="text-gray-400">× {item.quantity}</span>
-                            </span>
-                            <span className="font-medium text-gray-900 flex-shrink-0 ml-4">
-                              {formatMKD(item.lineTotal ?? item.unitPrice * item.quantity)}
-                            </span>
-                          </div>
+                      <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">{t("detail.customer")}</p>
+                      <div className="space-y-1 text-sm text-gray-700 break-words">
+                        {([
+                          ["detail.name",       order.customerName],
+                          ["detail.email",      order.customerEmail],
+                          ["detail.phone",      order.phone],
+                          ["detail.address",    order.address],
+                          ["detail.city",       order.city],
+                          ["detail.postalCode", order.postalCode],
+                        ] as const).map(([label, value]) => (
+                          <p key={label}>
+                            <span className="text-gray-400">{t(label)} </span>
+                            {value || <span className="text-gray-400">{t("detail.notProvided")}</span>}
+                          </p>
                         ))}
-                        <div className="border-t border-gray-200 pt-1.5 flex justify-between text-sm font-semibold">
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Products */}
+                  <div className="mt-6">
+                    <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">{t("detail.products", { count: order.items.length })}</p>
+                    <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                      <div className="hidden md:grid grid-cols-12 gap-4 px-4 py-2 bg-gray-50 border-b border-gray-100 text-xs font-semibold uppercase tracking-wide text-gray-500">
+                        <div className="col-span-5">{t("detail.product")}</div>
+                        <div className="col-span-2">{t("detail.sku")}</div>
+                        <div className="col-span-1 text-center">{t("detail.qty")}</div>
+                        <div className="col-span-2 text-right">{t("detail.unitPrice")}</div>
+                        <div className="col-span-2 text-right">{t("detail.lineTotal")}</div>
+                      </div>
+                      {order.items.map((item, i) => {
+                        const code = item.sku || item.articleNumber
+                        return (
+                          <div key={i} className="grid grid-cols-12 gap-x-4 gap-y-2 px-4 py-3 border-b border-gray-100 last:border-0 items-center text-sm">
+                            <div className="col-span-12 md:col-span-5 flex items-start gap-3 min-w-0">
+                              <ItemImage src={item.imageUrl} alt={item.productName} />
+                              <div className="min-w-0">
+                                <p className="font-medium text-gray-900 break-words">{item.productName}</p>
+                                {item.variant && (
+                                  <p className="text-xs text-gray-500 mt-0.5">{t("detail.variant")} {item.variant}</p>
+                                )}
+                                {item.productExists === false ? (
+                                  <p className="text-xs text-gray-400 mt-1">{t("detail.productRemoved")}</p>
+                                ) : (
+                                  <a
+                                    href={`/${locale}/product/${item.productId}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="mt-1 inline-flex items-center gap-1 text-xs font-medium text-teal-600 hover:text-teal-700"
+                                  >
+                                    <Eye className="w-3.5 h-3.5" /> {t("detail.viewProduct")}
+                                  </a>
+                                )}
+                              </div>
+                            </div>
+                            <div className="col-span-12 md:col-span-2 text-gray-700">
+                              <span className="md:hidden text-gray-400">{t("detail.sku")}: </span>
+                              <span className="font-mono text-xs">{code || t("detail.notProvided")}</span>
+                            </div>
+                            <div className="col-span-4 md:col-span-1 md:text-center text-gray-700">
+                              <span className="md:hidden text-gray-400">{t("detail.qty")}: </span>{item.quantity}
+                            </div>
+                            <div className="col-span-4 md:col-span-2 text-right text-gray-700">
+                              <span className="md:hidden text-gray-400 block text-xs">{t("detail.unitPrice")}</span>
+                              {formatMKD(item.unitPrice)}
+                            </div>
+                            <div className="col-span-4 md:col-span-2 text-right font-semibold text-gray-900">
+                              <span className="md:hidden text-gray-400 block text-xs font-normal">{t("detail.lineTotal")}</span>
+                              {formatMKD(item.lineTotal ?? item.unitPrice * item.quantity)}
+                            </div>
+                          </div>
+                        )
+                      })}
+                      <div className="px-4 py-3 bg-gray-50 border-t border-gray-200 text-sm space-y-1">
+                        {order.subtotal != null && order.subtotal > 0 && (
+                          <div className="flex justify-between text-gray-600">
+                            <span>{t("detail.subtotal")}</span>
+                            <span>{formatMKD(order.subtotal)}</span>
+                          </div>
+                        )}
+                        {order.deliveryCost != null && order.subtotal != null && order.subtotal > 0 && (
+                          <div className="flex justify-between text-gray-600">
+                            <span>{t("detail.deliveryCost")}</span>
+                            <span>{formatMKD(order.deliveryCost)}</span>
+                          </div>
+                        )}
+                        <div className="flex justify-between font-semibold">
                           <span>{t("detail.total")}</span>
                           <span className="text-teal-600">{formatMKD(order.totalAmount)}</span>
                         </div>

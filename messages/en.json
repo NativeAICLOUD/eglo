@@ -546,7 +546,8 @@
         "email": "Email",
         "phone": "Phone",
         "street": "Address (street and number)",
-        "city": "City"
+        "city": "City",
+        "postalCode": "Postal code"
       },
       "pickupNotice": "Pick up the order at:"
     },
@@ -1553,7 +1554,30 @@
         "delivery":     "Delivery:",
         "status":       "Status:",
         "products":     "Products ({count})",
-        "total":        "Total"
+        "total":        "Total",
+        "customer": "Customer",
+        "name": "Name:",
+        "email": "Email:",
+        "phone": "Phone:",
+        "address": "Address:",
+        "city": "City:",
+        "postalCode": "Postal code:",
+        "payment": "Payment:",
+        "subtotal": "Products total",
+        "deliveryCost": "Delivery",
+        "notProvided": "—",
+        "product": "Product",
+        "sku": "SKU / Article No.",
+        "qty": "Qty",
+        "unitPrice": "Unit price",
+        "lineTotal": "Total",
+        "variant": "Variant:",
+        "viewProduct": "View product",
+        "productRemoved": "Product no longer in the catalog",
+        "paymentMethods": {
+          "CashOnDelivery": "Cash on delivery",
+          "PayInStore": "Pay in store"
+        }
       }
     },
     "users": {

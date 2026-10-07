@@ -522,7 +522,8 @@
         "email": "Email",
         "phone": "Telefoni",
         "street": "Adresa (rruga dhe numri)",
-        "city": "Qyteti"
+        "city": "Qyteti",
+        "postalCode": "Kodi postar"
       },
       "pickupNotice": "Merrni porosinë në:"
     },
@@ -1717,7 +1718,30 @@
         "delivery":     "Dërgesa:",
         "status":       "Statusi:",
         "products":     "Produkte ({count})",
-        "total":        "Totali"
+        "total":        "Totali",
+        "customer": "Klienti",
+        "name": "Emri:",
+        "email": "Email:",
+        "phone": "Telefoni:",
+        "address": "Adresa:",
+        "city": "Qyteti:",
+        "postalCode": "Kodi postar:",
+        "payment": "Pagesa:",
+        "subtotal": "Totali i produkteve",
+        "deliveryCost": "Dërgesa",
+        "notProvided": "—",
+        "product": "Produkti",
+        "sku": "SKU / Nr. artikulli",
+        "qty": "Sasia",
+        "unitPrice": "Çmimi për njësi",
+        "lineTotal": "Totali",
+        "variant": "Varianti:",
+        "viewProduct": "Shiko produktin",
+        "productRemoved": "Produkti nuk është më në katalog",
+        "paymentMethods": {
+          "CashOnDelivery": "Pagesë në dorëzim",
+          "PayInStore": "Pagesë në dyqan"
+        }
       }
     },
     "users": {
