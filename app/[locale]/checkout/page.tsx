@@ -102,6 +102,7 @@ export default function CheckoutPage() {
         deliveryMethod: deliveryMethod === "courier" ? "Courier" : "Pickup",
         // No online payment: courier orders are paid to the courier, pickups at the store
         paymentMethod: deliveryMethod === "courier" ? "CashOnDelivery" : "PayInStore",
+        language: locale,
         shippingAddress: {
           firstName: address.firstName,
           lastName: address.lastName,
