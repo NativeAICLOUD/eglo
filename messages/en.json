@@ -569,6 +569,28 @@
       "orderNumber": "Order number:",
       "continueShopping": "Continue shopping"
     },
+    "verify": {
+      "title": "Verify your email",
+      "notice": "We'll send a verification code to your email to confirm the order.",
+      "sentTo": "We sent a 6-digit code to <strong>{email}</strong>. Enter it below to continue with your order.",
+      "checkSpam": "Didn't get it? Check your spam folder.",
+      "codeLabel": "Verification code",
+      "submit": "Verify and continue",
+      "verifying": "Verifying...",
+      "sending": "Sending code...",
+      "resend": "Resend code",
+      "resendIn": "Resend code in {seconds}s",
+      "resent": "A new code has been sent.",
+      "changeEmail": "Change email",
+      "errors": {
+        "invalidEmail": "Enter a valid email address",
+        "invalidCode": "The code is incorrect. Please try again.",
+        "expired": "The code has expired. Request a new one.",
+        "tooManyAttempts": "Too many wrong attempts. Request a new code.",
+        "sendFailed": "We couldn't send the code. Check the email address and try again.",
+        "reverify": "Please verify your email again to place the order."
+      }
+    },
     "errors": {
       "generic": "An error occurred. Please try again.",
       "status": "Error: {status}"

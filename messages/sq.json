@@ -545,6 +545,28 @@
       "orderNumber": "Numri i porosisë:",
       "continueShopping": "Vazhdo blerjen"
     },
+    "verify": {
+      "title": "Verifikoni email-in tuaj",
+      "notice": "Do t'ju dërgojmë një kod verifikimi në email për të konfirmuar porosinë.",
+      "sentTo": "Ju dërguam një kod 6-shifror në <strong>{email}</strong>. Shkruajeni më poshtë për të vazhduar me porosinë.",
+      "checkSpam": "Nuk e morët? Kontrolloni dosjen e spam-it.",
+      "codeLabel": "Kodi i verifikimit",
+      "submit": "Verifiko dhe vazhdo",
+      "verifying": "Duke verifikuar...",
+      "sending": "Duke dërguar kodin...",
+      "resend": "Dërgo kodin përsëri",
+      "resendIn": "Kod i ri pas {seconds}s",
+      "resent": "U dërgua një kod i ri.",
+      "changeEmail": "Ndrysho email-in",
+      "errors": {
+        "invalidEmail": "Shkruani një adresë email të vlefshme",
+        "invalidCode": "Kodi është i pasaktë. Provoni përsëri.",
+        "expired": "Kodi ka skaduar. Kërkoni një të ri.",
+        "tooManyAttempts": "Shumë përpjekje të gabuara. Kërkoni një kod të ri.",
+        "sendFailed": "Nuk mundëm ta dërgojmë kodin. Kontrolloni adresën e email-it dhe provoni përsëri.",
+        "reverify": "Ju lutemi verifikoni përsëri email-in për të bërë porosinë."
+      }
+    },
     "errors": {
       "generic": "Ndodhi një gabim. Ju lutem provoni përsëri.",
       "status": "Gabim: {status}"
