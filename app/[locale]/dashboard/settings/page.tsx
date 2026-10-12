@@ -14,6 +14,7 @@ import {
 } from "../../../../lib/api"
 import { Input } from "../../../../components/Input"
 import { MenuPromosEditor } from "../../../../components/dashboard/MenuPromosEditor"
+import { BestSellersEditor } from "../../../../components/dashboard/BestSellersEditor"
 
 const LOCALES = [
   { code: "en", label: "English" },
@@ -343,6 +344,9 @@ export default function DashboardSettingsPage() {
           </div>
         )}
       </div>
+
+      {/* Homepage "Best sellers" products */}
+      <BestSellersEditor />
 
       {/* Mega-menu image cards */}
       <MenuPromosEditor />

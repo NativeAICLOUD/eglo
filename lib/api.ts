@@ -56,6 +56,22 @@ export interface MenuPromoSettings {
   updatedAt: string | null;
 }
 
+/** A product picked for the homepage "Best sellers" section, as the dashboard lists it. */
+export interface BestSellerPick {
+  id: string;
+  name: string;
+  sku: string | null;
+  imageUrl: string | null;
+  isPublished: boolean;
+}
+
+/** Admin selection for the homepage "Best sellers" section; no products = automatic by units sold. */
+export interface BestSellerSettings {
+  products: BestSellerPick[];
+  updatedAt: string | null;
+  maxProducts: number;
+}
+
 export interface PriceListImportResult {
   dryRun: boolean;
   rowsRead: number;
@@ -636,6 +652,19 @@ class ApiService {
     const res = await this.request<{ updatedAt?: string }>("/menu-promos", {
       method: "PUT",
       body: JSON.stringify({ cards, expectedUpdatedAt: updatedAt }),
+    });
+    return res?.updatedAt ?? null;
+  }
+
+  async getBestSellerSettings(): Promise<BestSellerSettings> {
+    return this.request<BestSellerSettings>("/best-sellers/settings");
+  }
+
+  /** Returns the new server version. Rejects (409) if the selection changed since `updatedAt`. */
+  async updateBestSellers(productIds: string[], updatedAt: string | null): Promise<string | null> {
+    const res = await this.request<{ updatedAt?: string }>("/best-sellers/settings", {
+      method: "PUT",
+      body: JSON.stringify({ productIds, expectedUpdatedAt: updatedAt }),
     });
     return res?.updatedAt ?? null;
   }

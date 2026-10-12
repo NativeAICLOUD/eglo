@@ -1642,6 +1642,33 @@
       "notifications":           "Notifications",
       "emailNotifications":      "Email notifications",
       "emailNotificationsDesc":  "Receive updates about orders and activity.",
+      "bestSellers": {
+        "title": "Homepage best sellers",
+        "hint": "Choose which products appear in the \"Best sellers\" section on the homepage and in what order (up to {max}). If the list is empty, the section shows the best-selling products automatically.",
+        "loading": "Loading…",
+        "selected": "Selected products ({count}/{max})",
+        "clear": "Remove all",
+        "automatic": "No products chosen — the homepage shows the best-selling products automatically.",
+        "notPublished": "Not published — hidden on the homepage",
+        "noImage": "No photo — hidden on the homepage",
+        "moveUp": "Move up",
+        "moveDown": "Move down",
+        "remove": "Remove",
+        "addLabel": "Add a product",
+        "searchPlaceholder": "Search by name or product code…",
+        "searching": "Searching…",
+        "noResults": "No products found.",
+        "add": "Add",
+        "added": "Added",
+        "full": "The list is full ({max} products). Remove one to add another.",
+        "save": "Save best sellers",
+        "saving": "Saving…",
+        "saved": "Saved. The homepage updates within a minute.",
+        "errors": {
+          "loadFailed": "Could not load the best sellers.",
+          "saveFailed": "Could not save the best sellers."
+        }
+      },
       "menuPromos": {
         "title": "Menu images",
         "hint": "Image cards shown on the right of the menu when hovering a category. Choose a category, then edit its cards. Texts are per language; empty languages fall back to Macedonian.",

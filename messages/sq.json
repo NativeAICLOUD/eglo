@@ -1806,6 +1806,33 @@
       "notifications":           "Njoftimet",
       "emailNotifications":      "Njoftimet me email",
       "emailNotificationsDesc":  "Merrni përditësime për porositë dhe aktivitetet.",
+      "bestSellers": {
+        "title": "Më të shiturat në faqen kryesore",
+        "hint": "Zgjidhni cilat produkte shfaqen në seksionin \"Më të shiturat\" në faqen kryesore dhe me çfarë radhe (deri në {max}). Nëse lista është bosh, seksioni shfaq automatikisht produktet më të shitura.",
+        "loading": "Duke u ngarkuar…",
+        "selected": "Produktet e zgjedhura ({count}/{max})",
+        "clear": "Hiqi të gjitha",
+        "automatic": "Asnjë produkt i zgjedhur — faqja kryesore shfaq automatikisht produktet më të shitura.",
+        "notPublished": "I papublikuar — nuk shfaqet në faqen kryesore",
+        "noImage": "Pa foto — nuk shfaqet në faqen kryesore",
+        "moveUp": "Lëviz lart",
+        "moveDown": "Lëviz poshtë",
+        "remove": "Hiq",
+        "addLabel": "Shto një produkt",
+        "searchPlaceholder": "Kërko sipas emrit ose kodit të produktit…",
+        "searching": "Duke kërkuar…",
+        "noResults": "Nuk u gjet asnjë produkt.",
+        "add": "Shto",
+        "added": "U shtua",
+        "full": "Lista është plot ({max} produkte). Hiqni një për të shtuar një tjetër.",
+        "save": "Ruaj më të shiturat",
+        "saving": "Duke ruajtur…",
+        "saved": "U ruajt. Faqja kryesore përditësohet brenda një minute.",
+        "errors": {
+          "loadFailed": "Më të shiturat nuk mund të ngarkoheshin.",
+          "saveFailed": "Më të shiturat nuk mund të ruheshin."
+        }
+      },
       "menuPromos": {
         "title": "Imazhet e menysë",
         "hint": "Kartat me imazh që shfaqen në të djathtë të menysë kur kaloni mbi një kategori. Zgjidhni një kategori dhe pastaj ndryshoni kartat e saj. Tekstet janë sipas gjuhës; gjuhët bosh përdorin tekstin maqedonisht.",
