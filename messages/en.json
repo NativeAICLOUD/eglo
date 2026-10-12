@@ -1314,6 +1314,24 @@
       "viewAll":          "View all",
       "manageProducts":   "Manage, add, and edit products.",
       "manageCategories": "Manage product categories.",
+      "topProducts": {
+        "title": "Most viewed products",
+        "subtitle": "Product page views and add-to-cart clicks from customers",
+        "summary": "{views} product views · {cartAdds} added to cart",
+        "periods": {
+          "days": "{days} days",
+          "all": "All time"
+        },
+        "columns": {
+          "product": "Product",
+          "views": "Views",
+          "cartAdds": "Added to cart",
+          "ordered": "Ordered"
+        },
+        "empty": "No product views yet for this period. Views are counted from now on.",
+        "error": "Could not load the statistics.",
+        "deleted": "Deleted product"
+      },
       "stats": {
         "totalProducts": "Total products",
         "totalOrders":   "Total orders",

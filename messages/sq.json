@@ -1502,6 +1502,24 @@
       "viewAll":          "Shiko të gjitha",
       "manageProducts":   "Menaxho, shto dhe redakto produktet.",
       "manageCategories": "Menaxho kategoritë e produkteve.",
+      "topProducts": {
+        "title": "Produktet më të shikuara",
+        "subtitle": "Shikimet e faqes së produktit dhe shtimet në shportë nga klientët",
+        "summary": "{views} shikime · {cartAdds} të shtuara në shportë",
+        "periods": {
+          "days": "{days} ditë",
+          "all": "Gjithsej"
+        },
+        "columns": {
+          "product": "Produkti",
+          "views": "Shikime",
+          "cartAdds": "Në shportë",
+          "ordered": "Të porositura"
+        },
+        "empty": "Ende nuk ka shikime për këtë periudhë. Shikimet numërohen nga tani.",
+        "error": "Statistikat nuk mund të ngarkoheshin.",
+        "deleted": "Produkt i fshirë"
+      },
       "stats": {
         "totalProducts": "Gjithsej produkte",
         "totalOrders":   "Gjithsej porosi",

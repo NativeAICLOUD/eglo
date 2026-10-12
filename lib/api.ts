@@ -109,6 +109,28 @@ export interface DashboardStats {
   revenue: number;
 }
 
+/** One product in the dashboard's "most viewed" list. */
+export interface TopProduct {
+  productId: string;
+  /** Null when the product has since been deleted. */
+  name: string | null;
+  sku: string | null;
+  imageUrl: string | null;
+  exists: boolean;
+  views: number;
+  cartAdds: number;
+  /** Units ordered in the same period, excluding cancelled orders. */
+  ordered: number;
+}
+
+export interface TopProductsStats {
+  /** 0 = all time. */
+  days: number;
+  totalViews: number;
+  totalCartAdds: number;
+  items: TopProduct[];
+}
+
 /** A registered account as listed in the admin dashboard. */
 export interface DashboardUser {
   id: string;
@@ -388,6 +410,25 @@ class ApiService {
 
   async getStats(): Promise<DashboardStats> {
     return this.request<DashboardStats>("/stats");
+  }
+
+  /** Most viewed products for the last `days` days (0 = all time). Admin only. */
+  async getTopProducts(days: number, limit = 20): Promise<TopProductsStats> {
+    return this.request<TopProductsStats>(`/stats/products?days=${days}&limit=${limit}`);
+  }
+
+  /**
+   * Counts a product page view or add-to-cart for the dashboard statistics. Fire-and-forget:
+   * never throws, and sends the login so the backend can leave out staff browsing.
+   */
+  trackProduct(productId: string, event: "view" | "cart"): void {
+    if (typeof window === "undefined") return;
+    const token = this.getToken();
+    fetch(this.url(`/product-stats/${encodeURIComponent(productId)}/${event}`), {
+      method: "POST",
+      headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+      keepalive: true,
+    }).catch(() => {});
   }
 
   async getCategories(): Promise<BackendCategory[]> {

@@ -111,6 +111,18 @@ export default function ProductPage({ params }: ProductPageProps) {
     return () => { cancelled = true }
   }, [resolvedParams.slug])
 
+  // Dashboard statistics: one view per product per browser session, so refreshes don't inflate it
+  const productId = product?.id
+  useEffect(() => {
+    if (!productId) return
+    const key = `viewed_product_${productId}`
+    try {
+      if (sessionStorage.getItem(key)) return
+      sessionStorage.setItem(key, "1")
+    } catch { /* storage blocked — still count the view */ }
+    apiService.trackProduct(productId, "view")
+  }, [productId])
+
   if (loading) {
     return (
       <div className="min-h-screen bg-white animate-pulse">
@@ -268,6 +280,7 @@ export default function ProductPage({ params }: ProductPageProps) {
         image: productImageForCart,
       })
     }
+    apiService.trackProduct(product.id, "cart")
     setShowCartPopup(true)
   }
 

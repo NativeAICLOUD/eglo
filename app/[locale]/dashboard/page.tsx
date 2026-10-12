@@ -7,6 +7,7 @@ import { useParams } from "next/navigation"
 import { useEffect, useState } from "react"
 import { Button } from "../../../components/Button"
 import { apiService, formatMKD } from "../../../lib/api"
+import { TopProductsCard } from "../../../components/dashboard/TopProductsCard"
 
 export default function DashboardOverviewPage() {
   const t      = useTranslations("dashboard")
@@ -73,6 +74,9 @@ export default function DashboardOverviewPage() {
           </div>
         ))}
       </div>
+
+      {/* Which products customers look at */}
+      <TopProductsCard locale={locale} />
 
       {/* Quick links */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
