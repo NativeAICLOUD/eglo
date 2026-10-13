@@ -9,6 +9,7 @@ import Link from "next/link"
 import { useTranslations } from 'next-intl'
 import { useParams } from 'next/navigation'
 import { apiService, BackendProduct, parseProductName } from "../../../lib/api"
+import { STYLE_TREND_IDS } from "../../../lib/stylesAndTrends"
 
 const STYLE_KEYS = ["scandinavian", "natural", "vintage", "industrial"]
 
@@ -19,12 +20,15 @@ function SearchPageContent() {
   // Style cards on the home page link here with ?style=<key>; the query itself is an
   // EGLO material keyword (e.g. HOLZ), so show the style's name instead of the raw term.
   const styleParam = searchParams.get("style")
-  const style = styleParam && STYLE_KEYS.includes(styleParam) ? styleParam : null
+  // Keys come from either the "Shop by style" or the "Discover Styles & Trends" home section.
+  const style = styleParam && (STYLE_KEYS.includes(styleParam) || STYLE_TREND_IDS.includes(styleParam)) ? styleParam : null
   const [searchTerm, setSearchTerm] = useState(style ? "" : query)
   const [filteredProducts, setFilteredProducts] = useState<BackendProduct[]>([])
   const [loading, setLoading] = useState(false)
   const t = useTranslations('search')
-  const tStyle = useTranslations('styleGrid')
+  const tStyleGrid = useTranslations('styleGrid')
+  const tStyleTrends = useTranslations('stylesAndTrends')
+  const tStyle = style && STYLE_TREND_IDS.includes(style) ? tStyleTrends : tStyleGrid
   const params = useParams()
   const locale = params.locale as string
 

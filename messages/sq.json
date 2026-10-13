@@ -840,6 +840,41 @@
       }
     }
   },
+  "stylesAndTrends": {
+    "title": "Zbuloni stilet dhe trendet",
+    "styles": {
+      "pureSerenity": {
+        "title": "Harmoni e pastër",
+        "description": "Dritë e butë dhe tone natyrale të qeta",
+        "alt": "Llambë tavoline qeramike me dritë të butë në një ambient të qetë në tone krem"
+      },
+      "asianAesthetic": {
+        "title": "Estetikë aziatike",
+        "description": "Forma të thurura, skulpturore dhe dru i ngrohtë",
+        "alt": "Llambë e varur e gjerë e thurur mbi një tavolinë ngrënieje prej druri"
+      },
+      "modernMinimalism": {
+        "title": "Minimalizëm modern",
+        "description": "Linja të pastra në gri, të bardhë dhe të zezë",
+        "alt": "Llambë dyshemeje e hollë e zezë pranë një divani të errët në një dhomë ndenjeje minimaliste gri"
+      },
+      "industrialStyle": {
+        "title": "Stil industrial",
+        "description": "Llamba të varura metalike me karakter urban",
+        "alt": "Llambë e varur gjeometrike e zezë dhe bakri përpara një muri me tulla të bardha"
+      },
+      "nature": {
+        "title": "Stil natyral",
+        "description": "Dru, rattan dhe tekstura tokësore",
+        "alt": "Llambë e varur e thurur mbi një divan bezhë me bar të tharë"
+      },
+      "scandinavianStyle": {
+        "title": "Stil skandinav",
+        "description": "Hapësira të ndritshme, dru i çelët dhe forma të thjeshta",
+        "alt": "Llamba të varura me unaza të arta mbi një tavolinë ngrënieje prej druri të çelët"
+      }
+    }
+  },
   "trendingIdeasSection": {
     "trending": "Çfarë Është në Trend",
     "title": "Tendencat Aktuale",

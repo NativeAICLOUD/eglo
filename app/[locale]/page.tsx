@@ -5,6 +5,7 @@ import { FeaturedProducts } from "../../components/FeaturedProducts"
 import { CTASection } from "../../components/CtaSection"
 import { StyleGrid } from "../../components/StyleGrid"
 import { TrendingIdeas } from "../../components/TrendingIdeasSection"
+import { StylesAndTrends } from "../../components/StylesAndTrends"
 import { GoogleReviews } from "../../components/GoogleReviews"
 import { BestSellersSection } from "../../components/BestSellersSection"
 import { API_BASE_URL } from "../../lib/api"
@@ -35,6 +36,7 @@ export default async function HomePage() {
       <BestSellersSection />
       <FeaturedProducts />
       <TrendingIdeas />
+      <StylesAndTrends />
       <CTASection />
       <GoogleReviews />
     </div>
