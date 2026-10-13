@@ -15,6 +15,8 @@ interface ProductCardProps {
   productDesc: string
   price: number
   imageUrl?: string | null
+  /** Second photo shown while the cursor is over the card */
+  hoverImageUrl?: string | null
   productSlug?: string
   discountPercentage?: number | null
   isNew?: boolean
@@ -25,6 +27,7 @@ export default function ProductCard({
   productDesc,
   price,
   imageUrl,
+  hoverImageUrl,
   productSlug,
   discountPercentage,
   isNew
@@ -43,12 +46,21 @@ export default function ProductCard({
   const map = productImagesMap as Record<string, string[]>
   const r2Images = map[productDesc?.trim()] ?? map[productSlug ?? ''] ?? []
   const resolvedImage = r2Images.length > 0 ? r2Images[0] : (imageUrl || PLACEHOLDER)
+  const hoverImage = r2Images.length > 1 ? r2Images[1] : hoverImageUrl
+
+  // The hover photo is only fetched once the cursor first reaches the card, and only
+  // swapped in after it has loaded — so lists stay light and the swap never flashes blank.
+  const [wantHover, setWantHover] = useState(false)
+  const [hoverLoaded, setHoverLoaded] = useState(false)
 
   const hasDiscount = !!discountPercentage && discountPercentage > 0
   const finalPrice = hasDiscount ? getDiscountedPrice(price, discountPercentage) : price
 
   const cardContent = (
-    <div className="group h-full flex flex-col bg-white rounded-xl border border-gray-100 overflow-hidden transition-all duration-300 hover:border-gray-200 hover:shadow-[0_12px_32px_-16px_rgba(15,23,42,0.22)] cursor-pointer">
+    <div
+      onMouseEnter={hoverImage ? () => setWantHover(true) : undefined}
+      className="group h-full flex flex-col bg-white rounded-xl border border-gray-100 overflow-hidden transition-all duration-300 hover:border-gray-200 hover:shadow-[0_12px_32px_-16px_rgba(15,23,42,0.22)] cursor-pointer"
+    >
       {/* Soft grey pulse while the photo loads, then it fades in — no blank white gaps while scrolling. */}
       <div className={`relative aspect-square overflow-hidden ${loaded ? "bg-white" : "bg-gray-100 animate-pulse"}`}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -59,9 +71,20 @@ export default function ProductCard({
           decoding="async"
           alt={productName}
           onLoad={() => setLoaded(true)}
-          className={`absolute inset-0 w-full h-full object-contain p-4 sm:p-6 transition-[opacity,transform] duration-500 ease-out group-hover:scale-[1.03] ${loaded ? "opacity-100" : "opacity-0"}`}
+          className={`absolute inset-0 w-full h-full object-contain p-4 sm:p-6 transition-[opacity,transform] duration-500 ease-out group-hover:scale-[1.03] ${loaded ? "opacity-100" : "opacity-0"} ${hoverLoaded ? "group-hover:opacity-0" : ""}`}
           onError={(e) => { (e.currentTarget as HTMLImageElement).src = PLACEHOLDER; setLoaded(true) }}
         />
+        {wantHover && hoverImage && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={trimmedImageSrc(hoverImage, 600)}
+            decoding="async"
+            alt=""
+            aria-hidden
+            onLoad={() => setHoverLoaded(true)}
+            className={`absolute inset-0 w-full h-full object-contain p-4 sm:p-6 opacity-0 transition-[opacity,transform] duration-500 ease-out group-hover:scale-[1.03] ${hoverLoaded ? "group-hover:opacity-100" : ""}`}
+          />
+        )}
         {productSlug && (
           <FavoriteButton
             className="absolute top-2 right-2"

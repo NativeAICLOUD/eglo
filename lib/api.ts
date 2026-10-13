@@ -100,6 +100,8 @@ export interface BackendProduct {
   /** Admin-controlled flag that shows the NEW badge */
   isNew?: boolean;
   imageUrl: string | null;
+  /** Next gallery photo — product cards swap to it on hover. Only on list endpoints. */
+  hoverImageUrl?: string | null;
   createdDate: string;
   // Fields present on paginated list + single-product responses
   categoryId?: string | null;

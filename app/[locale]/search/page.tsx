@@ -133,6 +133,7 @@ function SearchPageContent() {
                 discountPercentage={product.discountPercentage}
                 isNew={product.isNew}
                 imageUrl={product.imageUrl}
+                hoverImageUrl={product.hoverImageUrl}
                 productSlug={product.id}
               />
             ))}
