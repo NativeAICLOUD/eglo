@@ -263,6 +263,10 @@
   "navigation": {
     "inspiration": "Inspirimi",
     "all": "Të Gjitha",
+    "promoCta": {
+      "discover": "Zbuloni gamën",
+      "view": "Shikoni gamën"
+    },
     "viewAll": "Shiko të gjitha",
     "menu": "Menu"
   },
@@ -1806,6 +1810,23 @@
       "notifications":           "Njoftimet",
       "emailNotifications":      "Njoftimet me email",
       "emailNotificationsDesc":  "Merrni përditësime për porositë dhe aktivitetet.",
+      "hero": {
+        "title": "Baneri i faqes kryesore",
+        "hint": "Imazhi i madh në krye të faqes kryesore. Përdorni një foto të gjerë horizontale (të paktën 1920 × 800 px). Ana e majtë është pas tekstit, prandaj mbajeni subjektin kryesor në të djathtë.",
+        "loading": "Duke u ngarkuar…",
+        "defaultBadge": "Imazhi standard",
+        "upload": "Ngarko imazh të ri",
+        "uploading": "Duke u ngarkuar…",
+        "useDefault": "Përdor imazhin standard",
+        "save": "Ruaj banerin",
+        "saving": "Duke ruajtur…",
+        "saved": "U ruajt. Faqja kryesore përditësohet brenda një minute.",
+        "errors": {
+          "loadFailed": "Baneri nuk mund të ngarkohej.",
+          "uploadFailed": "Imazhi nuk mund të ngarkohej.",
+          "saveFailed": "Baneri nuk mund të ruhej."
+        }
+      },
       "bestSellers": {
         "title": "Më të shiturat në faqen kryesore",
         "hint": "Zgjidhni cilat produkte shfaqen në seksionin \"Më të shiturat\" në faqen kryesore dhe me çfarë radhe (deri në {max}). Nëse lista është bosh, seksioni shfaq automatikisht produktet më të shitura.",

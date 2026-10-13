@@ -263,6 +263,10 @@
   "navigation": {
     "inspiration": "Inspiration",
     "all": "All",
+    "promoCta": {
+      "discover": "Discover the range",
+      "view": "View the range"
+    },
     "viewAll": "View all",
     "menu": "Menu"
   },
@@ -1642,6 +1646,23 @@
       "notifications":           "Notifications",
       "emailNotifications":      "Email notifications",
       "emailNotificationsDesc":  "Receive updates about orders and activity.",
+      "hero": {
+        "title": "Homepage banner",
+        "hint": "The large image at the top of the homepage. Use a wide landscape photo (at least 1920 × 800 px). The left side sits behind the text, so keep the main subject on the right.",
+        "loading": "Loading…",
+        "defaultBadge": "Default image",
+        "upload": "Upload new image",
+        "uploading": "Uploading…",
+        "useDefault": "Use the default image",
+        "save": "Save banner",
+        "saving": "Saving…",
+        "saved": "Saved. The homepage updates within a minute.",
+        "errors": {
+          "loadFailed": "Could not load the banner.",
+          "uploadFailed": "Could not upload the image.",
+          "saveFailed": "Could not save the banner."
+        }
+      },
       "bestSellers": {
         "title": "Homepage best sellers",
         "hint": "Choose which products appear in the \"Best sellers\" section on the homepage and in what order (up to {max}). If the list is empty, the section shows the best-selling products automatically.",

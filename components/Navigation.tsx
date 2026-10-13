@@ -346,7 +346,8 @@ export function Navigation({ isMobileMenuOpen, setIsMobileMenuOpen }: Navigation
                         className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-white border border-white/60 rounded-full hover:bg-white hover:text-teal-700 transition-colors"
                         onClick={closeMegaMenu}
                       >
-                        {promoText(promo.ctaText)}
+                        {/* Cards saved without button text get a standard label */}
+                        {promoText(promo.ctaText) || t(i === 0 ? 'promoCta.discover' : 'promoCta.view')}
                       </Link>
                     </div>
                   </div>
