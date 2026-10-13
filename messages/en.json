@@ -870,32 +870,32 @@
       "pureSerenity": {
         "title": "Pure Serenity",
         "description": "Soft light and calm, natural tones",
-        "alt": "Ceramic table lamp with a soft glow in a calm cream-toned interior"
+        "alt": "Ceramic table lamp with a linen shade on a round wooden side table"
       },
       "asianAesthetic": {
         "title": "Asian Aesthetic",
         "description": "Woven, sculptural shapes and warm wood",
-        "alt": "Wide woven pendant light above a wooden dining table"
+        "alt": "Bamboo pendant light in a warm room with a cane cabinet and plants"
       },
       "modernMinimalism": {
         "title": "Modern Minimalism",
         "description": "Clean lines in grey, white and black",
-        "alt": "Slim black floor lamp beside a dark sofa in a grey minimalist living room"
+        "alt": "Slim LED floor lamp beside a black sofa in a grey minimalist living room"
       },
       "industrialStyle": {
         "title": "Industrial Style",
         "description": "Metal pendants with a raw urban edge",
-        "alt": "Black and copper geometric pendant light against a white brick wall"
+        "alt": "Copper and silver wire pendant lights above a wooden dining table"
       },
       "nature": {
         "title": "Nature",
         "description": "Wood, rattan and earthy textures",
-        "alt": "Woven pendant light above a beige sofa with dried grasses"
+        "alt": "Rattan pendant light above a woven armchair surrounded by plants"
       },
       "scandinavianStyle": {
         "title": "Scandinavian Style",
         "description": "Bright rooms, light wood and simple forms",
-        "alt": "Gold ring pendant lights above a light wooden dining table"
+        "alt": "Light wooden pendant light in a bright room with a cane cabinet"
       }
     }
   },
