@@ -56,6 +56,15 @@ export interface MenuPromoSettings {
   updatedAt: string | null;
 }
 
+/** Built-in homepage banner, used until an admin uploads another one. */
+export const DEFAULT_HERO_IMAGE = "/assets/images/banner.webp";
+
+/** Homepage banner image; null imageUrl = the built-in DEFAULT_HERO_IMAGE. */
+export interface HeroSettings {
+  imageUrl: string | null;
+  updatedAt: string | null;
+}
+
 /** A product picked for the homepage "Best sellers" section, as the dashboard lists it. */
 export interface BestSellerPick {
   id: string;
@@ -656,6 +665,24 @@ class ApiService {
       body: JSON.stringify({ cards, expectedUpdatedAt: updatedAt }),
     });
     return res?.updatedAt ?? null;
+  }
+
+  async getHero(): Promise<HeroSettings> {
+    const data = await this.request<Partial<HeroSettings>>("/hero");
+    return { imageUrl: data.imageUrl ?? null, updatedAt: data.updatedAt ?? null };
+  }
+
+  /** Pass null to go back to the built-in banner. Rejects (409) if it changed since `updatedAt`. */
+  async updateHero(imageUrl: string | null, updatedAt: string | null): Promise<string | null> {
+    const res = await this.request<{ updatedAt?: string }>("/hero", {
+      method: "PUT",
+      body: JSON.stringify({ imageUrl, expectedUpdatedAt: updatedAt }),
+    });
+    return res?.updatedAt ?? null;
+  }
+
+  async uploadHeroImage(file: File): Promise<string> {
+    return this.uploadImage("/hero/image", file);
   }
 
   async getBestSellerSettings(): Promise<BestSellerSettings> {

@@ -15,6 +15,7 @@ import {
 import { Input } from "../../../../components/Input"
 import { MenuPromosEditor } from "../../../../components/dashboard/MenuPromosEditor"
 import { BestSellersEditor } from "../../../../components/dashboard/BestSellersEditor"
+import { HeroImageEditor } from "../../../../components/dashboard/HeroImageEditor"
 
 const LOCALES = [
   { code: "en", label: "English" },
@@ -344,6 +345,9 @@ export default function DashboardSettingsPage() {
           </div>
         )}
       </div>
+
+      {/* Homepage banner image */}
+      <HeroImageEditor />
 
       {/* Homepage "Best sellers" products */}
       <BestSellersEditor />

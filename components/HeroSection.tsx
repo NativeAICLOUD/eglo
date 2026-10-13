@@ -5,8 +5,10 @@ import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 import { useTranslations } from 'next-intl'
 import { useParams } from "next/navigation"
+import { DEFAULT_HERO_IMAGE } from "../lib/api"
 
-export function HeroSection() {
+/** `imageUrl` is the banner chosen in the dashboard settings; empty = the built-in one. */
+export function HeroSection({ imageUrl }: { imageUrl?: string | null }) {
   const t = useTranslations('heroSection')
   const { locale } = useParams() as { locale: string }
 
@@ -15,7 +17,7 @@ export function HeroSection() {
       {/* Background image */}
       <div className="absolute inset-0">
         <Image
-          src="/assets/images/banner.webp"
+          src={imageUrl || DEFAULT_HERO_IMAGE}
           alt="Modern living room with elegant lighting"
           fill
           className="object-cover object-center"
