@@ -15,7 +15,7 @@ export function StylesAndTrends() {
   const locale = params.locale as string
 
   return (
-    <section aria-labelledby="styles-trends-heading" className="bg-white">
+    <section aria-labelledby="styles-trends-heading" className="bg-white pb-12 md:pb-16">
       <h2
         id="styles-trends-heading"
         className="py-8 px-4 text-center text-2xl lg:text-[28px] leading-tight font-normal text-[#64748B]"
